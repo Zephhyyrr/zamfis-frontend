@@ -98,7 +98,7 @@ onMounted(() => {
     }
 
   } else {
-    errorMessage.value = 'Halaman ini tidak dapat digunakan. Token reset password tidak ditemukan pada URL (link kadaluwarsa atau terpotong).';
+    router.push('/auth/login?reset=error&message=Token+reset+password+tidak+ditemukan+pada+URL.');
   }
 });
 
@@ -133,7 +133,8 @@ const handleResetPassword = async () => {
 
   } catch (err: any) {
     console.error('Reset Password Error Detail:', err);
-    errorMessage.value = err?.data?.message || err?.message || 'Gagal tersambung ke server untuk memperbarui password Anda.';
+    const errorMsg = err?.data?.message || err?.message || 'Gagal tersambung ke server untuk memperbarui password Anda.';
+    router.push(`/auth/login?reset=error&message=${encodeURIComponent(errorMsg)}`);
   } finally {
     isLoading.value = false;
   }

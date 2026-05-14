@@ -8,6 +8,7 @@
     confirmText="Simpan Perubahan"  
     maxWidth="max-w-4xl"
     @confirm="submitEdit"
+    :isLoading="isLoading"
   >
     <div class="space-y-4 ">
       <div>
@@ -109,7 +110,9 @@ const props = defineProps({
 });
 
 const emit = defineEmits(['update:modelValue', 'saved']);
-const { updateContent } = useContent();
+let contentDetailRefresh: any = null;
+const { updateContent, fetchContentDetail } = useContent();
+const isLoading = ref(false);
 
 const form = ref({
     judul: '',
@@ -173,23 +176,47 @@ const syncVideoPreviews = () => {
   ];
 };
 
-watch(() => props.editData, (newVal) => {
-    if (newVal) {
-        form.value.judul = newVal.judul || '';
-        form.value.isi = newVal.isi || '';
-        form.value.status = newVal.status || 'draft';
+// Fetch fresh data when modal opens
+watch(() => props.modelValue, async (isOpen) => {
+  if (isOpen && props.editData?.id) {
+    isLoading.value = true;
+    try {
+      const result = fetchContentDetail(props.editData.id);
+      contentDetailRefresh = result.refresh;
+      const { data, pending } = result;
+      // Wait for data to be fetched
+      while (pending.value) {
+        await new Promise(resolve => setTimeout(resolve, 50));
+      }
+      const freshData = data.value?.data || data.value;
+      populateFormWithData(freshData);
+    } catch (error) {
+      console.error('Error fetching content detail:', error);
+      // Fallback ke data dari prop jika fetch gagal
+      populateFormWithData(props.editData);
+    } finally {
+      isLoading.value = false;
+    }
+  }
+});
+
+const populateFormWithData = (data: any) => {
+  if (data) {
+    form.value.judul = data.judul || '';
+    form.value.isi = data.isi || '';
+    form.value.status = data.status || 'draft';
     form.value.gambarUrl = [];
     form.value.videoUrl = [];
-        
-    existingImagePaths.value = normalizeExistingMedia((newVal as any).gambarUrls ?? newVal.gambarUrl);
-    existingVideoPaths.value = normalizeExistingMedia((newVal as any).videoUrls ?? newVal.videoUrl);
+    
+    existingImagePaths.value = normalizeExistingMedia((data as any).gambarUrls ?? data.gambarUrl);
+    existingVideoPaths.value = normalizeExistingMedia((data as any).videoUrls ?? data.videoUrl);
     syncImagePreviews();
     syncVideoPreviews();
 
     if (imageInputRef.value) imageInputRef.value.value = '';
     if (videoInputRef.value) videoInputRef.value.value = '';
-    }
-}, { immediate: true });
+  }
+};
 
 // Input handlers
 const onImageChange = (e: Event) => {
@@ -244,6 +271,8 @@ const submitEdit = async () => {
           gambarUrl: form.value.gambarUrl.length ? form.value.gambarUrl : null,
           videoUrl: form.value.videoUrl.length ? form.value.videoUrl : null
         } as any);
+        // Clear cache agar next edit fetch fresh data
+        if (contentDetailRefresh) await contentDetailRefresh();
         emit('update:modelValue', false);
         emit('saved', 'Berhasil', 'Konten berhasil diperbarui');
     } catch(e) {

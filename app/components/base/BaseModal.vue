@@ -24,18 +24,23 @@
                         </div>
 
                         <div class="px-6 py-6 text-font-color text-sm leading-relaxed overflow-y-auto min-h-0">
-                            <slot></slot>
+                            <div v-if="isLoading" class="flex items-center justify-center py-8">
+                                <Icon icon="lucide:loader-circle" class="w-8 h-8 animate-spin text-primary" />
+                            </div>
+                            <div v-else>
+                                <slot></slot>
+                            </div>
                         </div>
 
                         <div class="px-6 py-4 bg-gray-50 flex items-center justify-end gap-3 rounded-b-2xl">
                             <slot name="footer">
-                                <button @click="close"
-                                    class="px-4 py-2 text-sm font-medium text-font-color hover:bg-gray-200 bg-gray-100 rounded-xl transition-colors outline-none">
+                                <button @click="close" :disabled="isLoading"
+                                    class="px-4 py-2 text-sm font-medium text-font-color hover:bg-gray-200 bg-gray-100 rounded-xl transition-colors outline-none disabled:opacity-50 disabled:cursor-not-allowed">
                                     Batal
                                 </button>
 
                                 <BaseButton @click="confirm" :text="confirmText"
-                                    :variant="type === 'info' ? 'primary' : type" :fullWidth="false" />
+                                    :variant="type === 'info' ? 'primary' : type" :fullWidth="false" :disabled="isLoading" />
                             </slot>
                         </div>
 
@@ -56,7 +61,8 @@ const props = defineProps({
     icon: { type: String, default: '' },
     confirmText: { type: String, default: 'Lanjutkan' },
     type: { type: String, default: 'info' },
-    maxWidth: { type: String, default: 'max-w-md' }
+    maxWidth: { type: String, default: 'max-w-md' },
+    isLoading: { type: Boolean, default: false }
 });
 
 const emit = defineEmits(['update:modelValue', 'confirm', 'cancel']);

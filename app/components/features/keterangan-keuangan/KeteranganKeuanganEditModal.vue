@@ -7,6 +7,7 @@
     type="info"
     confirmText="Simpan Perubahan"
     @confirm="submitForm"
+    :isLoading="isLoading"
   >
     <div class="space-y-4">
       <div>
@@ -17,7 +18,7 @@
   </BaseModal>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, watch } from 'vue';
 import { useKeteranganTransaksi } from '~/composables/useKeteranganTransaksi';
 
@@ -27,18 +28,43 @@ const props = defineProps({
 });
 
 const emit = defineEmits(['update:modelValue', 'saved']);
+const isLoading = ref(false);
+let keteranganDetailRefresh: any = null;
 
-const { updateKeterangan } = useKeteranganTransaksi();
+const { updateKeterangan, fetchKeteranganDetail } = useKeteranganTransaksi();
 
 const form = ref({ nama: '' });
 
-watch(() => props.modelValue, (val) => {
-    if (val && props.editData.id) form.value = { nama: props.editData.nama || '' };
+watch(() => props.modelValue, async (val) => {
+    if (val && props.editData.id) {
+        isLoading.value = true;
+        try {
+            const result = fetchKeteranganDetail(props.editData.id);
+            keteranganDetailRefresh = result.refresh;
+            const { data, pending } = result;
+            while (pending.value) {
+                await new Promise(resolve => setTimeout(resolve, 50));
+            }
+            const freshData = data.value?.data || data.value;
+            populateFormWithData(freshData);
+        } catch (error) {
+            console.error('Error fetching keterangan detail:', error);
+            populateFormWithData(props.editData);
+        } finally {
+            isLoading.value = false;
+        }
+    }
 });
+
+const populateFormWithData = (data: any) => {
+    if (data) form.value = { nama: data.nama || '' };
+};
 
 const submitForm = async () => {
     try {
         await updateKeterangan(props.editData.id, { nama: form.value.nama });
+        // Clear cache agar next edit fetch fresh data
+        if (keteranganDetailRefresh) await keteranganDetailRefresh();
         emit('update:modelValue', false);
         emit('saved', 'Berhasil', 'Keterangan keuangan berhasil diperbarui');
     } catch(e) {

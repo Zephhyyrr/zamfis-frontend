@@ -1,6 +1,6 @@
 <template>
     <BaseModal :modelValue="modelValue" @update:modelValue="$emit('update:modelValue', $event)" title="Edit Pengguna"
-        icon="lucide:user" type="info" confirmText="Simpan Perubahan" @confirm="submitEditUser">
+        icon="lucide:user" type="info" confirmText="Simpan Perubahan" @confirm="submitEditUser" :isLoading="isLoading">
         <div v-if="editData" class="space-y-4 text-left mt-2">
             <div>
                 <label class="block mb-1 text-sm font-medium text-gray-700">Nama Lengkap</label>
@@ -43,12 +43,35 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits(['update:modelValue', 'success']);
-const { updateUser } = useUser();
+const isLoading = ref(false);
+let userDetailRefresh: any = null;
+const { updateUser, fetchUserById } = useUser();
 
 type EditUserForm = IUpdateUserPayload & { id: number };
 const editData = ref<EditUserForm | null>(null);
 
-watch(() => props.user, (newVal) => {
+watch(() => props.modelValue, async (isOpen) => {
+    if (isOpen && props.user?.id) {
+        isLoading.value = true;
+        try {
+            const result = fetchUserById(props.user.id);
+            userDetailRefresh = result.refresh;
+            const { data, pending } = result;
+            while (pending.value) {
+                await new Promise(resolve => setTimeout(resolve, 50));
+            }
+            const freshData = data.value?.data || data.value;
+            populateFormWithData(freshData);
+        } catch (error) {
+            console.error('Error fetching user detail:', error);
+            populateFormWithData(props.user);
+        } finally {
+            isLoading.value = false;
+        }
+    }
+});
+
+const populateFormWithData = (newVal: any) => {
     if (newVal) {
         editData.value = {
             id: newVal.id,
@@ -58,12 +81,14 @@ watch(() => props.user, (newVal) => {
             isActive: newVal.isActive ?? true
         };
     }
-}, { immediate: true });
+};
 
 const submitEditUser = async () => {
     if (!editData.value) return;
     try {
         await updateUser(editData.value.id, editData.value);
+        // Clear cache agar next edit fetch fresh data
+        if (userDetailRefresh) await userDetailRefresh();
         emit('update:modelValue', false)
         emit('success', 'Pengguna Diperbarui', `Data pengguna ${editData.value.nama} berhasil diupdate.`);
     } catch (error) {

@@ -7,6 +7,7 @@
     type="info"
     confirmText="Simpan Perubahan"
     @confirm="submitForm"
+    :isLoading="isLoading"
   >
     <div class="space-y-4">
       <div>
@@ -50,8 +51,10 @@ const props = defineProps({
 });
 
 const emit = defineEmits(['update:modelValue', 'saved']);
+const isLoading = ref(false);
+let transactionDetailRefresh: any = null;
 
-const { updateTransaction } = useTransaksi();
+const { updateTransaction, fetchTransactionDetail } = useTransaksi();
 const { fetchKeteranganList } = useKeteranganTransaksi();
 const params = ref({ page: 1, limit: 10 });
 const { data: ketData } = fetchKeteranganList(params);
@@ -88,17 +91,38 @@ const handleCurrencyInput = (field: 'kredit' | 'debet', event: Event) => {
   target.value = formatted;
 };
 
-watch(() => props.modelValue, (val) => {
+watch(() => props.modelValue, async (val) => {
     if (val && props.editData.id) {
-        form.value = {
-          tanggal: props.editData.tanggal ? (new Date(props.editData.tanggal).toISOString().split('T')[0] ?? '') : '',
-            uraian: props.editData.uraian || '',
-          keteranganTransaksiId: props.editData.keteranganTransaksiId || props.editData.id_keterangan_transaksi || props.editData.keteranganTransaksi?.id || 0,
-          kredit: props.editData.kredit ? formatRupiah(String(props.editData.kredit)) : '',
-          debet: props.editData.debet ? formatRupiah(String(props.editData.debet)) : ''
-        };
+        isLoading.value = true;
+        try {
+            const result = fetchTransactionDetail(props.editData.id);
+            transactionDetailRefresh = result.refresh;
+            const { data, pending } = result;
+            while (pending.value) {
+                await new Promise(resolve => setTimeout(resolve, 50));
+            }
+            const freshData = data.value?.data || data.value;
+            populateFormWithData(freshData);
+        } catch (error) {
+            console.error('Error fetching transaction detail:', error);
+            populateFormWithData(props.editData);
+        } finally {
+            isLoading.value = false;
+        }
     }
 });
+
+const populateFormWithData = (data: any) => {
+    if (data) {
+        form.value = {
+            tanggal: data.tanggal ? (new Date(data.tanggal).toISOString().split('T')[0] ?? '') : '',
+            uraian: data.uraian || '',
+            keteranganTransaksiId: data.keteranganTransaksiId || data.id_keterangan_transaksi || data.keteranganTransaksi?.id || 0,
+            kredit: data.kredit ? formatRupiah(String(data.kredit)) : '',
+            debet: data.debet ? formatRupiah(String(data.debet)) : ''
+        };
+    }
+};
 
 const submitForm = async () => {
     try {
@@ -126,11 +150,11 @@ const submitForm = async () => {
           kredit,
           debet
         });
+        if (transactionDetailRefresh) await transactionDetailRefresh();
         emit('update:modelValue', false);
         emit('saved', 'Berhasil', 'Data keuangan berhasil diperbarui');
     } catch(e) {
-        console.error('Error updating:', e);
-        alert('Gagal mengupdate rutinitas keuangan.');
+      // eslint-disable-next-line no-console
     }
 };
 </script>
