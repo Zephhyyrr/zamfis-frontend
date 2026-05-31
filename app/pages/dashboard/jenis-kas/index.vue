@@ -1,11 +1,11 @@
-<template>
+﻿<template>
   <div>
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
       <div>
-        <h1 class="text-2xl font-bold text-gray-800">Keterangan Keuangan</h1>
-        <p class="text-gray-600">Kelola Keterangan Keuangan Masjid</p>
+        <h1 class="text-2xl font-bold text-gray-800">Jenis Kas</h1>
+        <p class="text-gray-600">Kelola Jenis Kas Masjid</p>
       </div>
-      <BaseButton text="Tambah Keterangan" variant="primary" :fullWidth="false" icon="lucide:plus"
+      <BaseButton text="Tambah Jenis Kas" variant="primary" :fullWidth="false" icon="lucide:plus"
         @click="openCreateModal" />
     </div>
 
@@ -17,7 +17,7 @@
         </div>
         <input v-model="searchQuery" type="text"
           class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm"
-          placeholder="Cari keterangan...">
+          placeholder="Cari Jenis Kas...">
       </div>
     </div>
 
@@ -42,7 +42,7 @@
     <!-- Undo Delete Banner -->
     <div v-if="showUndoBanner"
       class="mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3">
-      <p class="text-sm text-amber-800">Keterangan dipindahkan ke draft. Ingin memulihkan sekarang?</p>
+      <p class="text-sm text-amber-800">Jenis Kas dipindahkan ke draft. Ingin memulihkan sekarang?</p>
       <button type="button"
         class="inline-flex items-center rounded-lg bg-amber-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-amber-700 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
         :disabled="undoLoading" @click="undoDelete">
@@ -59,7 +59,7 @@
               <th scope="col"
                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-16">No</th>
               <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Nama Keterangan</th>
+                Nama Jenis Kas</th>
               <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Aksi</th>
             </tr>
@@ -74,7 +74,7 @@
               <td colspan="3" class="px-6 py-8">
                 <div class="flex flex-col items-center justify-center text-center text-gray-500 text-sm">
                   <Icon icon="lucide:file-question" class="w-12 h-12 text-gray-300 mb-2" />
-                  <p>{{ activeTab === 'active' ? 'Belum ada data keterangan.' : 'Tidak ada keterangan di dalam draft.' }}</p>
+                  <p>{{ activeTab === 'active' ? 'Belum ada data Jenis Kas.' : 'Tidak ada Jenis Kas di dalam draft.' }}</p>
                 </div>
               </td>
             </tr>
@@ -114,9 +114,9 @@
         :meta="draftMeta" class="rounded-none border-t border-gray-100" />
     </div>
 
-    <FeaturesKeteranganKeuanganEditModal v-model="showEditModal" :editData="selectedItem" @saved="handleSuccess" />
+    <FeaturesJenisKasEditModal v-model="showEditModal" :editData="selectedItem" @saved="handleSuccess" />
 
-    <FeaturesKeteranganKeuanganDeleteModal v-model="showDeleteModal" :item="selectedItem" :mode="deleteMode"
+    <FeaturesJenisKasDeleteModal v-model="showDeleteModal" :item="selectedItem" :mode="deleteMode"
       @success="handleSuccess" />
 
     <BaseModal v-model="showResultModal" :title="resultTitle" icon="lucide:badge-check" type="success"
@@ -132,20 +132,20 @@ import { definePageMeta, useRouter } from '#imports';
 import { ref, computed, onBeforeUnmount } from 'vue';
 import { SearchIcon, PencilIcon, TrashIcon } from 'lucide-vue-next';
 import { Icon } from '@iconify/vue';
-import { useKeteranganTransaksi } from '~/composables/useKeteranganTransaksi';
+import { useJenisKas } from '~/composables/useJenisKas';
 
 definePageMeta({ layout: 'dashboard' as any });
 
 const router = useRouter();
-const { fetchKeteranganList, fetchDraftKeterangan, deleteKeterangan } = useKeteranganTransaksi();
+const { fetchJenisKasList, fetchDraftKas, deleteKas } = useJenisKas();
 
 // Fetch Active Data
 const activeParams = ref({ page: 1, limit: 10 });
-const { data: apiResponse, pending: activePending, refresh } = fetchKeteranganList(activeParams);
+const { data: apiResponse, pending: activePending, refresh } = fetchJenisKasList(activeParams);
 
 // Fetch Draft Data
 const draftParams = ref({ page: 1, limit: 10 });
-const { data: draftApiResponse, pending: draftPending, refresh: refreshDraft } = fetchDraftKeterangan(draftParams);
+const { data: draftApiResponse, pending: draftPending, refresh: refreshDraft } = fetchDraftKas(draftParams);
 
 // Extract raw data arrays dynamically
 const extractItems = (resRef: any) => {
@@ -192,7 +192,7 @@ const currentAction = ref<'edit' | 'delete' | null>(null);
 const deleteMode = ref<'archive' | 'restore' | 'permanent'>('archive');
 
 const openCreateModal = () => {
-  router.push('/dashboard/keterangan-keuangan/create');
+  router.push('/dashboard/jenis-kas/create');
 };
 
 const openActionModal = (action: 'edit' | 'delete', item: any, mode?: 'archive' | 'restore' | 'permanent') => {
@@ -233,15 +233,15 @@ const undoDelete = async () => {
   if (!lastDeletedItemId.value) return;
   undoLoading.value = true;
   try {
-    await deleteKeterangan(lastDeletedItemId.value); // Backend handles soft-delete restore mapping
+    await deleteKas(lastDeletedItemId.value); // Backend handles soft-delete restore mapping
     await refresh();
     await refreshDraft();
     clearUndoState();
-    resultTitle.value = 'Keterangan Dipulihkan';
-    resultMessage.value = 'Keterangan sudah berhasil dipulihkan dari draft.';
+    resultTitle.value = 'Jenis Kas Dipulihkan';
+    resultMessage.value = 'Jenis Kas sudah berhasil dipulihkan dari draft.';
     showResultModal.value = true;
   } catch (error) {
-    console.error('Gagal memulihkan keterangan:', error);
+    console.error('Gagal memulihkan Jenis Kas:', error);
   } finally {
     undoLoading.value = false;
   }
@@ -257,8 +257,8 @@ const handleSuccess = async (title: string, message: string) => {
 
   if (currentAction.value === 'delete' && deleteMode.value === 'archive' && selectedItem.value) {
     showDeleteUndo(selectedItem.value.id);
-    resultTitle.value = 'Keterangan Diarsipkan';
-    resultMessage.value = 'Data keterangan dipindahkan ke draft. Anda dapat memulihkannya dari tab Draft Tersimpan.';
+    resultTitle.value = 'Jenis Kas Diarsipkan';
+    resultMessage.value = 'Data Jenis Kas dipindahkan ke draft. Anda dapat memulihkannya dari tab Draft Tersimpan.';
     showResultModal.value = true;
     return;
   }
@@ -272,3 +272,6 @@ onBeforeUnmount(() => {
   if (undoTimer) clearTimeout(undoTimer);
 });
 </script>
+
+
+

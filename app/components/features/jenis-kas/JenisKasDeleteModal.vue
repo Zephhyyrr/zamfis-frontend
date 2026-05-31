@@ -1,4 +1,4 @@
-<template>
+﻿<template>
     <BaseModal :modelValue="modelValue" @update:modelValue="$emit('update:modelValue', $event)" 
         :title="modalTitle"
         :icon="modalIcon" 
@@ -14,7 +14,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { useKeteranganTransaksi } from '~/composables/useKeteranganTransaksi';
+import { useJenisKas } from '~/composables/useJenisKas';
 
 const props = withDefaults(defineProps<{
     modelValue: boolean;
@@ -25,7 +25,7 @@ const props = withDefaults(defineProps<{
 });
 
 const emit = defineEmits(['update:modelValue', 'success']);
-const { deleteKeterangan, deletePermanentKeterangan } = useKeteranganTransaksi();
+const { deleteKas, deletePermanentKas } = useJenisKas();
 
 const isRestoreMode = computed(() => props.mode === 'restore');
 const isPermanentMode = computed(() => props.mode === 'permanent');
@@ -52,23 +52,26 @@ const submitDelete = async () => {
     if (!props.item) return;
     try {
         if (isPermanentMode.value) {
-            await deletePermanentKeterangan(props.item.id);
+            await deletePermanentKas(props.item.id);
         } else {
-            await deleteKeterangan(props.item.id);
+            await deleteKas(props.item.id);
         }
         emit('update:modelValue', false);
         if (isPermanentMode.value) {
-            emit('success', 'Keterangan Dihapus Permanen', 'Data yang bersangkutan dengan keterangan ini ikut terhapus semuanya.', 'permanent');
+            emit('success', 'Jenis Kas Dihapus Permanen', 'Data yang bersangkutan dengan Jenis Kas ini ikut terhapus semuanya.', 'permanent');
             return;
         }
         if (props.mode === 'archive') {
-            emit('success', 'Keterangan Dihapus', 'Data keterangan telah berhasil dipindahkan ke draft.');
+            emit('success', 'Jenis Kas Dihapus', 'Data Jenis Kas telah berhasil dipindahkan ke draft.');
         } else {
-            emit('success', 'Keterangan Dipulihkan', 'Data keterangan telah berhasil dipulihkan.');
+            emit('success', 'Jenis Kas Dipulihkan', 'Data Jenis Kas telah berhasil dipulihkan.');
         }
     } catch (error) {
-        console.error('Gagal menghapus Keterangan:', error);
+        console.error('Gagal menghapus Jenis Kas:', error);
         alert('Gagal memproses perubahan. Pastikan backend aktif.');
     }
 };
 </script>
+
+
+

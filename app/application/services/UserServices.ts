@@ -1,11 +1,11 @@
 import { BaseService } from './BaseService';
 import { endpoints } from '~/infrastructure/http/endpoints';
-import type { IUser, ICreateUserPayload, IUpdateUserPayload, IUpdateUserFotoPayload, IActivateUserPayload } from '~/domain/models/IUser';
+import type { IUser, ICreateUserPayload, IUpdateUserPayload, IUpdateUserFotoPayload } from '~/domain/models/IUser';
 import type { IApiResponse } from '~/domain/types/IApiResponse';
 import type { IPaginationQuery } from '~/domain/types/IPaginationQuery';
 
-export class UserService extends BaseService { 
-    
+export class UserService extends BaseService {
+
     static async getAllUsers(params?: IPaginationQuery): Promise<IApiResponse<IUser[]>> {
         return await this.api<IApiResponse<IUser[]>>(endpoints.USER.GET_ALL, {
             method: 'GET',
@@ -28,7 +28,7 @@ export class UserService extends BaseService {
 
     static async updateUser(id: number, payload: IUpdateUserPayload): Promise<IApiResponse<IUser>> {
         return await this.api<IApiResponse<IUser>>(endpoints.USER.UPDATE(id), {
-            method: 'PUT', 
+            method: 'PUT',
             body: payload,
         });
     }
@@ -39,20 +39,24 @@ export class UserService extends BaseService {
         });
     }
 
+    static async deletePermanentUser(id: number): Promise<IApiResponse<null>> {
+        return await this.api<IApiResponse<null>>(endpoints.USER.DELETE_PERMANENT(id), {
+            method: 'DELETE',
+        });
+    }
+
     static async updateFotoProfil(id: number, payload: IUpdateUserFotoPayload): Promise<IApiResponse<IUser>> {
         const formData = new FormData();
         formData.append('fotoProfile', payload.fotoProfile);
-
         return await this.api<IApiResponse<IUser>>(endpoints.USER.FOTO_PROFIL(id), {
             method: 'PATCH',
             body: formData,
         });
     }
 
-    static async isActivateUser(id: number, payload: IActivateUserPayload): Promise<IApiResponse<IUser>> {
+    static async isActivateUser(id: number): Promise<IApiResponse<IUser>> {
         return await this.api<IApiResponse<IUser>>(endpoints.USER.ACTIVE(id), {
             method: 'PATCH',
-            body: payload,
         });
     }
 

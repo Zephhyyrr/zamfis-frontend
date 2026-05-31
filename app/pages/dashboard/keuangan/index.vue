@@ -62,18 +62,20 @@
               <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Uraian</th>
               <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Sumber (Keterangan)</th>
+                Sumber (Jenis Kas)</th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Media Pembayaran</th>
               <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Kredit (Masuk)</th>
+                Debet (Masuk)</th>
               <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Debet (Keluar)</th>
+                Kredit (Keluar)</th>
               <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Aksi</th>
             </tr>
           </thead>
           <tbody class="bg-white divide-y divide-gray-200">
             <tr v-if="filteredList.length === 0">
-              <td colspan="7" class="px-6 py-8 text-center text-gray-500 text-sm">
+              <td colspan="8" class="px-6 py-8 text-center text-gray-500 text-sm">
                   <div class="flex flex-col items-center justify-center text-center text-gray-500 text-sm">
                   <Icon icon="lucide:file-question" class="w-12 h-12 text-gray-300 mb-2" />
                   {{ activeTab === 'active' ? 'Belum ada data keuangan aktif.' : 'Tidak ada data keuangan draft.' }}
@@ -86,18 +88,23 @@
               <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ formatDate(item.tanggal) }}</td>
               <td class="px-6 py-4 text-sm text-gray-900">{{ item.uraian }}</td>
               <td class="px-6 py-4 text-sm text-gray-500">
-                <span class="inline-flex px-2 py-1 rounded-md text-xs font-medium" :class="Number(item.kredit || 0) > 0
+                <span class="inline-flex px-2 py-1 rounded-md text-xs font-medium" :class="Number(item.nominal || 0) > 0
                   ? 'bg-emerald-100 text-emerald-700'
-                  : Number(item.debet || 0) > 0
+                  : Number(item.nominal || 0) > 0
                     ? 'bg-red-100 text-red-700'
                     : 'bg-gray-100 text-gray-600'">
-                  {{ item.keteranganTransaksi?.nama || 'Uncategorized' }}
+                  {{ item.jenisKas?.nama || 'Uncategorized' }}
                 </span>
               </td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-emerald-600 text-right">{{
-                formatCurrency(item.kredit) }}</td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-red-600 text-right">{{
-                formatCurrency(item.debet) }}</td>
+              <td class="px-6 py-4 text-sm text-gray-500">
+                <span class="inline-flex px-2 py-1 rounded-md text-xs font-medium bg-blue-50 text-blue-700">
+                  {{ item.mediaPembayaran?.nama || 'Belum Diatur' }}
+                </span>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-emerald-600 text-right" :class="getDebit(item) <= 0 && 'text-gray-400'">{{
+                formatCurrency(getDebit(item)) }}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-red-600 text-right" :class="getKredit(item) <= 0 && 'text-gray-400'">{{
+                formatCurrency(getKredit(item)) }}</td>
               <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                 <button v-if="activeTab === 'active'" @click="openEditModal(item)"
                   class="text-blue-600 hover:text-blue-800 p-1.5 hover:bg-blue-50 rounded-lg mr-2 transition-colors outline-none focus:ring-2 focus:ring-blue-500/50"
@@ -190,7 +197,7 @@ const filteredList = computed(() => {
   const q = searchQuery.value.toLowerCase();
   return rawList.value.filter(item =>
     item.uraian?.toLowerCase().includes(q) ||
-    item.keteranganTransaksi?.nama?.toLowerCase().includes(q)
+    item.jenisKas?.nama?.toLowerCase().includes(q)
   );
 });
 
@@ -208,6 +215,14 @@ const formatCurrency = (val) => {
 const formatDate = (val) => {
   if (!val) return '-';
   return new Date(val).toLocaleDateString('id-ID', { year: 'numeric', month: '2-digit', day: '2-digit' });
+};
+
+const getDebit = (tx) => {
+  return Number(tx.debit) || (tx.tipe === 'uang_masuk' ? Number(tx.nominal || 0) : 0);
+};
+
+const getKredit = (tx) => {
+  return Number(tx.kredit) || (tx.tipe === 'uang_keluar' ? Number(tx.nominal || 0) : 0);
 };
 
 // Form state
@@ -290,3 +305,6 @@ const handleSuccess = async (title, message, eventMode) => {
   showResultModal.value = true;
 };
 </script>
+
+
+

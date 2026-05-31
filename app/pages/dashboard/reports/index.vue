@@ -3,7 +3,7 @@
     <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
       <div>
         <h1 class="text-2xl font-bold text-gray-800">Laporan Keuangan</h1>
-        <p class="text-sm text-gray-500">Tab mengikuti data keterangan keuangan, lengkap dengan filter dan pencarian.</p>
+        <p class="text-sm text-gray-500">Tab mengikuti data Jenis Kas, lengkap dengan filter dan pencarian.</p>
       </div>
       <BaseButton
         text="Export Excel"
@@ -22,7 +22,7 @@
           <input
             v-model="searchQuery"
             type="text"
-            placeholder="Cari uraian atau keterangan..."
+            placeholder="Cari uraian atau Jenis Kas..."
             class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-800 outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
           >
         </div>
@@ -95,24 +95,24 @@
       <div class="flex flex-wrap gap-2">
         <button
           type="button"
-          @click="selectKeteranganTab('all')"
+          @click="selectJenisKasTab('all')"
           :class="[
             'rounded-lg px-4 py-2 text-sm font-medium transition-colors',
-            activeKeteranganId === 'all' ? 'bg-emerald-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+            activejenisKasId === 'all' ? 'bg-emerald-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
           ]"
         >
-          Semua Keterangan
+          Semua Jenis Kas
           <span class="ml-2 rounded-full bg-black/10 px-2 py-0.5 text-xs">{{ transactions.length }}</span>
         </button>
 
         <button
-          v-for="tab in keteranganTabs"
+          v-for="tab in JenisKasTabs"
           :key="tab.id"
           type="button"
-          @click="selectKeteranganTab(tab.id)"
+          @click="selectJenisKasTab(tab.id)"
           :class="[
             'rounded-lg px-4 py-2 text-sm font-medium transition-colors',
-            activeKeteranganId === tab.id ? 'bg-emerald-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+            activejenisKasId === tab.id ? 'bg-emerald-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
           ]"
         >
           {{ tab.nama }}
@@ -132,7 +132,7 @@
       </div>
       <div class="rounded-xl border border-blue-200 bg-blue-50 p-4">
         <p class="text-xs font-semibold uppercase tracking-wide text-blue-700">Saldo Bersih</p>
-        <p class="mt-1 text-xl font-bold text-blue-700">{{ formatCurrency(summary.netBalance) }}</p>
+        <p class="mt-1 text-xl font-bold text-blue-700" :class="summary.netBalance < 0 ? 'text-red-600' : 'text-blue-700'">{{ formatCurrency(summary.netBalance) }}</p>
       </div>
     </div>
 
@@ -140,15 +140,7 @@
       <div class="flex items-center justify-between border-b border-gray-100 px-6 py-4">
         <h2 class="text-lg font-semibold text-gray-800">Data Transaksi</h2>
         <div class="flex items-center gap-3">
-          <span class="text-xs text-gray-500">{{ filteredRows.length }} data ditemukan</span>
-          <select
-            v-model.number="pageSize"
-            class="rounded-md border border-gray-300 bg-white px-2 py-1 text-xs text-gray-700 outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
-          >
-            <option :value="10">10 / halaman</option>
-            <option :value="25">25 / halaman</option>
-            <option :value="50">50 / halaman</option>
-          </select>
+          <span class="text-xs text-gray-500">{{ meta?.totalItems || 0 }} data ditemukan</span>
         </div>
       </div>
 
@@ -158,10 +150,10 @@
             <tr>
               <th class="px-6 py-3 text-left">No</th>
               <th class="px-6 py-3 text-left">Tanggal</th>
-              <th class="px-6 py-3 text-left">Keterangan</th>
+              <th class="px-6 py-3 text-left">Jenis Kas</th>
               <th class="px-6 py-3 text-left">Uraian</th>
-              <th class="px-6 py-3 text-right">Kredit</th>
               <th class="px-6 py-3 text-right">Debet</th>
+              <th class="px-6 py-3 text-right">Kredit</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-100">
@@ -170,28 +162,28 @@
                 <Icon icon="lucide:loader-circle" class="mx-auto h-8 w-8 animate-spin text-emerald-600" />
               </td>
             </tr>
-            <tr v-else-if="filteredRows.length === 0">
+            <tr v-else-if="transactions.length === 0">
               <td colspan="6" class="px-6 py-8 text-center text-sm text-gray-500">Tidak ada data yang cocok dengan filter.</td>
             </tr>
-            <tr v-else v-for="(row, index) in paginatedRows" :key="row.id" class="hover:bg-gray-50">
+            <tr v-else v-for="(row, index) in transactions" :key="row.id" class="hover:bg-gray-50">
               <td class="px-6 py-4 text-gray-500">{{ (currentPage - 1) * pageSize + index + 1 }}</td>
               <td class="px-6 py-4 text-gray-900">{{ formatDate(row.tanggal) }}</td>
               <td class="px-6 py-4">
                 <span
                   :class="[
                     'rounded-md px-2 py-1 text-xs font-medium',
-                    Number(row.kredit || 0) > 0 ? 'bg-emerald-100 text-emerald-700' : Number(row.debet || 0) > 0 ? 'bg-red-100 text-red-700' : 'bg-gray-100 text-gray-700'
+                    Number(row.nominal || 0) > 0 ? 'bg-emerald-100 text-emerald-700' : Number(row.nominal || 0) > 0 ? 'bg-red-100 text-red-700' : 'bg-gray-100 text-gray-700'
                   ]"
                 >
-                  {{ row.keteranganTransaksi?.nama || '-' }}
+                  {{ row.jenisKas?.nama || '-' }}
                 </span>
               </td>
               <td class="px-6 py-4 text-gray-800">{{ row.uraian }}</td>
-              <td class="px-6 py-4 text-right font-semibold" :class="Number(row.kredit || 0) > 0 ? 'text-emerald-600' : 'text-gray-400'">
-                {{ formatCurrency(row.kredit) }}
+              <td class="px-6 py-4 text-right font-semibold" :class="getDebit(row) > 0 ? 'text-emerald-600' : 'text-gray-400'">
+                {{ formatCurrency(getDebit(row)) }}
               </td>
-              <td class="px-6 py-4 text-right font-semibold" :class="Number(row.debet || 0) > 0 ? 'text-red-600' : 'text-gray-400'">
-                {{ formatCurrency(row.debet) }}
+              <td class="px-6 py-4 text-right font-semibold" :class="getKredit(row) > 0 ? 'text-red-600' : 'text-gray-400'">
+                {{ formatCurrency(getKredit(row)) }}
               </td>
             </tr>
           </tbody>
@@ -199,9 +191,9 @@
       </div>
 
       <BasePagination
-        v-if="filteredRows.length > 0"
+        v-if="meta && meta.totalPages > 1"
         v-model="currentPage"
-        :meta="paginationMeta"
+        :meta="meta"
       />
     </div>
 
@@ -258,14 +250,11 @@ import * as XLSX from 'xlsx';
 import { useTransaksi } from '~/composables/useTransaksi';
 import type { ITransaksi } from '~/domain/models/ITransaksi';
 import type { IPaginationMeta } from '~/domain/types/IApiResponse';
+import BasePagination from '~/components/base/BasePagination.vue';
 
 definePageMeta({
   layout: 'dashboard'
 });
-
-const params = ref({ page: 1, limit: 10 });
-const { fetchTransactions } = useTransaksi();
-const { data, pending } = fetchTransactions(params as any);
 
 const searchQuery = ref('');
 const transactionType = ref<'all' | 'income' | 'expense'>('all');
@@ -273,9 +262,27 @@ const startDate = ref('');
 const endDate = ref('');
 const selectedMonth = ref<number | 'all'>('all');
 const selectedYear = ref<number | 'all'>('all');
-const activeKeteranganId = ref<number | 'all'>('all');
+const activejenisKasId = ref<number | 'all'>('all');
 const currentPage = ref(1);
 const pageSize = ref(10);
+
+const params = computed(() => {
+  return {
+    page: currentPage.value,
+    limit: pageSize.value,
+    search: searchQuery.value,
+    type: transactionType.value === 'all' ? undefined : transactionType.value,
+    startDate: startDate.value || undefined,
+    endDate: endDate.value || undefined,
+    month: selectedMonth.value === 'all' ? undefined : selectedMonth.value,
+    year: selectedYear.value === 'all' ? undefined : selectedYear.value,
+    jenisKasId: activejenisKasId.value === 'all' ? undefined : activejenisKasId.value
+  }
+});
+
+const { fetchTransactions } = useTransaksi();
+const { data: responseData, pending } = fetchTransactions(params);
+
 const showExportModal = ref(false);
 const exportMode = ref<'monthly' | 'yearly'>('monthly');
 const exportMonth = ref(1);
@@ -296,16 +303,20 @@ const monthOptions = [
   { value: 12, label: 'Desember' }
 ];
 
-const extractItems = (resRef: any): ITransaksi[] => {
-  const root = resRef?.value;
-  if (!root) return [];
-  if (Array.isArray(root)) return root;
-  if (Array.isArray(root.data)) return root.data;
-  if (root.data && Array.isArray(root.data.data)) return root.data.data;
+const transactions = computed<ITransaksi[]>(() => {
+  if (responseData.value && (responseData.value as any).data) return (responseData.value as any).data;
   return [];
-};
+});
 
-const transactions = computed<ITransaksi[]>(() => extractItems(data));
+const meta = computed<IPaginationMeta | undefined>(() => {
+  if (responseData.value && (responseData.value as any).meta) return (responseData.value as any).meta;
+  return undefined;
+});
+
+const summary = computed(() => {
+  if (responseData.value && (responseData.value as any).summary) return (responseData.value as any).summary;
+  return { totalIncome: 0, totalExpense: 0, netBalance: 0 };
+});
 
 const availableYears = computed(() => {
   const years = new Set<number>();
@@ -324,91 +335,37 @@ const exportYears = computed(() => {
   return [new Date().getFullYear()];
 });
 
-const keteranganTabs = computed(() => {
+const JenisKasTabs = computed(() => {
   const map = new Map<number, { id: number; nama: string; count: number }>();
   transactions.value.forEach((tx) => {
-    const id = tx.keteranganTransaksi?.id || tx.keteranganTransaksiId;
-    const nama = tx.keteranganTransaksi?.nama || `Keterangan #${id}`;
+    const id = tx.jenisKas?.id || tx.jenisKasId;
+    const nama = tx.jenisKas?.nama || `Jenis Kas #${id}`;
     if (!id) return;
     if (!map.has(id)) {
       map.set(id, { id, nama, count: 0 });
     }
-    map.get(id)!.count += 1;
   });
   return [...map.values()].sort((a, b) => a.nama.localeCompare(b.nama));
 });
 
-const filteredRows = computed(() => {
-  const q = searchQuery.value.trim().toLowerCase();
-  const from = startDate.value ? new Date(`${startDate.value}T00:00:00`) : null;
-  const to = endDate.value ? new Date(`${endDate.value}T23:59:59`) : null;
-
-  return transactions.value.filter((tx) => {
-    if (activeKeteranganId.value !== 'all') {
-      const txKeteranganId = tx.keteranganTransaksi?.id || tx.keteranganTransaksiId;
-      if (txKeteranganId !== activeKeteranganId.value) return false;
-    }
-
-    if (transactionType.value === 'income' && Number(tx.kredit || 0) <= 0) return false;
-    if (transactionType.value === 'expense' && Number(tx.debet || 0) <= 0) return false;
-
-    const txDate = new Date(tx.tanggal);
-    if (selectedMonth.value !== 'all' && txDate.getMonth() + 1 !== Number(selectedMonth.value)) return false;
-    if (selectedYear.value !== 'all' && txDate.getFullYear() !== Number(selectedYear.value)) return false;
-    if (from && txDate < from) return false;
-    if (to && txDate > to) return false;
-
-    if (!q) return true;
-    const keteranganName = tx.keteranganTransaksi?.nama?.toLowerCase() || '';
-    const uraian = tx.uraian?.toLowerCase() || '';
-    return uraian.includes(q) || keteranganName.includes(q);
-  });
-});
-
-const totalPages = computed(() => {
-  if (!filteredRows.value.length) return 1;
-  return Math.ceil(filteredRows.value.length / pageSize.value);
-});
-
-const paginatedRows = computed(() => {
-  const start = (currentPage.value - 1) * pageSize.value;
-  const end = start + pageSize.value;
-  return filteredRows.value.slice(start, end);
-});
-
-const paginationMeta = computed<IPaginationMeta>(() => ({
-  totalItems: filteredRows.value.length,
-  totalPages: totalPages.value,
-  currentPage: currentPage.value,
-  perPage: pageSize.value,
-  hasNextPage: currentPage.value < totalPages.value,
-  hasPreviousPage: currentPage.value > 1
-}));
-
-const selectKeteranganTab = (id: number | 'all') => {
-  activeKeteranganId.value = id;
+const selectJenisKasTab = (id: number | 'all') => {
+  activejenisKasId.value = id;
   currentPage.value = 1;
 };
 
-watch([searchQuery, transactionType, startDate, endDate, selectedMonth, selectedYear, activeKeteranganId, pageSize], () => {
+watch([searchQuery, transactionType, startDate, endDate, selectedMonth, selectedYear, activejenisKasId, pageSize], () => {
   currentPage.value = 1;
 });
 
-watch(totalPages, (value) => {
-  if (currentPage.value > value) {
-    currentPage.value = value;
-  }
-});
+const getDebit = (tx: ITransaksi) => {
+  return Number(tx.debit) || (tx.tipe === 'uang_masuk' ? Number(tx.nominal || 0) : 0);
+};
 
-const summary = computed(() => {
-  const totalIncome = filteredRows.value.reduce((sum, tx) => sum + Number(tx.kredit || 0), 0);
-  const totalExpense = filteredRows.value.reduce((sum, tx) => sum + Number(tx.debet || 0), 0);
-  return {
-    totalIncome,
-    totalExpense,
-    netBalance: totalIncome - totalExpense
-  };
-});
+const getKredit = (tx: ITransaksi) => {
+  return Number(tx.kredit) || (tx.tipe === 'uang_keluar' ? Number(tx.nominal || 0) : 0);
+};
+
+
 
 const formatCurrency = (value: number | string | null | undefined) => {
   return new Intl.NumberFormat('id-ID', {
@@ -431,30 +388,7 @@ const formatMonthName = (month: number) => {
   return monthOptions.find((m) => m.value === month)?.label || `Bulan-${month}`;
 };
 
-const exportBaseRows = computed<ITransaksi[]>(() => {
-  const q = searchQuery.value.trim().toLowerCase();
-  const from = startDate.value ? new Date(`${startDate.value}T00:00:00`) : null;
-  const to = endDate.value ? new Date(`${endDate.value}T23:59:59`) : null;
 
-  return transactions.value.filter((tx) => {
-    if (activeKeteranganId.value !== 'all') {
-      const txKeteranganId = tx.keteranganTransaksi?.id || tx.keteranganTransaksiId;
-      if (txKeteranganId !== activeKeteranganId.value) return false;
-    }
-
-    if (transactionType.value === 'income' && Number(tx.kredit || 0) <= 0) return false;
-    if (transactionType.value === 'expense' && Number(tx.debet || 0) <= 0) return false;
-
-    const txDate = new Date(tx.tanggal);
-    if (from && txDate < from) return false;
-    if (to && txDate > to) return false;
-
-    if (!q) return true;
-    const keteranganName = tx.keteranganTransaksi?.nama?.toLowerCase() || '';
-    const uraian = tx.uraian?.toLowerCase() || '';
-    return uraian.includes(q) || keteranganName.includes(q);
-  });
-});
 
 const sortRows = (rows: ITransaksi[]) => {
   return [...rows].sort((a, b) => {
@@ -470,27 +404,29 @@ const buildSheet = (workbook: XLSX.WorkBook, year: number, month: number, rows: 
   let runningSaldo = 0;
 
   const detailRows = sortedRows.map((item, index) => {
-    runningSaldo += Number(item.kredit || 0) - Number(item.debet || 0);
+    const debit = getDebit(item);
+    const kredit = getKredit(item);
+    runningSaldo += debit - kredit;
     return [
       index + 1,
       formatDate(item.tanggal),
       item.uraian || '-',
-      item.keteranganTransaksi?.nama || '-',
-      Number(item.kredit || 0),
-      Number(item.debet || 0),
+      item.jenisKas?.nama || '-',
+      debit,
+      kredit,
       runningSaldo
     ];
   });
 
-  const totalIncome = sortedRows.reduce((sum, tx) => sum + Number(tx.kredit || 0), 0);
-  const totalExpense = sortedRows.reduce((sum, tx) => sum + Number(tx.debet || 0), 0);
+  const totalIncome = sortedRows.reduce((sum, tx) => sum + getDebit(tx), 0);
+  const totalExpense = sortedRows.reduce((sum, tx) => sum + getKredit(tx), 0);
   const finalAmount = totalIncome - totalExpense;
 
   const sheetData: (string | number)[][] = [
     ['LAPORAN KAS SURAU Zam - Zam'],
     [`Periode: ${formatMonthName(month)} ${year}`],
     [''],
-    ['No', 'Tanggal', 'Uraian', 'Keterangan', 'Pemasukan', 'Pengeluaran', 'Saldo']
+    ['No', 'Tanggal', 'Uraian', 'Jenis Kas', 'Pemasukan', 'Pengeluaran', 'Saldo']
   ];
 
   sheetData.push(...detailRows);
@@ -526,11 +462,21 @@ const openExportModal = () => {
   showExportModal.value = true;
 };
 
-const handleExportConfirm = () => {
+const handleExportConfirm = async () => {
+  // Fetch all filtered data from backend
+  const exportParams = { ...params.value, limit: -1 };
+  
+  // Use $fetch instead of useAsyncData for one-off button click
+  const response: any = await $fetch('/api/transactions', {
+    params: exportParams
+  });
+
+  const allFilteredRows = response.data || [];
+
   const workbook = XLSX.utils.book_new();
 
   if (exportMode.value === 'monthly') {
-    const monthRows = exportBaseRows.value.filter((tx) => {
+    const monthRows = allFilteredRows.filter((tx: any) => {
       const txDate = new Date(tx.tanggal);
       return txDate.getFullYear() === exportYear.value && txDate.getMonth() + 1 === exportMonth.value;
     });
@@ -541,7 +487,7 @@ const handleExportConfirm = () => {
   }
 
   for (let month = 1; month <= 12; month += 1) {
-    const monthRows = exportBaseRows.value.filter((tx) => {
+    const monthRows = allFilteredRows.filter((tx: any) => {
       const txDate = new Date(tx.tanggal);
       return txDate.getFullYear() === exportYear.value && txDate.getMonth() + 1 === month;
     });
@@ -558,7 +504,8 @@ const resetFilters = () => {
   endDate.value = '';
   selectedMonth.value = 'all';
   selectedYear.value = 'all';
-  activeKeteranganId.value = 'all';
+  activejenisKasId.value = 'all';
   currentPage.value = 1;
 };
 </script>
+

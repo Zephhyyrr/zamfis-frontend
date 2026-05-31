@@ -17,55 +17,67 @@
         <div class="space-y-6">
           <div>
             <label class="block text-sm font-medium text-gray-700">Tanggal</label>
-            <input v-model="form.tanggal" type="date" required :disabled="isSubmitting" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50" />
+            <input v-model="form.tanggal" type="date" required :disabled="isSubmitting"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50" />
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700">Uraian</label>
-            <input v-model="form.uraian" type="text" required :disabled="isSubmitting" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50" placeholder="Contoh: Pembelian alat tulis" />
+            <input v-model="form.uraian" type="text" required :disabled="isSubmitting"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50"
+              placeholder="Contoh: Pembelian alat tulis" />
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700">Pilih Sumber Keterangan</label>
-            <select v-model.number="form.keteranganTransaksiId" required :disabled="isSubmitting" class="mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50">
-              <option :value="0">-- Pilih --</option>
-              <option v-for="ket in keteranganList" :key="ket.id" :value="ket.id">{{ ket.nama }}</option>
+            <label class="block text-sm font-medium text-gray-700">Jenis Kas</label>
+            <select v-model.number="form.jenisKasId" required :disabled="isSubmitting"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50">
+              <option :value="0">-- Pilih Jenis Kas --</option>
+              <option v-for="ket in jenisKasList" :key="ket.id" :value="ket.id">{{ ket.nama }}</option>
             </select>
           </div>
-          <div class="grid grid-cols-2 gap-4">
-              <div>
-                <label class="block text-sm font-medium text-gray-700">Nilai Kredit (Masuk)</label>
-                <input :value="form.kredit" @input="handleCurrencyInput('kredit', $event)" type="text" inputmode="numeric" :disabled="isSubmitting" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50" placeholder="Rp. 0" />
-              </div>
-              <div>
-                <label class="block text-sm font-medium text-gray-700">Nilai Debet (Keluar)</label>
-                <input :value="form.debet" @input="handleCurrencyInput('debet', $event)" type="text" inputmode="numeric" :disabled="isSubmitting" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50" placeholder="Rp. 0" />
-              </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Media Pembayaran</label>
+            <select v-model.number="form.mediaPembayaranId" required :disabled="isSubmitting"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50">
+              <option :value="0">-- Pilih Media Pembayaran --</option>
+              <option v-for="mp in mediaPembayaranList" :key="mp.id" :value="mp.id">{{ mp.nama }}</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Tipe Transaksi</label>
+            <select v-model="form.tipe"
+              class="mt-1 block w-full border border-gray-300 bg-white rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm">
+              <option value="uang_masuk">Pemasukan / Uang Masuk</option>
+              <option value="uang_keluar">Pengeluaran / Uang Keluar</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Debet (Uang Masuk)</label>
+            <input :value="form.debitText" @input="handleDebitInput" type="text" inputmode="numeric"
+              :disabled="isSubmitting"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50"
+              placeholder="Rp. 0" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Kredit (Uang Keluar)</label>
+            <input :value="form.kreditText" @input="handleKreditInput" type="text" inputmode="numeric"
+              :disabled="isSubmitting"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50"
+              placeholder="Rp. 0" />
           </div>
         </div>
 
         <div class="mt-8 flex justify-end items-center gap-3">
-          <NuxtLink to="/dashboard/keuangan" class="px-4 py-2 bg-white text-gray-700 border border-gray-300 rounded-xl hover:bg-gray-50 font-medium transition-colors outline-none focus:ring-2 focus:ring-emerald-500/50">
+          <NuxtLink to="/dashboard/keuangan"
+            class="px-4 py-2 bg-white text-gray-700 border border-gray-300 rounded-xl hover:bg-gray-50 font-medium transition-colors">
             Batal
           </NuxtLink>
-          
-          <BaseButton 
-            type="submit" 
-            :isLoading="isSubmitting" 
-            text="Simpan Data" 
-            icon="lucide:save"
-            :fullWidth="false" 
-          />
+          <BaseButton type="submit" :isLoading="isSubmitting" text="Simpan Data" icon="lucide:save" :fullWidth="false" />
         </div>
       </form>
     </div>
 
-    <BaseModal
-      v-model="showSuccessModal"
-      title="Berhasil"
-      icon="lucide:badge-check"
-      type="success"
-      confirmText="Kembali ke daftar keuangan"
-      @confirm="handleSuccessConfirm"
-    >
+    <BaseModal v-model="showSuccessModal" title="Berhasil" icon="lucide:badge-check" type="success"
+      confirmText="Kembali ke daftar keuangan" @confirm="handleSuccessConfirm">
       <p class="text-sm text-gray-700">Data keuangan baru berhasil dicatat.</p>
     </BaseModal>
   </div>
@@ -76,30 +88,40 @@ import { ref, computed, onMounted } from 'vue';
 import { definePageMeta, useRouter } from '#imports';
 import { Icon } from '@iconify/vue';
 import { useTransaksi } from '~/composables/useTransaksi';
-import { useKeteranganTransaksi } from '~/composables/useKeteranganTransaksi';
+import { useJenisKas } from '~/composables/useJenisKas';
+import { useMediaPembayaran } from '~/composables/useMediaPembayaran';
 
 definePageMeta({ layout: 'dashboard' as any });
 
 const router = useRouter();
 const { createTransaction } = useTransaksi();
-const { fetchKeteranganList } = useKeteranganTransaksi();
-const params = ref({ page: 1, limit: 1000 });
-const { data: ketData, refresh } = fetchKeteranganList(params);
-onMounted(() => { refresh(); });
+const { fetchJenisKasList } = useJenisKas();
+const { fetchMediaPembayaranList } = useMediaPembayaran();
 
-const keteranganList = computed(() => {
-    let list = ketData.value;
-    if (list && (list as any).data !== undefined && !Array.isArray(list)) list = (list as any).data;
-    if (list && (list as any).data !== undefined && !Array.isArray(list)) list = (list as any).data;
-    return Array.isArray(list) ? list : [];
-});
+const params = ref({ page: 1, limit: 1000 });
+const { data: ketData, refresh: refreshJK } = fetchJenisKasList(params);
+const { data: mpData, refresh: refreshMP } = fetchMediaPembayaranList(params);
+
+onMounted(() => { refreshJK(); refreshMP(); });
+
+const extractList = (resData: any) => {
+  let list = resData?.value;
+  if (list && (list as any).data !== undefined && !Array.isArray(list)) list = (list as any).data;
+  if (list && (list as any).data !== undefined && !Array.isArray(list)) list = (list as any).data;
+  return Array.isArray(list) ? list : [];
+};
+
+const jenisKasList = computed(() => extractList(ketData));
+const mediaPembayaranList = computed(() => extractList(mpData));
 
 const form = ref({
-    tanggal: new Date().toISOString().split('T')[0],
-    uraian: '',
-  keteranganTransaksiId: 0,
-    kredit: '',
-    debet: ''
+  tanggal: new Date().toISOString().split('T')[0],
+  uraian: '',
+  jenisKasId: 0,
+  mediaPembayaranId: 0,
+  debitText: '',
+  kreditText: '',
+  tipe: 'uang_masuk' as 'uang_masuk' | 'uang_keluar'
 });
 
 const isSubmitting = ref(false);
@@ -112,70 +134,67 @@ const handleSuccessConfirm = () => {
 };
 
 const formatRupiah = (value: string) => {
-  const digitsOnly = value.replace(/\D/g, '');
-  if (!digitsOnly) return '';
-  return `Rp. ${Number(digitsOnly).toLocaleString('id-ID')}`;
+  const digits = value.replace(/\D/g, '');
+  if (!digits) return '';
+  return `Rp. ${Number(digits).toLocaleString('id-ID')}`;
 };
 
 const parseRupiah = (value: string) => {
-  const digitsOnly = value.replace(/\D/g, '');
-  return digitsOnly ? Number(digitsOnly) : NaN;
+  const digits = value.replace(/\D/g, '');
+  return digits ? Number(digits) : NaN;
 };
 
-const handleCurrencyInput = (field: 'kredit' | 'debet', event: Event) => {
+const handleDebitInput = (event: Event) => {
   const target = event.target as HTMLInputElement;
   const formatted = formatRupiah(target.value);
-  form.value[field] = formatted;
+  form.value.debitText = formatted;
   target.value = formatted;
+  if (parseRupiah(formatted) > 0) {
+    form.value.tipe = 'uang_masuk';
+    form.value.kreditText = ''; // Auto clear kredit
+  }
+};
+
+const handleKreditInput = (event: Event) => {
+  const target = event.target as HTMLInputElement;
+  const formatted = formatRupiah(target.value);
+  form.value.kreditText = formatted;
+  target.value = formatted;
+  if (parseRupiah(formatted) > 0) {
+    form.value.tipe = 'uang_keluar';
+    form.value.debitText = ''; // Auto clear debet
+  }
 };
 
 const submitForm = async () => {
-    isSubmitting.value = true;
-    errorMessage.value = '';
+  isSubmitting.value = true;
+  errorMessage.value = '';
+  try {
+    const debit = parseRupiah(form.value.debitText) || 0;
+    const kredit = parseRupiah(form.value.kreditText) || 0;
+    if (!form.value.tanggal) throw new Error('Tanggal wajib diisi.');
+    if (!form.value.jenisKasId) throw new Error('Pilih jenis kas.');
+    if (!form.value.mediaPembayaranId) throw new Error('Pilih media pembayaran.');
+    if (debit <= 0 && kredit <= 0) throw new Error('Nominal Debet atau Kredit harus diisi.');
+    
+    // Auto-calculate nominal based on what is filled
+    const nominal = Math.max(debit, kredit);
 
-    try {
-    const tanggal = form.value.tanggal;
-    const keteranganId = Number(form.value.keteranganTransaksiId);
-    const parsedKredit = parseRupiah(form.value.kredit);
-    const parsedDebet = parseRupiah(form.value.debet);
-    const kredit = Number.isNaN(parsedKredit) ? 0 : parsedKredit;
-    const debet = Number.isNaN(parsedDebet) ? 0 : parsedDebet;
-
-    if (!tanggal) {
-      throw new Error('Tanggal wajib diisi.');
-    }
-
-    if (!Number.isInteger(keteranganId) || keteranganId <= 0) {
-      throw new Error('Keterangan transaksi tidak valid.');
-    }
-
-    if (kredit < 0 || debet < 0) {
-      throw new Error('Nilai kredit/debet tidak valid.');
-    }
-
-    if (kredit <= 0 && debet <= 0) {
-      throw new Error('Isi salah satu: kredit atau debet.');
-    }
-
-    if (kredit > 0 && debet > 0) {
-      throw new Error('Pilih salah satu saja: kredit atau debet.');
-    }
-
-    const formattedTanggal = new Date(`${tanggal}T10:30:00.000Z`).toISOString();
-
-        await createTransaction({
-      tanggal: formattedTanggal,
-            uraian: form.value.uraian,
-          keteranganTransaksiId: keteranganId,
-            kredit,
-            debet
-        });
-        showSuccessModal.value = true;
-    } catch(error: any) {
-        console.error('Error creating:', error);
-        errorMessage.value = error?.data?.message || error?.message || 'Gagal menyimpan catatan keuangan.';
-    } finally {
-        isSubmitting.value = false;
-    }
+    await createTransaction({
+      tanggal: new Date(form.value.tanggal + 'T10:30:00.000Z').toISOString(),
+      uraian: form.value.uraian,
+      jenisKasId: form.value.jenisKasId,
+      mediaPembayaranId: form.value.mediaPembayaranId,
+      nominal,
+      debit,
+      kredit,
+      tipe: form.value.tipe
+    });
+    showSuccessModal.value = true;
+  } catch (error: any) {
+    errorMessage.value = error?.data?.message || error?.message || 'Gagal menyimpan catatan keuangan.';
+  } finally {
+    isSubmitting.value = false;
+  }
 };
 </script>

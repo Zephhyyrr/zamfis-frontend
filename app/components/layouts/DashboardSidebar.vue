@@ -1,7 +1,7 @@
-<template>
+﻿<template>
   <aside
     :class="[
-      'fixed inset-y-0 left-0 z-40 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 transition-all duration-300 ease-in-out md:relative md:translate-x-0',
+      'fixed inset-y-0 left-0 z-40 flex flex-col bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 transition-all duration-300 ease-in-out md:relative md:translate-x-0',
       isOpen ? 'translate-x-0' : '-translate-x-full',
       isCollapsed ? 'w-20' : 'w-64'
     ]"
@@ -19,7 +19,7 @@
       </button>
     </div>
 
-    <nav class="mt-4 space-y-1" :class="isCollapsed ? 'px-2' : 'px-4'">
+    <nav class="mt-4 flex-1 overflow-y-auto space-y-1 pb-6" :class="isCollapsed ? 'px-2' : 'px-4'">
       <NuxtLink to="/dashboard/"
         :class="[
           'flex items-center py-3 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors',
@@ -55,16 +55,27 @@
         <span v-show="!isCollapsed" class="whitespace-nowrap transition-opacity duration-300">Keuangan</span>
       </NuxtLink>
 
-      <NuxtLink to="/dashboard/keterangan-keuangan"
+      <NuxtLink to="/dashboard/jenis-kas"
         :class="[
           'flex items-center py-3 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors',
           isCollapsed ? 'justify-center px-0 mt-2' : 'px-4',
-          isKeteranganRouteActive && 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 font-medium'
+          isJenisKasRouteActive && 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 font-medium'
         ]"
         active-class="bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 font-medium"
         @click="$emit('close')">
         <TagsIcon class="w-5 h-5 flex-shrink-0" :class="!isCollapsed && 'mr-3'" />
-        <span v-show="!isCollapsed" class="whitespace-nowrap transition-opacity duration-300">Ket. Keuangan</span>
+        <span v-show="!isCollapsed" class="whitespace-nowrap transition-opacity duration-300">Jenis Kas</span>
+      </NuxtLink>
+      
+      <NuxtLink to="/dashboard/media-pembayaran"
+        :class="[
+          'flex items-center py-3 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors',
+          isCollapsed ? 'justify-center px-0' : 'px-4',
+          isMediaPembayaranRouteActive && 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 font-medium'
+        ]"
+        @click="$emit('close')">
+        <CreditCardIcon class="w-5 h-5 flex-shrink-0" :class="!isCollapsed && 'mr-3'" />
+        <span v-show="!isCollapsed" class="whitespace-nowrap transition-opacity duration-300">Media Pembayaran</span>
       </NuxtLink>
       
       <NuxtLink to="/dashboard/content"
@@ -79,6 +90,39 @@
         <span v-show="!isCollapsed" class="whitespace-nowrap transition-opacity duration-300">Konten</span>
       </NuxtLink>
 
+      <NuxtLink to="/dashboard/favorite-transaksi"
+        :class="[
+          'flex items-center py-3 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors',
+          isCollapsed ? 'justify-center px-0 mt-2' : 'px-4',
+          isFavTransaksiRouteActive && 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 font-medium'
+        ]"
+        @click="$emit('close')">
+        <StarIcon class="w-5 h-5 flex-shrink-0" :class="!isCollapsed && 'mr-3'" />
+        <span v-show="!isCollapsed" class="whitespace-nowrap transition-opacity duration-300">Favorit Transaksi</span>
+      </NuxtLink>
+
+      <NuxtLink to="/dashboard/kelompok-kurban"
+        :class="[
+          'flex items-center py-3 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors',
+          isCollapsed ? 'justify-center px-0 mt-2' : 'px-4',
+          isKelompokKurbanRouteActive && 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 font-medium'
+        ]"
+        @click="$emit('close')">
+        <UsersRoundIcon class="w-5 h-5 flex-shrink-0" :class="!isCollapsed && 'mr-3'" />
+        <span v-show="!isCollapsed" class="whitespace-nowrap transition-opacity duration-300">Kelompok Kurban</span>
+      </NuxtLink>
+
+      <NuxtLink to="/dashboard/peserta-kurban"
+        :class="[
+          'flex items-center py-3 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors',
+          isCollapsed ? 'justify-center px-0 mt-2' : 'px-4',
+          isPesertaKurbanRouteActive && 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 font-medium'
+        ]"
+        @click="$emit('close')">
+        <BeefIcon class="w-5 h-5 flex-shrink-0" :class="!isCollapsed && 'mr-3'" />
+        <span v-show="!isCollapsed" class="whitespace-nowrap transition-opacity duration-300">Peserta Kurban</span>
+      </NuxtLink>
+
       <NuxtLink to="/dashboard/users"
         :class="[
           'flex items-center py-3 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors',
@@ -90,7 +134,7 @@
         <UsersIcon class="w-5 h-5 flex-shrink-0" :class="!isCollapsed && 'mr-3'" />
         <span v-show="!isCollapsed" class="whitespace-nowrap transition-opacity duration-300">Manajemen User</span>
       </NuxtLink>
-      
+
       <NuxtLink to="/dashboard/settings"
         :class="[
           'flex items-center py-3 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors',
@@ -116,14 +160,22 @@ import {
   XIcon, 
   WalletIcon, 
   TagsIcon,
-  FileImageIcon
+  FileImageIcon,
+  CreditCardIcon,
+  StarIcon,
+  UsersRoundIcon,
+  BeefIcon
 } from 'lucide-vue-next';
 
 const route = useRoute();
 const isUsersRouteActive = computed(() => route.path === '/dashboard/users' || route.path.startsWith('/dashboard/users/'));
 const isTransaksiRouteActive = computed(() => route.path === '/dashboard/keuangan' || route.path.startsWith('/dashboard/keuangan/'));
-const isKeteranganRouteActive = computed(() => route.path === '/dashboard/keterangan-keuangan/' || route.path.startsWith('/dashboard/keterangan-keuangan/'));
+const isJenisKasRouteActive = computed(() => route.path === '/dashboard/jenis-kas/' || route.path.startsWith('/dashboard/jenis-kas/'));
 const isContentRouteActive = computed(() => route.path === '/dashboard/content/' || route.path.startsWith('/dashboard/content/'));
+const isMediaPembayaranRouteActive = computed(() => route.path.startsWith('/dashboard/media-pembayaran'));
+const isFavTransaksiRouteActive = computed(() => route.path.startsWith('/dashboard/favorite-transaksi'));
+const isKelompokKurbanRouteActive = computed(() => route.path.startsWith('/dashboard/kelompok-kurban'));
+const isPesertaKurbanRouteActive = computed(() => route.path.startsWith('/dashboard/peserta-kurban'));
 
 defineProps({
   isOpen: {
@@ -138,3 +190,7 @@ defineProps({
 
 defineEmits(['close']);
 </script>
+
+
+
+

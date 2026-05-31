@@ -7,7 +7,15 @@ export const useTransaksi = () => {
         return useAsyncData(
             'transactions-list',
             () => TransaksiService.getAll(params.value),
-            { watch: [params] }
+            { watch: [params], lazy: true }
+        );
+    };
+
+    const fetchAllTransactionsForDashboard = (params: Ref<IPaginationQuery>) => {
+        return useAsyncData(
+            'dashboard-all-transactions',
+            () => TransaksiService.getAll(params.value),
+            { watch: [params], lazy: true }
         );
     };
 
@@ -34,7 +42,7 @@ export const useTransaksi = () => {
         return useAsyncData(
             'transactions-draft-list',
             () => TransaksiService.getDraft(params.value),
-            { watch: [params] }
+            { watch: [params], lazy: true }
         );
     }
 
@@ -42,13 +50,23 @@ export const useTransaksi = () => {
         return await TransaksiService.deletePermanent(id);
     }
 
+    const fetchDashboardSummary = (year: Ref<number>) => {
+        return useAsyncData(
+            'dashboard-summary',
+            () => TransaksiService.getDashboard(year.value),
+            { watch: [year], lazy: true }
+        );
+    };
+
     return {
         fetchTransactions,
+        fetchAllTransactionsForDashboard,
         fetchTransactionDetail,
         createTransaction,
         updateTransaction,
         deleteTransaction,
         fetchDraftTransactions,
-        deletePermanentTransaction
+        deletePermanentTransaction,
+        fetchDashboardSummary
     };
 };

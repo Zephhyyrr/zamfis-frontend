@@ -1,6 +1,5 @@
-
 import { UserService } from '~/application/services/UserServices';
-import type { ICreateUserPayload, IUpdateUserPayload, IUpdateUserFotoPayload, IActivateUserPayload } from '~/domain/models/IUser';
+import type { ICreateUserPayload, IUpdateUserPayload, IUpdateUserFotoPayload } from '~/domain/models/IUser';
 import type { IPaginationQuery } from '~/domain/types/IPaginationQuery';
 
 export const useUser = () => {
@@ -31,12 +30,16 @@ export const useUser = () => {
         return await UserService.deleteUser(id);
     };
 
+    const deletePermanentUser = async (id: number) => {
+        return await UserService.deletePermanentUser(id);
+    };
+
     const updateFotoProfil = async (id: number, payload: IUpdateUserFotoPayload) => {
         return await UserService.updateFotoProfil(id, payload);
     };
 
-    const activateUser = async (id: number, payload: IActivateUserPayload) => {
-        return await UserService.isActivateUser(id, payload);
+    const toggleActivateUser = async (id: number) => {
+        return await UserService.isActivateUser(id);
     };
 
     const fetchDraftUsers = (params: Ref<IPaginationQuery>) => {
@@ -53,8 +56,9 @@ export const useUser = () => {
         createUser,
         updateUser,
         deleteUser,
+        deletePermanentUser,
         updateFotoProfil,
-        activateUser,
+        toggleActivateUser,
         fetchDraftUsers,
     };
 };

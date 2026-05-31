@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <header
     class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 h-16 flex items-center justify-between px-4 md:px-8 shadow-sm transition-colors duration-200">
     <div class="flex items-center">
@@ -87,16 +87,18 @@ const currentRouteName = computed(() => {
     case '/dashboard': return 'Dashboard Utama';
     case '/dashboard/reports': return 'Laporan Transaksi';
     case '/dashboard/keuangan': return 'Input Donasi';
-    case '/dashboard/keterangan-keuangan': return 'Input Keterangan';
+    case '/dashboard/jenis-kas': return 'Input Jenis Kas';
     case '/dashboard/settings': return 'Pengaturan Sistem';
     case '/dashboard/users': return 'Manajemen Pengguna';
     case '/dashboard/content': return 'Manajemen Konten';
     default:
       if (route.path.startsWith('/dashboard/users/')) return 'Detail Pengguna';
       if (route.path.startsWith('/dashboard/keuangan/')) return 'Input Donasi';
-      if (route.path.startsWith('/dashboard/keterangan-keuangan/')) return 'Input Keterangan';
+      if (route.path.startsWith('/dashboard/jenis-kas/')) return 'Input Jenis Kas';
       if (route.path.startsWith('/dashboard/content/')) return 'Manajemen Konten';
       return 'Dashboard';
   }
 });
 </script>
+
+

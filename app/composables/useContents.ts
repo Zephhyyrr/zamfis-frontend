@@ -1,5 +1,5 @@
 import { ContentService } from '~/application/services/ContentService';
-import type { ICreateContentPayload, IUpdateContentPayload, IPublishedPayload } from '~/domain/models/IContent';
+import type { ICreateContentPayload, IUpdateContentPayload } from '~/domain/models/IContent';
 import type { IPaginationQuery } from '~/domain/types/IPaginationQuery';
 
 export const useContent = () => {
@@ -30,21 +30,17 @@ export const useContent = () => {
         return await ContentService.deleteContent(id);
     };
 
-    const toggleStatus = async (id: number, payload: IPublishedPayload) => {
-        return await ContentService.toggleContentStatus(id, payload);
-    };
-
     const fetchDraftContents = (params: Ref<IPaginationQuery>) => {
         return useAsyncData(
             'contents-draft-list',
             () => ContentService.getDraftContents(params.value),
             { watch: [params] }
         );
-    }
+    };
 
     const deletePermanentContent = async (id: number) => {
         return await ContentService.deleteContentPermanently(id);
-    }
+    };
 
     return {
         fetchContents,
@@ -52,7 +48,6 @@ export const useContent = () => {
         createContent,
         updateContent,
         deleteContent,
-        toggleStatus,
         fetchDraftContents,
         deletePermanentContent
     };

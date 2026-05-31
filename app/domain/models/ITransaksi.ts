@@ -1,23 +1,35 @@
 import type { IUser } from './IUser';
-import type { IKeteranganTransaksi } from './IKeteranganTransaksi';
+import type { IJenisKas } from './IJenisKas';
+import type { IMediaPembayaran } from './IMediaPembayaran';
+
 export interface ITransaksi {
     id: number;
-    saldo: number;
-    kredit: number;
-    debet: number;
     uraian: string;
+    tipe: 'uang_masuk' | 'uang_keluar';
+    nominal: number;
+    debit: number;
+    kredit: number;
     tanggal: string;
     isDeleted: boolean;
     createdAt: string;
     updatedAt: string;
     userId: number;
-    keteranganTransaksiId: number;
+    jenisKasId: number;
+    mediaPembayaranId: number;
     user?: IUser;
-    keteranganTransaksi?: IKeteranganTransaksi;
+    jenisKas?: IJenisKas;
+    mediaPembayaran?: IMediaPembayaran;
 }
 
-// Create Payload
-export interface ICreateTransaksiPayload extends Omit<ITransaksi, 'id' | 'saldo' | 'isDeleted' | 'createdAt' | 'updatedAt' | 'user' | 'userId' | 'keteranganTransaksi'> {}
+export interface ICreateTransaksiPayload {
+    uraian: string;
+    tipe: 'uang_masuk' | 'uang_keluar';
+    nominal: number;
+    debit: number;
+    kredit: number;
+    tanggal: string;
+    jenisKasId: number;
+    mediaPembayaranId: number;
+}
 
-// Update Payload
 export interface IUpdateTransaksiPayload extends Partial<ICreateTransaksiPayload> {}
