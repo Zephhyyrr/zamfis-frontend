@@ -87,7 +87,7 @@ const { createPesertaKurban } = usePesertaKurban();
 const { fetchMediaPembayaranList } = useMediaPembayaran();
 const { fetchKelompokKurbanList } = useKelompokKurban();
 
-const params = ref({ page: 1, limit: 1000 });
+const params = ref({ page: 1, limit: 10 });
 const { data: mpData, refresh: refreshMP } = fetchMediaPembayaranList(params);
 const { data: kkData, refresh: refreshKK } = fetchKelompokKurbanList(params);
 

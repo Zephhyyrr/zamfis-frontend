@@ -36,16 +36,6 @@
       </button>
     </div>
 
-    <div v-if="showUndoBanner"
-      class="mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3">
-      <p class="text-sm text-amber-800">Akun dipindahkan ke draft. Ingin memulihkan sekarang?</p>
-      <button type="button"
-        class="inline-flex items-center rounded-lg bg-amber-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-amber-700 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
-        :disabled="undoLoading" @click="undoDelete">
-        {{ undoLoading ? 'Memulihkan...' : 'Pulihkan Sekarang' }}
-      </button>
-    </div>
-
     <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
       <div class="overflow-x-auto">
         <table class="min-w-full divide-y divide-gray-200">

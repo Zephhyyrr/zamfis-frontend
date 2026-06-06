@@ -3,9 +3,10 @@ import type { ICreateTransaksiPayload, IUpdateTransaksiPayload } from '~/domain/
 import type { IPaginationQuery } from '~/domain/types/IPaginationQuery';
 
 export const useTransaksi = () => {
-    const fetchTransactions = (params: Ref<IPaginationQuery>) => {
+    const fetchTransactions = (params: Ref<IPaginationQuery>, customKey?: string) => {
+        const key = customKey || 'transactions-list';
         return useAsyncData(
-            'transactions-list',
+            key,
             () => TransaksiService.getAll(params.value),
             { watch: [params], lazy: true }
         );
@@ -50,9 +51,10 @@ export const useTransaksi = () => {
         return await TransaksiService.deletePermanent(id);
     }
 
-    const fetchDashboardSummary = (year: Ref<number>) => {
+    const fetchDashboardSummary = (year: Ref<number | 'all'>, customKey?: string) => {
+        const key = customKey || 'dashboard-summary';
         return useAsyncData(
-            'dashboard-summary',
+            key,
             () => TransaksiService.getDashboard(year.value),
             { watch: [year], lazy: true }
         );

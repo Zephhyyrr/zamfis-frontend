@@ -70,8 +70,8 @@ const errorMsg = ref('');
 
 const { updatePesertaKurban } = usePesertaKurban();
 
-const mpParams = ref({ page: 1, limit: 1000 });
-const kkParams = ref({ page: 1, limit: 1000 });
+const mpParams = ref({ page: 1, limit: 10 });
+const kkParams = ref({ page: 1, limit: 10 });
 const { fetchMediaPembayaranList } = useMediaPembayaran();
 const { fetchKelompokKurbanList } = useKelompokKurban();
 const { data: mpData } = fetchMediaPembayaranList(mpParams);

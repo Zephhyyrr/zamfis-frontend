@@ -11,7 +11,7 @@
 
     <!-- Full-page Loading Overlay -->
     <Transition name="fade">
-      <div v-if="transactionPending" class="flex flex-col items-center justify-center py-24">
+      <div v-if="summaryPending" class="flex flex-col items-center justify-center py-24">
         <ClientOnly>
           <BaseLottiePlayer :animationData="loadingAnimation" :size="200" />
           <template #fallback>
@@ -23,28 +23,55 @@
     </Transition>
 
     <Transition name="fade">
-      <div v-if="!transactionPending">
-        <!-- Cash Summary (selalu dari semua data) -->
-        <div class="mb-8 grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 transition-all hover:shadow-md">
-            <p class="text-xs font-semibold uppercase tracking-wide text-emerald-700">Total Uang Masuk</p>
-            <p class="mt-2 text-2xl font-bold text-emerald-700">{{ formatCurrency(totalIncome) }}</p>
-          </div>
-          <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 transition-all hover:shadow-md">
-            <p class="text-xs font-semibold uppercase tracking-wide text-red-700">Total Uang Keluar</p>
-            <p class="mt-2 text-2xl font-bold text-red-700">{{ formatCurrency(totalExpense) }}</p>
-          </div>
-          <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 transition-all hover:shadow-md">
-            <p class="text-xs font-semibold uppercase tracking-wide text-blue-700">Saldo Kas Saat Ini</p>
-            <p class="mt-2 text-2xl font-bold text-blue-700">{{ formatCurrency(currentBalance) }}</p>
+      <div v-if="!summaryPending">
+
+        <!-- ══════════════════════════════════════════════
+             SECTION 1: Summary Cards Per Jenis Kas
+        ══════════════════════════════════════════════ -->
+        <div class="mb-8 space-y-4">
+          <!-- Row per Jenis Kas -->
+          <div
+            v-for="kas in perKasCards"
+            :key="kas.jenisKasId"
+            class="rounded-2xl border p-5 shadow-sm"
+            :class="kasGroupStyle(kas.jenisKasId).wrapper"
+          >
+            <!-- Label Jenis Kas -->
+            <div class="flex items-center gap-2 mb-4">
+              <span class="inline-block w-2.5 h-2.5 rounded-full flex-shrink-0"
+                :class="kasGroupStyle(kas.jenisKasId).dot"></span>
+              <h3 class="text-sm font-bold uppercase tracking-wider" :class="kasGroupStyle(kas.jenisKasId).title">
+                {{ kas.nama }}
+              </h3>
+            </div>
+
+            <!-- 3 mini cards -->
+            <div class="grid grid-cols-3 gap-3">
+              <div class="bg-white rounded-xl p-4 border border-emerald-100 shadow-xs hover:shadow-md transition-shadow">
+                <p class="text-xs font-semibold uppercase tracking-wide text-emerald-600">Uang Masuk</p>
+                <p class="mt-1.5 text-lg font-bold text-emerald-700 leading-tight">{{ formatCurrency(kas.income) }}</p>
+              </div>
+              <div class="bg-white rounded-xl p-4 border border-red-100 shadow-xs hover:shadow-md transition-shadow">
+                <p class="text-xs font-semibold uppercase tracking-wide text-red-500">Uang Keluar</p>
+                <p class="mt-1.5 text-lg font-bold text-red-600 leading-tight">{{ formatCurrency(kas.expense) }}</p>
+              </div>
+              <div class="bg-white rounded-xl p-4 border border-blue-100 shadow-xs hover:shadow-md transition-shadow">
+                <p class="text-xs font-semibold uppercase tracking-wide text-blue-500">Saldo</p>
+                <p class="mt-1.5 text-lg font-bold leading-tight" :class="kas.balance >= 0 ? 'text-blue-700' : 'text-orange-600'">
+                  {{ formatCurrency(kas.balance) }}
+                </p>
+              </div>
+            </div>
           </div>
         </div>
 
-        <!-- Chart Section -->
+        <!-- ══════════════════════════════════════════════
+             SECTION 2: Grafik Kas Umum (Bar Chart)
+        ══════════════════════════════════════════════ -->
         <div class="mb-8 bg-white p-6 rounded-xl shadow-sm border border-gray-100">
           <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-5">
             <div>
-              <h3 class="text-lg font-semibold text-gray-800">Tren Uang Masuk dan Uang Keluar</h3>
+              <h3 class="text-lg font-semibold text-gray-800">Grafik Kas Surau</h3>
               <p class="text-xs text-gray-400 mt-0.5">
                 {{ selectedChartYear === 'all' ? 'Menampilkan semua tahun' : `Menampilkan data tahun ${selectedChartYear}` }}
               </p>
@@ -54,18 +81,18 @@
               <select v-model="selectedChartYear"
                 class="rounded-md border border-gray-300 bg-white px-3 py-1.5 text-xs text-gray-700 outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-colors">
                 <option value="all">Semua Tahun</option>
-                <option v-for="year in availableChartYears" :key="year" :value="year">{{ year }}</option>
+                <option v-for="year in availableYears" :key="year" :value="year">{{ year }}</option>
               </select>
             </div>
           </div>
 
-          <!-- Dua chart terpisah -->
+          <!-- Dua bar chart terpisah -->
           <div class="grid grid-cols-1 gap-4 lg:grid-cols-2">
             <div class="rounded-xl border border-emerald-100 p-3">
               <p class="mb-2 text-sm font-semibold text-emerald-700">Chart Uang Masuk</p>
               <div class="h-72">
                 <ClientOnly>
-                  <Bar :data="incomeChartData" :options="incomeChartOptions" />
+                  <Bar :key="`income-${selectedChartYear}`" :data="incomeChartData" :options="incomeChartOptions" />
                   <template #fallback>
                     <div class="h-72 bg-gray-100 rounded-xl animate-pulse"></div>
                   </template>
@@ -76,7 +103,7 @@
               <p class="mb-2 text-sm font-semibold text-red-700">Chart Uang Keluar</p>
               <div class="h-72">
                 <ClientOnly>
-                  <Bar :data="expenseChartData" :options="expenseChartOptions" />
+                  <Bar :key="`expense-${selectedChartYear}`" :data="expenseChartData" :options="expenseChartOptions" />
                   <template #fallback>
                     <div class="h-72 bg-gray-100 rounded-xl animate-pulse"></div>
                   </template>
@@ -86,72 +113,107 @@
           </div>
         </div>
 
-        <!-- Ringkasan per Jenis Kas (muncul saat pilih tahun tertentu) -->
-        <Transition name="slide-fade">
-          <div v-if="selectedChartYear !== 'all'" class="mb-8 bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-            <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
-              <div>
-                <h3 class="text-base font-semibold text-gray-800">Ringkasan per Jenis Kas</h3>
-                <p class="text-xs text-gray-400 mt-0.5">Total konsumsi tiap sumber kas tahun {{ selectedChartYear }}</p>
-              </div>
-              <span class="text-xs font-medium bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-full border border-emerald-100">
-                {{ jenisKasSummary.length }} jenis kas
-              </span>
-            </div>
-            <div class="overflow-x-auto">
-              <table class="min-w-full divide-y divide-gray-100">
-                <thead class="bg-gray-50">
-                  <tr>
-                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Jenis Kas</th>
-                    <th class="px-6 py-3 text-right text-xs font-semibold text-emerald-600 uppercase tracking-wider">Uang Masuk</th>
-                    <th class="px-6 py-3 text-right text-xs font-semibold text-red-600 uppercase tracking-wider">Uang Keluar</th>
-                    <th class="px-6 py-3 text-right text-xs font-semibold text-blue-600 uppercase tracking-wider">Saldo</th>
-                    <th class="px-6 py-3 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider">Transaksi</th>
-                  </tr>
-                </thead>
-                <tbody class="divide-y divide-gray-50">
-                  <tr v-if="jenisKasSummary.length === 0">
-                    <td colspan="5" class="px-6 py-8 text-center text-sm text-gray-400">Tidak ada data untuk tahun ini.</td>
-                  </tr>
-                  <tr v-for="row in jenisKasSummary" :key="row.nama" class="hover:bg-gray-50 transition-colors">
-                    <td class="px-6 py-4">
-                      <div class="flex items-center gap-2">
-                        <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 flex-shrink-0"></span>
-                        <span class="text-sm font-medium text-gray-800">{{ row.nama }}</span>
-                      </div>
-                    </td>
-                    <td class="px-6 py-4 text-right">
-                      <span class="text-sm font-semibold text-emerald-700">{{ formatCurrency(row.income) }}</span>
-                    </td>
-                    <td class="px-6 py-4 text-right">
-                      <span class="text-sm font-semibold text-red-600">{{ formatCurrency(row.expense) }}</span>
-                    </td>
-                    <td class="px-6 py-4 text-right">
-                      <span class="text-sm font-semibold" :class="row.balance >= 0 ? 'text-blue-700' : 'text-orange-600'">
-                        {{ formatCurrency(row.balance) }}
-                      </span>
-                    </td>
-                    <td class="px-6 py-4 text-right">
-                      <span class="inline-block text-xs font-medium bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full">
-                        {{ row.count }} transaksi
-                      </span>
-                    </td>
-                  </tr>
-                </tbody>
-                <tfoot class="bg-gray-50 border-t border-gray-200">
-                  <tr>
-                    <td class="px-6 py-3 text-xs font-bold text-gray-600 uppercase">Total</td>
-                    <td class="px-6 py-3 text-right text-xs font-bold text-emerald-700">{{ formatCurrency(jenisKasTotalIncome) }}</td>
-                    <td class="px-6 py-3 text-right text-xs font-bold text-red-600">{{ formatCurrency(jenisKasTotalExpense) }}</td>
-                    <td class="px-6 py-3 text-right text-xs font-bold" :class="jenisKasTotalBalance >= 0 ? 'text-blue-700' : 'text-orange-600'">{{ formatCurrency(jenisKasTotalBalance) }}</td>
-                    <td class="px-6 py-3 text-right text-xs font-bold text-gray-500">{{ jenisKasTotalCount }} transaksi</td>
-                  </tr>
-                </tfoot>
-              </table>
-            </div>
+        <!-- ══════════════════════════════════════════════
+             SECTION 3: Pie Chart — Anak Yatim & TPQ
+        ══════════════════════════════════════════════ -->
+        <div class="mb-8 bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+          <div class="mb-5">
+            <h3 class="text-lg font-semibold text-gray-800">Rekapitulasi Pertahun</h3>
+            <p class="text-xs text-gray-400 mt-0.5">Distribusi pemasukan &amp; pengeluaran per tahun (Kas Anak Yatim &amp; TPQ)</p>
           </div>
-        </Transition>
 
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+            <!-- Pie Chart: Kas Anak Yatim -->
+            <div class="rounded-xl border border-purple-100 bg-purple-50/40 p-4">
+              <div class="flex items-center gap-2 mb-4">
+                <span class="inline-block w-2.5 h-2.5 rounded-full bg-purple-500 flex-shrink-0"></span>
+                <p class="text-sm font-bold text-purple-800">Kas Anak Yatim</p>
+              </div>
+
+              <!-- Selector tahun yatim -->
+              <div class="flex items-center gap-2 mb-3">
+                <label class="text-xs text-gray-500 font-medium">Tahun:</label>
+                <select v-model="selectedYearYatim"
+                  class="rounded-md border border-purple-300 bg-white px-2 py-1 text-xs text-gray-700 outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-400 transition-colors">
+                  <option value="all">Semua Tahun</option>
+                  <option v-for="r in pieYatimData" :key="r.year" :value="r.year">{{ r.year }}</option>
+                </select>
+              </div>
+
+              <div v-if="selectedYatimRow" class="h-64">
+                <ClientOnly>
+                  <Pie :key="`yatim-${selectedYearYatim}`" :data="yatimPieChartData" :options="pieChartOptions" />
+                  <template #fallback>
+                    <div class="h-64 bg-purple-50 rounded-xl animate-pulse"></div>
+                  </template>
+                </ClientOnly>
+              </div>
+              <div v-else class="h-64 flex items-center justify-center text-sm text-gray-400">
+                Belum ada data Kas Anak Yatim.
+              </div>
+
+              <!-- Legend ringkas -->
+              <div v-if="selectedYatimRow" class="mt-3 grid grid-cols-2 gap-2">
+                <div class="text-center bg-white rounded-lg p-2 border border-purple-100">
+                  <p class="text-xs text-emerald-600 font-semibold">Masuk</p>
+                  <p class="text-sm font-bold text-emerald-700">{{ formatCurrency(selectedYatimRow.income) }}</p>
+                </div>
+                <div class="text-center bg-white rounded-lg p-2 border border-purple-100">
+                  <p class="text-xs text-red-500 font-semibold">Keluar</p>
+                  <p class="text-sm font-bold text-red-600">{{ formatCurrency(selectedYatimRow.expense) }}</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Pie Chart: Kas TPQ -->
+            <div class="rounded-xl border border-teal-100 bg-teal-50/40 p-4">
+              <div class="flex items-center gap-2 mb-4">
+                <span class="inline-block w-2.5 h-2.5 rounded-full bg-teal-500 flex-shrink-0"></span>
+                <p class="text-sm font-bold text-teal-800">Kas TPQ</p>
+              </div>
+
+              <!-- Selector tahun TPQ -->
+              <div class="flex items-center gap-2 mb-3">
+                <label class="text-xs text-gray-500 font-medium">Tahun:</label>
+                <select v-model="selectedYearTpq"
+                  class="rounded-md border border-teal-300 bg-white px-2 py-1 text-xs text-gray-700 outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-400 transition-colors">
+                  <option value="all">Semua Tahun</option>
+                  <option v-for="r in pieTpqData" :key="r.year" :value="r.year">{{ r.year }}</option>
+                </select>
+              </div>
+
+              <div v-if="selectedTpqRow" class="h-64">
+                <ClientOnly>
+                  <Pie :key="`tpq-${selectedYearTpq}`" :data="tpqPieChartData" :options="pieChartOptions" />
+                  <template #fallback>
+                    <div class="h-64 bg-teal-50 rounded-xl animate-pulse"></div>
+                  </template>
+                </ClientOnly>
+              </div>
+              <div v-else class="h-64 flex items-center justify-center text-sm text-gray-400">
+                Belum ada data Kas TPQ.
+              </div>
+
+              <!-- Legend ringkas -->
+              <div v-if="selectedTpqRow" class="mt-3 grid grid-cols-2 gap-2">
+                <div class="text-center bg-white rounded-lg p-2 border border-teal-100">
+                  <p class="text-xs text-emerald-600 font-semibold">Masuk</p>
+                  <p class="text-sm font-bold text-emerald-700">{{ formatCurrency(selectedTpqRow.income) }}</p>
+                </div>
+                <div class="text-center bg-white rounded-lg p-2 border border-teal-100">
+                  <p class="text-xs text-red-500 font-semibold">Keluar</p>
+                  <p class="text-sm font-bold text-red-600">{{ formatCurrency(selectedTpqRow.expense) }}</p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+
+
+        <!-- CTA Prediksi -->
         <div class="rounded-2xl border border-emerald-200 bg-gradient-to-r from-emerald-50 via-white to-teal-50 p-5 shadow-sm">
           <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
@@ -184,14 +246,16 @@ import {
   CategoryScale,
   LinearScale,
   BarElement,
+  ArcElement,
   Title,
   Tooltip,
   Legend
 } from 'chart.js';
 import { Bar } from 'vue-chartjs';
+import { Pie } from 'vue-chartjs';
 import { useTransaksi } from '~/composables/useTransaksi';
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+ChartJS.register(CategoryScale, LinearScale, BarElement, ArcElement, Title, Tooltip, Legend);
 
 // --- Lottie loading animation ---
 const loadingAnimation = {
@@ -213,113 +277,100 @@ const loadingAnimation = {
   }]
 };
 
-// --- Data fetching ---
-const selectedChartYear = ref('all'); // 'all' atau angka tahun
+// --- State ---
+const selectedChartYear = ref('all');
+const selectedYearYatim = ref('all');
+const selectedYearTpq = ref('all');
 
-const params = ref({ page: 1, limit: 999999 });
-const { fetchAllTransactionsForDashboard } = useTransaksi();
-const { data: transactionResponse, pending: transactionPending } = fetchAllTransactionsForDashboard(params);
+// Ambil summary dari backend
+const { fetchDashboardSummary } = useTransaksi();
 
-const extractItems = (resRef) => {
-  const root = resRef?.value;
-  if (!root) return [];
-  if (Array.isArray(root)) return root;
-  if (Array.isArray(root.data)) return root.data;
-  if (root.data && Array.isArray(root.data.data)) return root.data.data;
-  return [];
-};
-
-const transactions = computed(() => extractItems(transactionResponse));
-
-// Daftar tahun yang tersedia dari data aktual
-const availableChartYears = computed(() => {
-  const years = new Set();
-  transactions.value.forEach((item) => {
-    if (!item.tanggal) return;
-    const y = new Date(item.tanggal).getFullYear();
-    if (!Number.isNaN(y)) years.add(y);
-  });
-  return Array.from(years).sort((a, b) => b - a);
-});
-
-// Summary cards: selalu pakai semua data
-const totalIncome = computed(() =>
-  transactions.value
-    .filter(item => item.tipe === 'uang_masuk')
-    .reduce((sum, item) => sum + Number(item.debit || item.nominal || 0), 0)
+const yearParam = computed(() =>
+  selectedChartYear.value === 'all' ? 'all' : Number(selectedChartYear.value)
 );
-const totalExpense = computed(() =>
-  transactions.value
-    .filter(item => item.tipe === 'uang_keluar')
-    .reduce((sum, item) => sum + Number(item.kredit || item.nominal || 0), 0)
-);
-const currentBalance = computed(() => totalIncome.value - totalExpense.value);
+
+const { data: summaryResponse, pending: summaryPending } = fetchDashboardSummary(yearParam, 'dashboard-summary');
+
+const overallYearParam = ref('all');
+const { data: overallSummaryResponse } = fetchDashboardSummary(overallYearParam, 'dashboard-overall');
+
+// --- Helpers ---
+const summaryData = computed(() => summaryResponse.value?.data ?? null);
+const overallSummaryData = computed(() => overallSummaryResponse.value?.data ?? null);
 
 const formatCurrency = (value) => new Intl.NumberFormat('id-ID', {
   style: 'currency', currency: 'IDR', minimumFractionDigits: 0
 }).format(Number(value || 0));
 
-// --- Chart Logic ---
-const monthLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+// --- Daftar tahun ---
+const availableYears = computed(() => overallSummaryData.value?.availableYears ?? []);
 
-// Mode per-tahun: X-axis = bulan
-const monthlyCash = computed(() => {
-  const incomePerMonth = Array(12).fill(0);
-  const expensePerMonth = Array(12).fill(0);
+// --- Per Kas Cards (from overall, always all-years) ---
+const perKasCards = computed(() => overallSummaryData.value?.perKasCards ?? []);
 
-  const filtered = selectedChartYear.value === 'all'
-    ? transactions.value
-    : transactions.value.filter(item => {
-        if (!item.tanggal) return false;
-        return new Date(item.tanggal).getFullYear() === Number(selectedChartYear.value);
-      });
+// --- Pie Chart Data ---
+const pieYatimData = computed(() => overallSummaryData.value?.pieYatim ?? []);
+const pieTpqData = computed(() => overallSummaryData.value?.pieTpq ?? []);
 
-  filtered.forEach((item) => {
-    if (!item.tanggal) return;
-    const monthIndex = new Date(item.tanggal).getMonth();
-    if (item.tipe === 'uang_masuk') {
-      incomePerMonth[monthIndex] += Number(item.debit || item.nominal || 0);
-    } else if (item.tipe === 'uang_keluar') {
-      expensePerMonth[monthIndex] += Number(item.kredit || item.nominal || 0);
-    }
-  });
+// Auto-select: tidak perlu auto-select karena default sudah 'all'
+// Tapi jika belum ada data & dipilih tahun tertentu tetap didukung
 
-  return { incomePerMonth, expensePerMonth };
+const yatimAllTotal = computed(() => {
+  const card = perKasCards.value.find(c => c.jenisKasId === 2);
+  return card ? { income: card.income, expense: card.expense } : null;
 });
 
-// Mode semua tahun: X-axis = tahun
-const yearlyCash = computed(() => {
-  const years = [...availableChartYears.value].sort((a, b) => a - b);
-  const incomePerYear = years.map(() => 0);
-  const expensePerYear = years.map(() => 0);
-
-  transactions.value.forEach((item) => {
-    if (!item.tanggal) return;
-    const year = new Date(item.tanggal).getFullYear();
-    const idx = years.indexOf(year);
-    if (idx === -1) return;
-    if (item.tipe === 'uang_masuk') {
-      incomePerYear[idx] += Number(item.debit || item.nominal || 0);
-    } else if (item.tipe === 'uang_keluar') {
-      expensePerYear[idx] += Number(item.kredit || item.nominal || 0);
-    }
-  });
-
-  return { years: years.map(String), incomePerYear, expensePerYear };
+const tpqAllTotal = computed(() => {
+  const card = perKasCards.value.find(c => c.jenisKasId === 3);
+  return card ? { income: card.income, expense: card.expense } : null;
 });
 
-// Labels & data aktif sesuai mode
-const activeLabels = computed(() =>
-  selectedChartYear.value === 'all' ? yearlyCash.value.years : monthLabels
+const selectedYatimRow = computed(() => {
+  if (selectedYearYatim.value === 'all') return yatimAllTotal.value;
+  return pieYatimData.value.find(r => r.year === selectedYearYatim.value) ?? null;
+});
+const selectedTpqRow = computed(() => {
+  if (selectedYearTpq.value === 'all') return tpqAllTotal.value;
+  return pieTpqData.value.find(r => r.year === selectedYearTpq.value) ?? null;
+});
+
+// Pie chart data builder
+const buildPieData = (row, colorIncome, colorExpense) => ({
+  labels: ['Uang Masuk', 'Uang Keluar'],
+  datasets: [{
+    data: [row?.income ?? 0, row?.expense ?? 0],
+    backgroundColor: [colorIncome, colorExpense],
+    borderColor: ['#ffffff', '#ffffff'],
+    borderWidth: 2,
+    hoverOffset: 8,
+  }]
+});
+
+const yatimPieChartData = computed(() =>
+  buildPieData(selectedYatimRow.value, '#8b5cf6', '#f87171')
 );
-const activeIncome = computed(() =>
-  selectedChartYear.value === 'all' ? yearlyCash.value.incomePerYear : monthlyCash.value.incomePerMonth
-);
-const activeExpense = computed(() =>
-  selectedChartYear.value === 'all' ? yearlyCash.value.expensePerYear : monthlyCash.value.expensePerMonth
+const tpqPieChartData = computed(() =>
+  buildPieData(selectedTpqRow.value, '#14b8a6', '#fb923c')
 );
 
-// Chart data
+const pieChartOptions = {
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: {
+    legend: { position: 'bottom', labels: { padding: 16, font: { size: 12 } } },
+    tooltip: {
+      callbacks: {
+        label: (ctx) => ` ${ctx.label}: ${new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(ctx.raw)}`
+      }
+    }
+  }
+};
+
+// --- Bar Chart (Kas Umum) ---
+const activeLabels = computed(() => summaryData.value?.chart?.labels ?? []);
+const activeIncome = computed(() => summaryData.value?.chart?.incomeData ?? []);
+const activeExpense = computed(() => summaryData.value?.chart?.expenseData ?? []);
+
 const incomeChartData = computed(() => ({
   labels: activeLabels.value,
   datasets: [{ label: 'Uang Masuk', data: activeIncome.value, backgroundColor: '#10b981', borderRadius: 4 }]
@@ -330,36 +381,6 @@ const expenseChartData = computed(() => ({
   datasets: [{ label: 'Uang Keluar', data: activeExpense.value, backgroundColor: '#ef4444', borderRadius: 4 }]
 }));
 
-// --- Ringkasan per Jenis Kas ---
-const jenisKasSummary = computed(() => {
-  if (selectedChartYear.value === 'all') return [];
-  const year = Number(selectedChartYear.value);
-  const map = new Map();
-
-  transactions.value.forEach((item) => {
-    if (!item.tanggal) return;
-    if (new Date(item.tanggal).getFullYear() !== year) return;
-
-    const kasName = item.jenisKas?.nama || item.jenisKasId || 'Tidak Diketahui';
-    if (!map.has(kasName)) map.set(kasName, { nama: kasName, income: 0, expense: 0, count: 0 });
-    const row = map.get(kasName);
-    row.count++;
-    if (item.tipe === 'uang_masuk') {
-      row.income += Number(item.debit || item.nominal || 0);
-    } else if (item.tipe === 'uang_keluar') {
-      row.expense += Number(item.kredit || item.nominal || 0);
-    }
-  });
-
-  return Array.from(map.values())
-    .map(r => ({ ...r, balance: r.income - r.expense }))
-    .sort((a, b) => b.income - a.income);
-});
-
-const jenisKasTotalIncome = computed(() => jenisKasSummary.value.reduce((s, r) => s + r.income, 0));
-const jenisKasTotalExpense = computed(() => jenisKasSummary.value.reduce((s, r) => s + r.expense, 0));
-const jenisKasTotalBalance = computed(() => jenisKasTotalIncome.value - jenisKasTotalExpense.value);
-const jenisKasTotalCount = computed(() => jenisKasSummary.value.reduce((s, r) => s + r.count, 0));
 
 const buildChartOptions = (datasetLabel) => ({
   responsive: true,
@@ -382,6 +403,28 @@ const buildChartOptions = (datasetLabel) => ({
 
 const incomeChartOptions = buildChartOptions('Uang Masuk');
 const expenseChartOptions = buildChartOptions('Uang Keluar');
+
+// --- Styling helper per jenisKas ---
+const kasGroupStyle = (id) => {
+  const map = {
+    1: {
+      wrapper: 'bg-emerald-50/50 border-emerald-200',
+      title: 'text-emerald-800',
+      dot: 'bg-emerald-500',
+    },
+    2: {
+      wrapper: 'bg-purple-50/50 border-purple-200',
+      title: 'text-purple-800',
+      dot: 'bg-purple-500',
+    },
+    3: {
+      wrapper: 'bg-teal-50/50 border-teal-200',
+      title: 'text-teal-800',
+      dot: 'bg-teal-500',
+    },
+  };
+  return map[id] ?? map[1];
+};
 
 const currentDate = new Date().toLocaleDateString('id-ID', {
   weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'

@@ -17,8 +17,31 @@
       </div>
       <div>
         <label class="block text-sm font-medium text-gray-700">Uraian</label>
-        <input v-model="form.uraian" type="text"
-          class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm" />
+        <div class="mt-1 flex rounded-md shadow-sm">
+          <input v-model="form.uraian" type="text" list="edit-favorite-uraian-list" autocomplete="off"
+            class="flex-1 block w-full border border-gray-300 rounded-none rounded-l-md shadow-sm py-2 px-3 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm" />
+          <button type="button" @click="saveAsFavorite" :disabled="!form.uraian || isSavingFavorite"
+            class="inline-flex items-center px-3 py-2 border border-l-0 border-gray-300 rounded-r-md bg-gray-50 text-gray-600 hover:bg-gray-100 hover:text-emerald-600 transition-colors disabled:opacity-50"
+            title="Simpan uraian ini sebagai Favorit">
+            <Icon :icon="isSavingFavorite ? 'lucide:loader-circle' : 'lucide:star'" :class="['w-4 h-4', isSavingFavorite && 'animate-spin']" />
+          </button>
+        </div>
+        <datalist id="edit-favorite-uraian-list">
+          <option v-for="fav in favoriteTransaksiList" :key="fav.id" :value="fav.uraian"></option>
+        </datalist>
+        <div class="mt-2 flex flex-wrap gap-2" v-if="favoriteTransaksiList.length > 0">
+          <button 
+            type="button" 
+            v-for="fav in favoriteTransaksiList" 
+            :key="'btn-'+fav.id"
+            @click="form.uraian = fav.uraian"
+            class="inline-flex items-center text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-full px-2.5 py-1 hover:bg-emerald-100 transition-colors"
+            title="Gunakan uraian favorit ini"
+          >
+            <Icon icon="lucide:star" class="w-3 h-3 mr-1" />
+            {{ fav.uraian }}
+          </button>
+        </div>
       </div>
       <div>
         <label class="block text-sm font-medium text-gray-700">Jenis Kas</label>
@@ -63,9 +86,11 @@
 
 <script setup lang="ts">
 import { ref, watch, computed } from 'vue';
+import { Icon } from '@iconify/vue';
 import { useTransaksi } from '~/composables/useTransaksi';
 import { useJenisKas } from '~/composables/useJenisKas';
 import { useMediaPembayaran } from '~/composables/useMediaPembayaran';
+import { useFavoriteTransaksi } from '~/composables/useFavoriteTransaksi';
 import type { IJenisKas } from '~/domain/models/IJenisKas';
 import type { IUpdateTransaksiPayload } from '~/domain/models/ITransaksi';
 
@@ -81,10 +106,12 @@ const errorMsg = ref('');
 const { updateTransaction, fetchTransactionDetail } = useTransaksi();
 const { fetchJenisKasList } = useJenisKas();
 const { fetchMediaPembayaranList } = useMediaPembayaran();
+const { fetchFavoriteTransaksiList, createFavoriteTransaksi } = useFavoriteTransaksi();
 
-const params = ref({ page: 1, limit: 1000 });
+const params = ref({ page: 1, limit: 10 });
 const { data: ketData } = fetchJenisKasList(params);
 const { data: mpData } = fetchMediaPembayaranList(params);
+const { data: favData, refresh: refreshFav } = fetchFavoriteTransaksiList(params);
 
 const extractList = (resData: any) => {
   let list = resData?.value;
@@ -95,6 +122,7 @@ const extractList = (resData: any) => {
 
 const jenisKasList = computed<IJenisKas[]>(() => extractList(ketData));
 const mediaPembayaranList = computed(() => extractList(mpData));
+const favoriteTransaksiList = computed(() => extractList(favData));
 
 const form = ref({
   tanggal: '',
@@ -139,6 +167,20 @@ const handleKreditInput = (event: Event) => {
   }
 };
 
+const isSavingFavorite = ref(false);
+const saveAsFavorite = async () => {
+  if (!form.value.uraian) return;
+  isSavingFavorite.value = true;
+  try {
+    await createFavoriteTransaksi({ uraian: form.value.uraian } as any);
+    await refreshFav();
+  } catch (error) {
+    console.error('Gagal menyimpan favorit', error);
+  } finally {
+    isSavingFavorite.value = false;
+  }
+};
+
 watch(() => props.modelValue, async (val) => {
   if (val && props.editData?.id) {
     isLoading.value = true;
@@ -162,7 +204,7 @@ watch(() => props.modelValue, async (val) => {
 const populateFormWithData = (data: any) => {
   if (data) {
     form.value = {
-      tanggal: data.tanggal ? new Date(data.tanggal).toISOString().split('T')[0] : '',
+      tanggal: data.tanggal ? (new Date(data.tanggal).toISOString().split('T')[0] || '') : '',
       uraian: data.uraian || '',
       jenisKasId: data.jenisKasId || data.jenisKas?.id || 0,
       mediaPembayaranId: data.mediaPembayaranId || data.mediaPembayaran?.id || 0,

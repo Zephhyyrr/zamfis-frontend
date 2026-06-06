@@ -16,7 +16,7 @@
     </div>
 
     <div class="rounded-xl border border-gray-100 bg-white p-4 shadow-sm">
-      <div class="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-7">
+      <div class="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-8">
         <div class="xl:col-span-2">
           <label class="mb-1 block text-xs font-semibold uppercase tracking-wide text-gray-500">Cari</label>
           <input
@@ -28,7 +28,18 @@
         </div>
 
         <div>
-          <label class="mb-1 block text-xs font-semibold uppercase tracking-wide text-gray-500">Jenis</label>
+          <label class="mb-1 block text-xs font-semibold uppercase tracking-wide text-gray-500">Jenis Kas</label>
+          <select
+            v-model="activejenisKasId"
+            class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-800 outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+          >
+            <option value="all">Semua Jenis Kas</option>
+            <option v-for="tab in JenisKasTabs" :key="tab.id" :value="tab.id">{{ tab.nama }}</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="mb-1 block text-xs font-semibold uppercase tracking-wide text-gray-500">Kategori</label>
           <select
             v-model="transactionType"
             class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-800 outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
@@ -102,7 +113,7 @@
           ]"
         >
           Semua Jenis Kas
-          <span class="ml-2 rounded-full bg-black/10 px-2 py-0.5 text-xs">{{ transactions.length }}</span>
+          <span class="ml-2 rounded-full bg-black/10 px-2 py-0.5 text-xs">{{ meta?.totalItems || 0 }}</span>
         </button>
 
         <button
@@ -116,7 +127,6 @@
           ]"
         >
           {{ tab.nama }}
-          <span class="ml-2 rounded-full bg-black/10 px-2 py-0.5 text-xs">{{ tab.count }}</span>
         </button>
       </div>
     </div>
@@ -154,16 +164,17 @@
               <th class="px-6 py-3 text-left">Uraian</th>
               <th class="px-6 py-3 text-right">Debet</th>
               <th class="px-6 py-3 text-right">Kredit</th>
+              <th class="px-6 py-3 text-right">Media Pembayaran</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-100">
             <tr v-if="pending" class="hover:bg-gray-50">
-              <td colspan="6" class="px-6 py-8 text-center">
+              <td colspan="7" class="px-6 py-8 text-center">
                 <Icon icon="lucide:loader-circle" class="mx-auto h-8 w-8 animate-spin text-emerald-600" />
               </td>
             </tr>
             <tr v-else-if="transactions.length === 0">
-              <td colspan="6" class="px-6 py-8 text-center text-sm text-gray-500">Tidak ada data yang cocok dengan filter.</td>
+              <td colspan="7" class="px-6 py-8 text-center text-sm text-gray-500">Tidak ada data yang cocok dengan filter.</td>
             </tr>
             <tr v-else v-for="(row, index) in transactions" :key="row.id" class="hover:bg-gray-50">
               <td class="px-6 py-4 text-gray-500">{{ (currentPage - 1) * pageSize + index + 1 }}</td>
@@ -184,6 +195,9 @@
               </td>
               <td class="px-6 py-4 text-right font-semibold" :class="getKredit(row) > 0 ? 'text-red-600' : 'text-gray-400'">
                 {{ formatCurrency(getKredit(row)) }}
+              </td>
+              <td class="px-6 py-4 text-center text-gray-800">
+                {{ row.mediaPembayaran?.nama || '-' }}
               </td>
             </tr>
           </tbody>
@@ -244,13 +258,14 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
 import { definePageMeta } from '#imports';
+import { $fetch } from 'ofetch';
 import { DownloadIcon } from 'lucide-vue-next';
 import { Icon } from '@iconify/vue';
 import * as XLSX from 'xlsx';
 import { useTransaksi } from '~/composables/useTransaksi';
 import type { ITransaksi } from '~/domain/models/ITransaksi';
 import type { IPaginationMeta } from '~/domain/types/IApiResponse';
-import BasePagination from '~/components/base/BasePagination.vue';
+import { useJenisKas } from '~/composables/useJenisKas';
 
 definePageMeta({
   layout: 'dashboard'
@@ -280,8 +295,15 @@ const params = computed(() => {
   }
 });
 
-const { fetchTransactions } = useTransaksi();
-const { data: responseData, pending } = fetchTransactions(params);
+const { fetchTransactions, fetchDashboardSummary } = useTransaksi();
+const { data: responseData, pending } = fetchTransactions(params, 'reports-transactions');
+
+const { fetchJenisKasList } = useJenisKas();
+const kasParams = ref({ page: 1, limit: 10 });
+const { data: kasResponse } = fetchJenisKasList(kasParams);
+
+const summaryYearRef = ref<'all'>('all');
+const { data: dashboardSummaryData } = fetchDashboardSummary(summaryYearRef);
 
 const showExportModal = ref(false);
 const exportMode = ref<'monthly' | 'yearly'>('monthly');
@@ -319,15 +341,11 @@ const summary = computed(() => {
 });
 
 const availableYears = computed(() => {
-  const years = new Set<number>();
-  transactions.value.forEach((tx) => {
-    if (!tx.tanggal) return;
-    const year = new Date(tx.tanggal).getFullYear();
-    if (!Number.isNaN(year)) {
-      years.add(year);
-    }
-  });
-  return [...years].sort((a, b) => b - a);
+  if (dashboardSummaryData.value && (dashboardSummaryData.value as any).data) {
+    const years = (dashboardSummaryData.value as any).data.availableYears || [];
+    if (years.length) return years;
+  }
+  return [new Date().getFullYear()];
 });
 
 const exportYears = computed(() => {
@@ -336,16 +354,13 @@ const exportYears = computed(() => {
 });
 
 const JenisKasTabs = computed(() => {
-  const map = new Map<number, { id: number; nama: string; count: number }>();
-  transactions.value.forEach((tx) => {
-    const id = tx.jenisKas?.id || tx.jenisKasId;
-    const nama = tx.jenisKas?.nama || `Jenis Kas #${id}`;
-    if (!id) return;
-    if (!map.has(id)) {
-      map.set(id, { id, nama, count: 0 });
-    }
-  });
-  return [...map.values()].sort((a, b) => a.nama.localeCompare(b.nama));
+  const list = (kasResponse.value as any)?.data?.data || [];
+  if (!Array.isArray(list)) return [];
+  return list.map((k: any) => ({
+    id: k.id,
+    nama: k.nama,
+    count: 0
+  }));
 });
 
 const selectJenisKasTab = (id: number | 'all') => {

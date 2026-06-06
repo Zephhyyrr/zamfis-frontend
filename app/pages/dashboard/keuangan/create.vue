@@ -22,9 +22,30 @@
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700">Uraian</label>
-            <input v-model="form.uraian" type="text" required :disabled="isSubmitting"
-              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50"
-              placeholder="Contoh: Pembelian alat tulis" />
+            <div class="mt-1 flex rounded-md shadow-sm">
+              <input v-model="form.uraian" type="text" required :disabled="isSubmitting" list="favorite-uraian-list"
+                class="flex-1 block w-full px-3 py-2 border border-gray-300 rounded-none rounded-l-md focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50"
+                placeholder="Contoh: Pembelian alat tulis" autocomplete="off" />
+              <button type="button" @click="saveAsFavorite" :disabled="!form.uraian || isSavingFavorite"
+                class="inline-flex items-center px-3 py-2 border border-l-0 border-gray-300 rounded-r-md bg-gray-50 text-gray-600 hover:bg-gray-100 hover:text-emerald-600 transition-colors disabled:opacity-50"
+                title="Simpan uraian ini sebagai Favorit">
+                <Icon :icon="isSavingFavorite ? 'lucide:loader-circle' : 'lucide:star'"
+                  :class="['w-4 h-4', isSavingFavorite && 'animate-spin']" />
+              </button>
+            </div>
+            <datalist id="favorite-uraian-list">
+              <option v-for="fav in favoriteTransaksiList" :key="fav.id" :value="fav.uraian"></option>
+            </datalist>
+            <!-- Favorite Chips -->
+            <div class="mt-2 flex flex-wrap gap-2" v-if="favoriteTransaksiList.length > 0">
+              <button type="button" v-for="fav in favoriteTransaksiList" :key="'btn-' + fav.id"
+                @click="form.uraian = fav.uraian"
+                class="inline-flex items-center text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-full px-2.5 py-1 hover:bg-emerald-100 transition-colors"
+                title="Gunakan uraian favorit ini">
+                <Icon icon="lucide:star" class="w-3 h-3 mr-1" />
+                {{ fav.uraian }}
+              </button>
+            </div>
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700">Jenis Kas</label>
@@ -46,8 +67,8 @@
             <label class="block text-sm font-medium text-gray-700">Tipe Transaksi</label>
             <select v-model="form.tipe"
               class="mt-1 block w-full border border-gray-300 bg-white rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm">
-              <option value="uang_masuk">Pemasukan / Uang Masuk</option>
-              <option value="uang_keluar">Pengeluaran / Uang Keluar</option>
+              <option value="uang_masuk">Uang Masuk</option>
+              <option value="uang_keluar">Uang Keluar</option>
             </select>
           </div>
           <div>
@@ -71,7 +92,8 @@
             class="px-4 py-2 bg-white text-gray-700 border border-gray-300 rounded-xl hover:bg-gray-50 font-medium transition-colors">
             Batal
           </NuxtLink>
-          <BaseButton type="submit" :isLoading="isSubmitting" text="Simpan Data" icon="lucide:save" :fullWidth="false" />
+          <BaseButton type="submit" :isLoading="isSubmitting" text="Simpan Data" icon="lucide:save"
+            :fullWidth="false" />
         </div>
       </form>
     </div>
@@ -90,6 +112,7 @@ import { Icon } from '@iconify/vue';
 import { useTransaksi } from '~/composables/useTransaksi';
 import { useJenisKas } from '~/composables/useJenisKas';
 import { useMediaPembayaran } from '~/composables/useMediaPembayaran';
+import { useFavoriteTransaksi } from '~/composables/useFavoriteTransaksi';
 
 definePageMeta({ layout: 'dashboard' as any });
 
@@ -97,12 +120,14 @@ const router = useRouter();
 const { createTransaction } = useTransaksi();
 const { fetchJenisKasList } = useJenisKas();
 const { fetchMediaPembayaranList } = useMediaPembayaran();
+const { fetchFavoriteTransaksiList, createFavoriteTransaksi } = useFavoriteTransaksi();
 
-const params = ref({ page: 1, limit: 1000 });
+const params = ref({ page: 1, limit: 10 });
 const { data: ketData, refresh: refreshJK } = fetchJenisKasList(params);
 const { data: mpData, refresh: refreshMP } = fetchMediaPembayaranList(params);
+const { data: favData, refresh: refreshFav } = fetchFavoriteTransaksiList(params);
 
-onMounted(() => { refreshJK(); refreshMP(); });
+onMounted(() => { refreshJK(); refreshMP(); refreshFav(); });
 
 const extractList = (resData: any) => {
   let list = resData?.value;
@@ -113,9 +138,10 @@ const extractList = (resData: any) => {
 
 const jenisKasList = computed(() => extractList(ketData));
 const mediaPembayaranList = computed(() => extractList(mpData));
+const favoriteTransaksiList = computed(() => extractList(favData));
 
 const form = ref({
-  tanggal: new Date().toISOString().split('T')[0],
+  tanggal: new Date().toISOString().split('T')[0] || '',
   uraian: '',
   jenisKasId: 0,
   mediaPembayaranId: 0,
@@ -125,8 +151,22 @@ const form = ref({
 });
 
 const isSubmitting = ref(false);
+const isSavingFavorite = ref(false);
 const errorMessage = ref('');
 const showSuccessModal = ref(false);
+
+const saveAsFavorite = async () => {
+  if (!form.value.uraian) return;
+  isSavingFavorite.value = true;
+  try {
+    await createFavoriteTransaksi({ uraian: form.value.uraian } as any);
+    await refreshFav();
+  } catch (error) {
+    console.error('Gagal menyimpan favorit', error);
+  } finally {
+    isSavingFavorite.value = false;
+  }
+};
 
 const handleSuccessConfirm = () => {
   showSuccessModal.value = false;
@@ -176,7 +216,7 @@ const submitForm = async () => {
     if (!form.value.jenisKasId) throw new Error('Pilih jenis kas.');
     if (!form.value.mediaPembayaranId) throw new Error('Pilih media pembayaran.');
     if (debit <= 0 && kredit <= 0) throw new Error('Nominal Debet atau Kredit harus diisi.');
-    
+
     // Auto-calculate nominal based on what is filled
     const nominal = Math.max(debit, kredit);
 

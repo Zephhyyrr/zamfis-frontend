@@ -51,7 +51,7 @@ export class TransaksiService extends BaseService {
         });
     }
 
-    static async getDashboard(year: number): Promise<IApiResponse<any>> {
+    static async getDashboard(year: number | 'all'): Promise<IApiResponse<any>> {
         return await this.api<IApiResponse<any>>(endpoints.TRANSAKSI.GET_DASHBOARD, {
             method: 'GET',
             query: { year }
