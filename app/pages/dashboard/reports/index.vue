@@ -258,7 +258,6 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
 import { definePageMeta } from '#imports';
-import { $fetch } from 'ofetch';
 import { DownloadIcon } from 'lucide-vue-next';
 import { Icon } from '@iconify/vue';
 import * as XLSX from 'xlsx';

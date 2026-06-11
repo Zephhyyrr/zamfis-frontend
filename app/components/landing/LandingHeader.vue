@@ -1,82 +1,103 @@
 <template>
-  <header class="bg-gradient-to-r from-secondary via-emerald-800 to-secondary text-white shadow-xl sticky top-0 z-50 border-b border-emerald-600/30">
-    <div class="container mx-auto px-4 md:px-12 py-4 flex justify-between items-center">
-      <a href="/">
-        <div class="flex items-center gap-3">
-          <div class="w-10 h-10 bg-primary/20 rounded-full flex items-center justify-center border border-primary/30">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
-            </svg>
-          </div>
-          <div class="flex flex-col">
-            <h1 class="text-xl font-bold tracking-wide leading-tight">Surau Zam Zam</h1>
-            <span class="text-xs text-emerald-300 font-medium">{{ hijriDate }}</span>
+  <header class="sticky top-0 z-50 bg-white dark:bg-gray-900 shadow-md border-b border-gray-100 dark:border-gray-800">
+    <div class="container mx-auto px-4 md:px-12 py-3.5 flex justify-between items-center">
+
+      <!-- Logo -->
+      <a href="/" class="flex items-center gap-3 group">
+        <div class="relative w-11 h-11">
+          <div class="absolute inset-0 bg-gradient-to-br from-primary to-secondary rounded-xl shadow-lg shadow-primary/30 group-hover:shadow-primary/50 transition-shadow duration-300"></div>
+          <div class="absolute inset-0 flex items-center justify-center">
+            <BookOpenIcon class="h-5 w-5 text-white" />
           </div>
         </div>
+        <div class="flex flex-col">
+          <h1 class="text-lg font-bold text-secondary dark:text-white tracking-tight leading-tight" style="font-family: 'Plus Jakarta Sans', sans-serif;">Surau Zam Zam</h1>
+          <span class="text-[11px] text-primary font-semibold tracking-wide">{{ hijriDate }}</span>
+        </div>
       </a>
-      <nav class="hidden lg:flex gap-6 font-semibold">
-        <a href="/#beranda" :class="{'text-primary': activeSection === 'beranda', 'hover:text-primary': activeSection !== 'beranda'}" class="transition relative group">Beranda
-          <span :class="activeSection === 'beranda' ? 'w-full' : 'w-0'" class="absolute -bottom-1 left-0 h-0.5 bg-primary transition-all group-hover:w-full"></span>
-        </a>
-        <a href="/#jadwal" :class="{'text-primary': activeSection === 'jadwal', 'hover:text-primary': activeSection !== 'jadwal'}" class="transition relative group">Jadwal Shalat
-          <span :class="activeSection === 'jadwal' ? 'w-full' : 'w-0'" class="absolute -bottom-1 left-0 h-0.5 bg-primary transition-all group-hover:w-full"></span>
-        </a>
-        <a href="/#donasi" :class="{'text-primary': activeSection === 'donasi', 'hover:text-primary': activeSection !== 'donasi'}" class="transition relative group">Donasi
-          <span :class="activeSection === 'donasi' ? 'w-full' : 'w-0'" class="absolute -bottom-1 left-0 h-0.5 bg-primary transition-all group-hover:w-full"></span>
-        </a>
-        <a href="/#transaksi" :class="{'text-primary': activeSection === 'transaksi', 'hover:text-primary': activeSection !== 'transaksi'}" class="transition relative group">Transaksi
-          <span :class="activeSection === 'transaksi' ? 'w-full' : 'w-0'" class="absolute -bottom-1 left-0 h-0.5 bg-primary transition-all group-hover:w-full"></span>
-        </a>
-        <a href="/#berita" :class="{'text-primary': activeSection === 'berita', 'hover:text-primary': activeSection !== 'berita'}" class="transition relative group">Berita
-          <span :class="activeSection === 'berita' ? 'w-full' : 'w-0'" class="absolute -bottom-1 left-0 h-0.5 bg-primary transition-all group-hover:w-full"></span>
-        </a>
-        <a href="/#pengurus" :class="{'text-primary': activeSection === 'pengurus', 'hover:text-primary': activeSection !== 'pengurus'}" class="transition relative group">Pengurus
-          <span :class="activeSection === 'pengurus' ? 'w-full' : 'w-0'" class="absolute -bottom-1 left-0 h-0.5 bg-primary transition-all group-hover:w-full"></span>
-        </a>
-        <a href="/#imsakiyah" :class="{'text-primary': activeSection === 'imsakiyah', 'hover:text-primary': activeSection !== 'imsakiyah'}" class="transition relative group">Imsakiyah
-          <span :class="activeSection === 'imsakiyah' ? 'w-full' : 'w-0'" class="absolute -bottom-1 left-0 h-0.5 bg-primary transition-all group-hover:w-full"></span>
+
+      <!-- Desktop Nav -->
+      <nav class="hidden lg:flex items-center gap-1 font-semibold text-sm">
+        <a v-for="link in navLinks" :key="link.id" :href="`/#${link.id}`"
+          :class="[
+            'px-3.5 py-2 rounded-xl transition-all duration-200 relative',
+            activeSection === link.id
+              ? 'text-primary bg-primary/10'
+              : 'text-secondary/80 dark:text-gray-300 hover:text-primary hover:bg-primary/5'
+          ]">
+          {{ link.label }}
+          <span v-if="activeSection === link.id"
+            class="absolute bottom-1 left-1/2 -translate-x-1/2 w-4 h-0.5 rounded-full bg-gradient-to-r from-primary to-secondary"></span>
         </a>
         <NuxtLink to="/login"
-          class="bg-primary text-white px-5 py-1.5 rounded-full hover:bg-emerald-400 transition shadow-lg shadow-primary/30 text-sm font-bold">Login</NuxtLink>
+          class="ml-3 rounded-xl text-sm font-semibold text-white transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-primary/50 hover:-translate-y-[1px] active:translate-y-0 py-2 px-5 bg-gradient-to-br from-primary to-secondary shadow-[0_4px_15px_-3px_rgba(16,185,129,0.4),0_0_0_1px_rgba(16,185,129,0.2)] hover:to-[#0b5f47] hover:shadow-[0_8px_25px_-5px_rgba(16,185,129,0.45),0_0_0_1px_rgba(16,185,129,0.3)]">
+          Login
+        </NuxtLink>
       </nav>
+
+      <!-- Mobile hamburger -->
+      <button @click="mobileOpen = !mobileOpen" class="lg:hidden p-2 rounded-xl hover:bg-emerald-50 dark:hover:bg-white/5 transition text-secondary dark:text-white">
+        <MenuIcon v-if="!mobileOpen" class="h-6 w-6" />
+        <XIcon v-else class="h-6 w-6" />
+      </button>
     </div>
+
+    <!-- Mobile menu -->
+    <Transition name="slide-down">
+      <div v-if="mobileOpen" class="lg:hidden border-t border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900">
+        <div class="container mx-auto px-4 py-3 flex flex-col gap-1">
+          <a v-for="link in navLinks" :key="link.id" :href="`/#${link.id}`" @click="mobileOpen = false"
+            :class="[
+              'px-4 py-2.5 rounded-xl font-semibold text-sm transition',
+              activeSection === link.id ? 'text-primary bg-primary/10' : 'text-secondary dark:text-gray-300 hover:bg-primary/5 hover:text-primary'
+            ]">
+            {{ link.label }}
+          </a>
+          <NuxtLink to="/login" @click="mobileOpen = false"
+            class="mt-1 rounded-xl text-sm font-semibold text-white py-2.5 px-4 text-center bg-gradient-to-br from-primary to-secondary shadow-[0_4px_15px_-3px_rgba(16,185,129,0.4)] hover:-translate-y-[1px] transition-all duration-300">
+            Login Admin
+          </NuxtLink>
+        </div>
+      </div>
+    </Transition>
   </header>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { BookOpenIcon, MenuIcon, XIcon } from 'lucide-vue-next'
 
-const hijriDate = new Intl.DateTimeFormat('id-ID-u-ca-islamic', { 
-  day: 'numeric', month: 'long', year: 'numeric' 
-}).format(new Date());
+const hijriDate = new Intl.DateTimeFormat('id-ID-u-ca-islamic', {
+  day: 'numeric', month: 'long', year: 'numeric'
+}).format(new Date())
 
-const props = defineProps({
-  forceActive: {
-    type: String,
-    default: ''
-  }
-})
+const navLinks = [
+  { id: 'beranda', label: 'Beranda' },
+  { id: 'jadwal', label: 'Jadwal Shalat' },
+  { id: 'donasi', label: 'Donasi' },
+  { id: 'transaksi', label: 'Transaksi' },
+  { id: 'berita', label: 'Berita' },
+  { id: 'pengurus', label: 'Pengurus' },
+  { id: 'imsakiyah', label: 'Imsakiyah' },
+]
 
-const activeSection = ref('beranda');
+const activeSection = ref('beranda')
+const mobileOpen = ref(false)
 
 onMounted(() => {
-  if (props.forceActive) {
-    activeSection.value = props.forceActive;
-    return;
-  }
-
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        activeSection.value = entry.target.id;
-      }
-    });
-  }, { threshold: 0.3 }); // Trigger when 30% of the section is visible
+      if (entry.isIntersecting) activeSection.value = entry.target.id
+    })
+  }, { threshold: 0.3 })
 
-  const sections = ['beranda', 'jadwal', 'donasi', 'transaksi', 'berita', 'pengurus', 'imsakiyah'];
-  sections.forEach(id => {
-    const el = document.getElementById(id);
-    if (el) observer.observe(el);
-  });
-});
+  navLinks.forEach(link => {
+    const el = document.getElementById(link.id)
+    if (el) observer.observe(el)
+  })
+})
 </script>
+
+<style scoped>
+.slide-down-enter-active, .slide-down-leave-active { transition: all 0.25s ease; }
+.slide-down-enter-from, .slide-down-leave-to { opacity: 0; transform: translateY(-8px); }
+</style>

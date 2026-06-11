@@ -1,19 +1,17 @@
 <template>
   <div class="fixed bottom-6 right-6 z-50 flex flex-col items-end">
-    <!-- Floating Button -->
-    <button
+    <BaseButton
       @click="toggleModal"
-      class="bg-gradient-to-r from-primary to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-white rounded-full p-4 shadow-2xl hover:shadow-emerald-900/50 transform hover:scale-110 transition-all duration-300 flex items-center justify-center group focus:outline-none focus:ring-4 focus:ring-primary/50 relative z-50"
+      :fullWidth="false"
+      variant="success"
+      class="!rounded-full !w-16 !h-16 !p-0 flex items-center justify-center shadow-2xl hover:shadow-emerald-900/50 transform hover:scale-110 group relative z-50 border-none"
     >
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white group-hover:rotate-12 transition-transform duration-300" viewBox="0 0 20 20" fill="currentColor">
-        <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z" />
-      </svg>
-      <span class="absolute right-full mr-4 bg-emerald-900/90 text-white text-xs font-bold px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap pointer-events-none">
+      <Icon icon="lucide:book-open" class="h-8 w-8 text-white group-hover:rotate-12 transition-transform duration-300" />
+      <span class="absolute right-full mr-4 bg-emerald-900/90 text-white text-xs font-bold px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap pointer-events-none tracking-normal font-sans">
         {{ currentDate || 'Mutiara Harian' }}
       </span>
-    </button>
+    </BaseButton>
 
-    <!-- FLOATING MODAL -->
     <Transition
       enter-active-class="transition duration-300 ease-out origin-bottom-right"
       enter-from-class="transform scale-50 opacity-0"
@@ -112,6 +110,7 @@
 import { ref } from 'vue'
 import { onMounted } from '#imports'
 import { useRuntimeConfig } from '#imports'
+import { Icon } from '@iconify/vue'
 import { $fetch } from 'ofetch'
 
 const modalState = ref<'CLOSED' | 'FLOATING' | 'FULLSCREEN'>('CLOSED')
@@ -123,7 +122,6 @@ const contentData = ref<{
   source: string
 } | null>(null)
 
-// URL dari environment variable
 const config = useRuntimeConfig()
 const API_ALQURAN = config.public.apiUrlAlquran as string
 const API_HADIS = config.public.apiUrlHadis as string
