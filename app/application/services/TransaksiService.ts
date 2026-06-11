@@ -58,4 +58,17 @@ export class TransaksiService extends BaseService {
         });
     }
 
+    static async getPublicDashboard(year: number | 'all'): Promise<IApiResponse<any>> {
+        return await this.api<IApiResponse<any>>(endpoints.TRANSAKSI.GET_PUBLIC_DASHBOARD, {
+            method: 'GET',
+            query: { year }
+        });
+    }
+
+    static async getPublicList(params?: IPaginationQuery): Promise<IApiResponse<any>> {
+        return await this.api<IApiResponse<any>>(endpoints.TRANSAKSI.GET_PUBLIC_LIST, {
+            method: 'GET',
+            query: params,
+        });
+    }
 }

@@ -105,9 +105,9 @@
               <td class="px-6 py-4 whitespace-nowrap">
                 <button type="button"
                   class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full transition-colors outline-none focus:ring-2 focus:ring-offset-1 focus:ring-emerald-500/30"
-                  :class="item.status === 'published' ? 'bg-emerald-100 text-emerald-800 hover:bg-emerald-200' : 'bg-amber-100 text-amber-800 hover:bg-amber-200'"
+                  :class="item.isTampil ? 'bg-emerald-100 text-emerald-800 hover:bg-emerald-200' : 'bg-amber-100 text-amber-800 hover:bg-amber-200'"
                   @click="openActionModal('status', item)">
-                  {{ item.status === 'published' ? 'Published' : 'Draft' }}
+                  {{ item.isTampil ? 'Published' : 'Draft' }}
                 </button>
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">

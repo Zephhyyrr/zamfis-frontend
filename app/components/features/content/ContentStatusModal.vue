@@ -17,21 +17,21 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits(['update:modelValue', 'success']);
-const { toggleStatus } = useContent();
+const { updateContent } = useContent();
 
-const targetStatus = computed(() => props.item?.status === 'published' ? 'draft' : 'published');
+const targetStatus = computed(() => props.item?.isTampil ? false : true);
 
 const modalTitle = computed(() =>
-    targetStatus.value === 'published' ? 'Terbitkan Konten' : 'Ubah ke Draft'
+    targetStatus.value ? 'Terbitkan Konten' : 'Sembunyikan ke Draft'
 );
 
 const confirmText = computed(() =>
-    targetStatus.value === 'published' ? 'Terbitkan Sekarang' : 'Simpan ke Draft'
+    targetStatus.value ? 'Terbitkan Sekarang' : 'Simpan ke Draft'
 );
 
 const modalMessage = computed(() => {
     if (!props.item) return '';
-    return targetStatus.value === 'published'
+    return targetStatus.value
         ? `Apakah Anda yakin ingin menerbitkan (publish) artikel "${props.item.judul}" agar dapat dilihat publik?`
         : `Apakah Anda yakin ingin menyembunyikan artikel "${props.item.judul}" ke dalam draft?`;
 });
@@ -40,12 +40,12 @@ const submitToggleStatus = async () => {
     if (!props.item) return;
 
     try {
-        await toggleStatus(props.item.id, { status: targetStatus.value });
+        await updateContent(props.item.id, { isTampil: targetStatus.value });
         emit('update:modelValue', false);
-        if (targetStatus.value === 'published') {
+        if (targetStatus.value) {
             emit('success', 'Konten Diterbitkan', 'Konten berhasil diubah menjadi published.');
         } else {
-            emit('success', 'Konten Diarsipkan', 'Konten berhasil dikembalikan ke status draft.');
+            emit('success', 'Konten Disembunyikan', 'Konten berhasil dikembalikan ke status draft.');
         }
     } catch (error) {
         console.error('Gagal mengubah status konten:', error);

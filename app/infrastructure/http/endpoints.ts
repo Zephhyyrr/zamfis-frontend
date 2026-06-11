@@ -89,5 +89,7 @@ export const endpoints = {
         GET_DRAFT: 'transaksi/draft',
         DELETE_PERMANENT: (id: number) => `transaksi/${id}/delete-permanent`,
         GET_DASHBOARD: 'transaksi/dashboard',
+        GET_PUBLIC_DASHBOARD: 'transaksi/public/dashboard',
+        GET_PUBLIC_LIST: 'transaksi/public/list',
     }
 } as const;

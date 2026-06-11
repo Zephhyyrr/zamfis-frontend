@@ -236,6 +236,8 @@
 </template>
 
 <script setup>
+import { definePageMeta } from '#imports';
+
 definePageMeta({
   layout: 'dashboard'
 });

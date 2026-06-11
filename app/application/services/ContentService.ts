@@ -22,6 +22,7 @@ export class ContentService extends BaseService {
     static async createContent(payload: ICreateContentPayload): Promise<IApiResponse<IContent>> {
         const formData = new FormData();
         formData.append('judul', payload.judul);
+        formData.append('isi', payload.isi);
         formData.append('jenis', payload.jenis);
         if (payload.isTampil !== undefined) {
             formData.append('isTampil', String(payload.isTampil));
@@ -38,6 +39,7 @@ export class ContentService extends BaseService {
     static async updateContent(id: number, payload: IUpdateContentPayload): Promise<IApiResponse<IContent>> {
         const formData = new FormData();
         if (payload.judul) formData.append('judul', payload.judul);
+        if (payload.isi) formData.append('isi', payload.isi);
         if (payload.jenis) formData.append('jenis', payload.jenis);
         if (payload.isTampil !== undefined) {
             formData.append('isTampil', String(payload.isTampil));

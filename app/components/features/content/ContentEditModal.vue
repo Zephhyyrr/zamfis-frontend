@@ -18,6 +18,12 @@
       </div>
 
       <div>
+        <label class="block text-sm font-medium text-gray-700">Isi Konten / Artikel</label>
+        <textarea v-model="form.isi" required rows="5"
+          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm" placeholder="Isi artikel/konten Anda di sini..."></textarea>
+      </div>
+
+      <div>
         <label class="block text-sm font-medium text-gray-700">Jenis Konten</label>
         <select v-model="form.jenis"
           class="mt-1 block w-full border border-gray-300 bg-white rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm">
@@ -75,6 +81,7 @@
 <script setup lang="ts">
 import { ref, watch, onBeforeUnmount } from 'vue';
 import { useContent } from '~/composables/useContents';
+import { resolveAssetUrl } from '~/infrastructure/adapters/assets';
 import { Icon } from '@iconify/vue';
 
 const props = defineProps({
@@ -94,6 +101,7 @@ const imageInputRef = ref<HTMLInputElement | null>(null);
 
 const form = ref({
   judul: '',
+  isi: '',
   jenis: 'berita' as 'berita' | 'pengurus' | 'imsakiyah',
   isTampil: true,
   newGambar: null as File | null,
@@ -139,12 +147,13 @@ watch(() => props.modelValue, async (isOpen) => {
 const populateFormWithData = (data: any) => {
   if (data) {
     form.value.judul = data.judul || '';
+    form.value.isi = data.isi || '';
     form.value.jenis = data.jenis || 'berita';
     form.value.isTampil = data.isTampil !== undefined ? data.isTampil : true;
     form.value.newGambar = null;
     // Show existing gambar
     if (data.gambarUrl && !data.gambarUrl.startsWith('blob:')) {
-      imagePreview.value = data.gambarUrl;
+      imagePreview.value = resolveAssetUrl(data.gambarUrl);
     } else {
       imagePreview.value = null;
     }
@@ -163,6 +172,7 @@ const submitEdit = async () => {
   try {
     await updateContent(props.editData.id, {
       judul: form.value.judul,
+      isi: form.value.isi,
       jenis: form.value.jenis,
       isTampil: form.value.isTampil,
       gambarUrl: form.value.newGambar ?? undefined,

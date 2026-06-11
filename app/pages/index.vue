@@ -1,23 +1,34 @@
 <template>
-  <div class="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-md w-full space-y-8 text-center">
-      <div>
-        <h2 class="mt-6 text-3xl font-extrabold text-gray-900">
-          Ini Landing Page
-        </h2>
-        <p class="mt-2 text-sm text-gray-600">
-          Sistem Peramalan Donasi Masjid Surau Zam-Zam
-        </p>
-        <div class="mt-8 flex justify-center gap-4">
-          <NuxtLink to="/auth/login" class="px-4 py-2 bg-emerald-600 text-white rounded-md hover:bg-emerald-700 transition">Login Sistem</NuxtLink>
-        </div>
-      </div>
-    </div>
+  <div class="min-h-screen bg-gradient-to-b from-emerald-50 via-white to-emerald-50 text-font-color font-sans dark:from-gray-900 dark:via-gray-950 dark:to-gray-900 dark:text-gray-100 transition-colors duration-300">
+    <LandingHeader />
+    <LandingHero />
+
+    <main class="container mx-auto px-4 md:px-12 py-16 space-y-20">
+      <LandingJadwal />
+      <LandingDonasi />
+      <LandingTransaksi />
+      <LandingBerita />
+      <LandingPengurus />
+      <LandingImsakiyah />
+    </main>
+
+    <LandingFooter />
+    <LandingFloatingInspiration />
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+import { definePageMeta, useHead } from '#imports'
+
 definePageMeta({
-  layout: false,
-});
+  layout: false // Standalone landing page layout
+})
+
+// Configure head tags for SEO
+useHead({
+  title: 'Beranda - Surau Zam Zam',
+  meta: [
+    { name: 'description', content: 'Sistem Informasi dan Website Resmi Surau Zam Zam' }
+  ]
+})
 </script>

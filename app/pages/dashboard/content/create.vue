@@ -20,6 +20,15 @@
             <input v-model="form.judul" type="text" required :disabled="isSubmitting" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50" placeholder="Masukkan judul..." />
           </div>
 
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Jenis Konten</label>
+            <select v-model="form.jenis" required :disabled="isSubmitting" class="mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50">
+              <option value="berita">Berita & Artikel</option>
+              <option value="pengurus">Profil Pengurus</option>
+              <option value="imsakiyah">Info Imsakiyah</option>
+            </select>
+          </div>
+
           <!-- File Upload Section - Gambar -->
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
@@ -141,6 +150,7 @@ const form = ref({
     judul: '',
     isi: '',
     status: 'draft',
+    jenis: 'berita',
   gambarUrl: [] as File[],
   videoUrl: [] as File[]
 });
@@ -228,9 +238,9 @@ const submitForm = async () => {
         await createContent({
             judul: form.value.judul,
             isi: form.value.isi,
-            status: form.value.status,
-          gambarUrl: form.value.gambarUrl.length ? form.value.gambarUrl : null,
-          videoUrl: form.value.videoUrl.length ? form.value.videoUrl : null
+            jenis: form.value.jenis as any,
+            isTampil: form.value.status === 'published',
+            gambarUrl: form.value.gambarUrl.length ? form.value.gambarUrl[0] : null,
         } as any);
         showSuccessModal.value = true;
     } catch(error: any) {

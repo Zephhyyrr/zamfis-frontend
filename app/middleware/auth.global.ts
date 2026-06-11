@@ -8,7 +8,7 @@ export default defineNuxtRouteMiddleware((to, from) => {
     }
 
     const token = useCookie('token');
-    const isPublic = to.path === '/' || to.path.startsWith('/auth');
+    const isPublic = to.path === '/' || to.path.startsWith('/auth') || to.path.startsWith('/berita');
 
     if (!token.value && !isPublic) {
         return navigateTo('/auth/login');

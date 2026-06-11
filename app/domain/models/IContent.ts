@@ -1,6 +1,7 @@
 export interface IContent {
     id: number;
     judul: string;
+    isi: string;
     gambarUrl: string;
     jenis: 'berita' | 'pengurus' | 'imsakiyah';
     isTampil: boolean;
@@ -12,6 +13,7 @@ export interface IContent {
 
 export interface ICreateContentPayload {
     judul: string;
+    isi: string;
     jenis: 'berita' | 'pengurus' | 'imsakiyah';
     gambarUrl?: File | null;
     isTampil?: boolean;
@@ -19,6 +21,7 @@ export interface ICreateContentPayload {
 
 export interface IUpdateContentPayload {
     judul?: string;
+    isi?: string;
     jenis?: 'berita' | 'pengurus' | 'imsakiyah';
     gambarUrl?: File | null;
     isTampil?: boolean;
