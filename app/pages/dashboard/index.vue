@@ -9,7 +9,6 @@
       </div>
     </div>
 
-    <!-- Full-page Loading Overlay -->
     <Transition name="fade">
       <div v-if="summaryPending" class="flex flex-col items-center justify-center py-24">
         <ClientOnly>
@@ -24,19 +23,13 @@
 
     <Transition name="fade">
       <div v-if="!summaryPending">
-
-        <!-- ══════════════════════════════════════════════
-             SECTION 1: Summary Cards Per Jenis Kas
-        ══════════════════════════════════════════════ -->
         <div class="mb-8 space-y-4">
-          <!-- Row per Jenis Kas -->
           <div
             v-for="kas in perKasCards"
             :key="kas.jenisKasId"
             class="rounded-2xl border p-5 shadow-sm"
             :class="kasGroupStyle(kas.jenisKasId).wrapper"
           >
-            <!-- Label Jenis Kas -->
             <div class="flex items-center gap-2 mb-4">
               <span class="inline-block w-2.5 h-2.5 rounded-full flex-shrink-0"
                 :class="kasGroupStyle(kas.jenisKasId).dot"></span>
@@ -45,7 +38,6 @@
               </h3>
             </div>
 
-            <!-- 3 mini cards -->
             <div class="grid grid-cols-3 gap-3">
               <div class="bg-white rounded-xl p-4 border border-emerald-100 shadow-xs hover:shadow-md transition-shadow">
                 <p class="text-xs font-semibold uppercase tracking-wide text-emerald-600">Uang Masuk</p>
@@ -64,10 +56,6 @@
             </div>
           </div>
         </div>
-
-        <!-- ══════════════════════════════════════════════
-             SECTION 2: Grafik Kas Umum (Bar Chart)
-        ══════════════════════════════════════════════ -->
         <div class="mb-8 bg-white p-6 rounded-xl shadow-sm border border-gray-100">
           <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-5">
             <div>
@@ -86,7 +74,6 @@
             </div>
           </div>
 
-          <!-- Dua bar chart terpisah -->
           <div class="grid grid-cols-1 gap-4 lg:grid-cols-2">
             <div class="rounded-xl border border-emerald-100 p-3">
               <p class="mb-2 text-sm font-semibold text-emerald-700">Chart Uang Masuk</p>
@@ -112,10 +99,6 @@
             </div>
           </div>
         </div>
-
-        <!-- ══════════════════════════════════════════════
-             SECTION 3: Pie Chart — Anak Yatim & TPQ
-        ══════════════════════════════════════════════ -->
         <div class="mb-8 bg-white p-6 rounded-xl shadow-sm border border-gray-100">
           <div class="mb-5">
             <h3 class="text-lg font-semibold text-gray-800">Rekapitulasi Pertahun</h3>
@@ -123,15 +106,12 @@
           </div>
 
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-
-            <!-- Pie Chart: Kas Anak Yatim -->
             <div class="rounded-xl border border-purple-100 bg-purple-50/40 p-4">
               <div class="flex items-center gap-2 mb-4">
                 <span class="inline-block w-2.5 h-2.5 rounded-full bg-purple-500 flex-shrink-0"></span>
                 <p class="text-sm font-bold text-purple-800">Kas Anak Yatim</p>
               </div>
 
-              <!-- Selector tahun yatim -->
               <div class="flex items-center gap-2 mb-3">
                 <label class="text-xs text-gray-500 font-medium">Tahun:</label>
                 <select v-model="selectedYearYatim"
@@ -153,7 +133,6 @@
                 Belum ada data Kas Anak Yatim.
               </div>
 
-              <!-- Legend ringkas -->
               <div v-if="selectedYatimRow" class="mt-3 grid grid-cols-2 gap-2">
                 <div class="text-center bg-white rounded-lg p-2 border border-purple-100">
                   <p class="text-xs text-emerald-600 font-semibold">Masuk</p>
@@ -166,13 +145,11 @@
               </div>
             </div>
 
-            <!-- Pie Chart: Kas TPQ -->
             <div class="rounded-xl border border-teal-100 bg-teal-50/40 p-4">
               <div class="flex items-center gap-2 mb-4">
                 <span class="inline-block w-2.5 h-2.5 rounded-full bg-teal-500 flex-shrink-0"></span>
                 <p class="text-sm font-bold text-teal-800">Kas TPQ</p>
               </div>
-
               <!-- Selector tahun TPQ -->
               <div class="flex items-center gap-2 mb-3">
                 <label class="text-xs text-gray-500 font-medium">Tahun:</label>
@@ -195,7 +172,6 @@
                 Belum ada data Kas TPQ.
               </div>
 
-              <!-- Legend ringkas -->
               <div v-if="selectedTpqRow" class="mt-3 grid grid-cols-2 gap-2">
                 <div class="text-center bg-white rounded-lg p-2 border border-teal-100">
                   <p class="text-xs text-emerald-600 font-semibold">Masuk</p>
@@ -210,10 +186,6 @@
 
           </div>
         </div>
-
-
-
-        <!-- CTA Prediksi -->
         <div class="rounded-2xl border border-emerald-200 bg-gradient-to-r from-emerald-50 via-white to-teal-50 p-5 shadow-sm">
           <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>

@@ -13,7 +13,9 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Poppins', 'sans-serif'],
+        sans: ['Poppins'],
+        serif: ['Poppins'],
+        mono: ['Poppins'],
       },
       colors: {
         primary: '#10b981',

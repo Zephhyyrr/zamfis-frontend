@@ -1,32 +1,23 @@
 <template>
   <section id="transaksi" class="scroll-mt-24">
-    <!-- Section header -->
     <div class="text-center mb-12">
       <h3 class="text-3xl md:text-4xl font-extrabold text-secondary dark:text-white mb-2">
         Riwayat Transaksi Terbaru
       </h3>
       <p class="text-emerald-700/70 dark:text-gray-400 font-medium">Transparansi pengelolaan keuangan Surau Zam Zam</p>
     </div>
-
     <div class="glass-card rounded-3xl overflow-hidden">
       <div
         class="p-5 border-b border-emerald-100/60 dark:border-white/5 flex flex-col sm:flex-row gap-3 items-center justify-between">
         <div
           class="flex items-center gap-2 bg-white/60 dark:bg-white/5 border border-emerald-100 dark:border-white/10 rounded-xl px-4 py-2.5 w-full sm:w-auto sm:min-w-[260px] backdrop-blur-md">
-          <svg class="h-4 w-4 text-emerald-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-          </svg>
+          <SearchIcon class="h-4 w-4 text-emerald-500 shrink-0" />
           <input type="text" v-model="searchQuery" placeholder="Cari uraian transaksi..."
             class="bg-transparent border-none focus:outline-none focus:ring-0 text-sm text-gray-700 dark:text-gray-200 w-full placeholder-gray-400" />
         </div>
-        <!-- Kas filter -->
         <div
           class="flex items-center gap-2 bg-white/60 dark:bg-white/5 border border-emerald-100 dark:border-white/10 rounded-xl px-4 py-2.5 w-full sm:w-auto backdrop-blur-md">
-          <svg class="h-4 w-4 text-emerald-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
-          </svg>
+          <FilterIcon class="h-4 w-4 text-emerald-500 shrink-0" />
           <select v-model="filterJenisKasId"
             class="bg-transparent border-none focus:outline-none text-sm font-semibold text-gray-700 dark:text-gray-200 w-full">
             <option value="Semua">Semua Kas</option>
@@ -36,8 +27,6 @@
           </select>
         </div>
       </div>
-
-      <!-- Loading / Empty state -->
       <div v-if="pendingTransaksi" class="flex justify-center my-16">
         <div class="animate-spin rounded-full h-12 w-12 border-b-4 border-primary"></div>
       </div>
@@ -46,8 +35,6 @@
         <div class="text-5xl mb-4">🔍</div>
         <p>Belum ada transaksi untuk filter yang dipilih.</p>
       </div>
-
-      <!-- Table -->
       <div v-else>
         <div class="overflow-x-auto">
           <table class="w-full text-left">
@@ -129,6 +116,7 @@
 import { computed, ref, watch } from 'vue'
 import { useAsyncData } from '#imports'
 import { TransaksiService } from '~/application/services/TransaksiService'
+import { SearchIcon, FilterIcon } from 'lucide-vue-next'
 
 const formatRupiah = (angka: number) =>
   new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka)

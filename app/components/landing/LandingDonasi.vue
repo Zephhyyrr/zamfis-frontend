@@ -1,6 +1,5 @@
 <template>
   <section id="donasi" class="scroll-mt-24">
-    <!-- Section header -->
     <div class="text-center mb-12">
       <h3 class="text-3xl md:text-4xl font-extrabold text-secondary dark:text-white mb-2">
         Transparansi Donasi &amp; Kas
@@ -17,32 +16,25 @@
     <div v-else class="grid grid-cols-1 md:grid-cols-3 gap-6">
       <div v-for="kas in kasSummaryList" :key="kas.jenisKasId"
         class="glass-card rounded-2xl overflow-hidden group hover:shadow-2xl hover:shadow-emerald-900/15 transition-all duration-300 hover:-translate-y-1">
-        <!-- Card top accent bar -->
         <div class="h-1 bg-gradient-to-r from-primary via-emerald-400 to-primary bg-[length:200%_auto] animate-gradient-x"></div>
         <div class="p-6">
           <h4 class="text-xl font-bold text-center text-secondary dark:text-white mb-6 pb-4 border-b border-emerald-100/50 dark:border-white/10">
             {{ kas.nama }}
           </h4>
           <div class="space-y-4">
-            <!-- Pemasukan -->
             <div class="flex justify-between items-center p-3.5 bg-emerald-50/70 dark:bg-emerald-900/20 rounded-xl border border-emerald-200/40 dark:border-emerald-700/30">
               <div class="flex items-center gap-2.5">
                 <div class="w-7 h-7 bg-emerald-500/15 rounded-lg flex items-center justify-center">
-                  <svg class="h-4 w-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11l5-5m0 0l5 5m-5-5v12"/>
-                  </svg>
+                  <ArrowUpIcon class="h-4 w-4 text-emerald-600" />
                 </div>
                 <span class="text-sm font-semibold text-emerald-700 dark:text-emerald-400">Pemasukan</span>
               </div>
               <span class="font-bold text-emerald-600 dark:text-emerald-300 text-sm">{{ formatRupiah(kas.income) }}</span>
             </div>
-            <!-- Pengeluaran -->
             <div class="flex justify-between items-center p-3.5 bg-red-50/70 dark:bg-red-900/20 rounded-xl border border-red-200/40 dark:border-red-700/30">
               <div class="flex items-center gap-2.5">
                 <div class="w-7 h-7 bg-red-500/15 rounded-lg flex items-center justify-center">
-                  <svg class="h-4 w-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 13l-5 5m0 0l-5-5m5 5V6"/>
-                  </svg>
+                  <ArrowDownIcon class="h-4 w-4 text-red-600" />
                 </div>
                 <span class="text-sm font-semibold text-red-700 dark:text-red-400">Pengeluaran</span>
               </div>
@@ -66,6 +58,7 @@
 import { computed } from 'vue'
 import { useAsyncData } from '#imports'
 import { TransaksiService } from '~/application/services/TransaksiService'
+import { ArrowUpIcon, ArrowDownIcon } from 'lucide-vue-next'
 
 const formatRupiah = (angka: number) =>
   new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka)

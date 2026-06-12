@@ -16,7 +16,6 @@
     </div>
     <div v-else class="glass-card rounded-3xl overflow-hidden shadow-xl shadow-emerald-900/5">
       <div class="flex flex-col md:flex-row-reverse">
-        <!-- Image Section -->
         <div class="md:w-5/12 p-8 md:p-12 flex items-center justify-center relative shrink-0">
           <div class="relative w-full max-w-md rounded-2xl overflow-hidden shadow-2xl">
             <img
@@ -31,8 +30,6 @@
             </div>
           </div>
         </div>
-
-        <!-- Content Section -->
         <div class="md:w-7/12 p-8 md:p-12 bg-white/50 dark:bg-gray-900/50">
           <div class="prose prose-emerald dark:prose-invert max-w-none text-gray-600 dark:text-gray-300 leading-relaxed"
             v-html="cleanedSejarahIsi">
@@ -65,11 +62,8 @@ const sejarahContent = computed(() => {
 const cleanedSejarahIsi = computed(() => {
   if (!sejarahContent.value?.isi) return ''
   let html = sejarahContent.value.isi
-  // Remove img tags
   html = html.replace(/<img[^>]*>/gi, '')
-  // Remove video tags and their contents
   html = html.replace(/<video\b[^>]*>[\s\S]*?<\/video>/gi, '')
-  // Remove iframe tags and their contents
   html = html.replace(/<iframe\b[^>]*>[\s\S]*?<\/iframe>/gi, '')
   return html
 })

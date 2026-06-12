@@ -5,7 +5,8 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       apiBaseUrl: process.env.BACKEND_API_BASE_URL || 'http://localhost:3000/api',
-      apiUrlJadwalShalat: process.env.API_URL_JADWAL_SHALAT || 'https://api.aladhan.com/v1/timingsByCity',
+      apiUrlJadwalShalat: process.env.API_URL_JADWAL_SHALAT || 'https://api.myquran.com/v2/sholat/jadwal/0314',
+      apiUrlHijri: process.env.API_URL_HIJRI || 'https://api.aladhan.com/v1/gToHCalendar',
       apiUrlAlquran: process.env.API_URL_ALQURAN || 'https://api.alquran.cloud/v1/ayah/random/editions/quran-uthmani,id.indonesian',
       apiUrlHadis: process.env.API_URL_HADIS || 'https://api.myquran.com/v2/hadits',
     }

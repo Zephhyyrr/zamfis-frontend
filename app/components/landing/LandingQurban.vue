@@ -1,6 +1,5 @@
 <template>
   <div id="kurban" class="scroll-mt-24">
-    <!-- Section Header -->
     <div class="text-center max-w-3xl mx-auto mb-16" data-aos="fade-up">
       <span class="text-emerald-600 font-semibold tracking-wider uppercase text-sm mb-4 block">
         Data Kurban {{ tahunFilter }}
@@ -12,8 +11,6 @@
         Semoga amal ibadah kurban diterima di sisi Allah SWT. Berikut adalah daftar kelompok dan peserta kurban tahun
         ini.
       </p>
-
-      <!-- Filter Tahun -->
       <div class="mt-8 flex justify-center">
         <div v-if="availableYears.length > 0"
           class="flex items-center gap-3 bg-white/80 dark:bg-white/5 border border-emerald-200 dark:border-white/10 rounded-xl px-5 py-3 w-full sm:w-auto min-w-[200px] backdrop-blur-md shadow-sm transition-all hover:border-emerald-300">
@@ -42,7 +39,6 @@
     </div>
 
     <div v-else>
-      <!-- Daftar Kelompok -->
       <div v-if="kelompokList.length > 0" class="mb-16">
         <h3 class="text-2xl font-bold text-gray-800 mb-8 flex items-center gap-3">
           Daftar Peserta Qurban
@@ -70,7 +66,6 @@
                 </div>
                 <span class="text-sm font-semibold text-gray-600">{{ formatCurrency(peserta.nominal) }}</span>
               </li>
-              <!-- Placeholder if less than 7 -->
               <li v-for="n in Math.max(0, 7 - (kelompok.peserta?.length || 0))" :key="'empty-' + n"
                 class="flex items-center gap-3 opacity-50">
                 <div
@@ -82,8 +77,6 @@
             </ul>
           </div>
         </div>
-
-        <!-- Pagination Controls -->
         <div v-if="totalPages > 1" class="mt-10 flex justify-center items-center gap-4">
           <button @click="prevPage" :disabled="currentPage === 1"
             class="p-2 rounded-full border border-gray-200 text-gray-600 hover:bg-emerald-50 hover:text-emerald-600 hover:border-emerald-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
@@ -96,8 +89,6 @@
           </button>
         </div>
       </div>
-
-      <!-- Daftar Individu -->
       <div v-if="individuList.length > 0">
         <h3 class="text-2xl font-bold text-gray-800 mb-8 flex items-center gap-3">
           <Icon icon="lucide:user" class="text-emerald-600" />
@@ -106,8 +97,7 @@
         <div class="bg-white rounded-2xl shadow-sm border border-emerald-100 overflow-hidden">
           <div
             class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-gray-100">
-            <div v-for="(peserta) in individuList" :key="peserta.id"
-              class="p-6 hover:bg-gray-50 transition-colors">
+            <div v-for="(peserta) in individuList" :key="peserta.id" class="p-6 hover:bg-gray-50 transition-colors">
               <div class="flex items-center gap-4 mb-3">
                 <div class="p-3 rounded-full"
                   :class="peserta.tipe === 'individu_sapi' ? 'bg-amber-100' : 'bg-emerald-100'">

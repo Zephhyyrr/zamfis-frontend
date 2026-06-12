@@ -26,7 +26,6 @@
               class="w-full h-auto object-contain group-hover:scale-[1.02] transition-transform duration-700">
             <div v-else class="p-16 text-center text-gray-400">Gambar tidak tersedia</div>
           </div>
-          <!-- Title -->
           <div class="p-5 text-center border-t border-emerald-100/50 dark:border-white/5">
             <h4 class="text-lg font-bold text-secondary dark:text-gray-100">{{ imsakiyahList[0].judul }}</h4>
           </div>

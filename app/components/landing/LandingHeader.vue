@@ -2,7 +2,6 @@
   <header class="sticky top-0 z-50 bg-white dark:bg-gray-900 shadow-md border-b border-gray-100 dark:border-gray-800">
     <div class="container mx-auto px-4 md:px-12 py-3.5 flex justify-between items-center">
 
-      <!-- Logo -->
       <a href="/" class="flex items-center gap-3 group">
         <div class="relative w-11 h-11">
           <div class="absolute inset-0 bg-gradient-to-br from-primary to-secondary rounded-xl shadow-lg shadow-primary/30 group-hover:shadow-primary/50 transition-shadow duration-300"></div>
@@ -16,7 +15,6 @@
         </div>
       </a>
 
-      <!-- Desktop Nav -->
       <nav class="hidden lg:flex items-center gap-1 font-semibold text-sm">
         <a v-for="link in navLinks" :key="link.id" :href="`/#${link.id}`"
           :class="[
@@ -35,14 +33,12 @@
         </NuxtLink>
       </nav>
 
-      <!-- Mobile hamburger -->
       <button @click="mobileOpen = !mobileOpen" class="lg:hidden p-2 rounded-xl hover:bg-emerald-50 dark:hover:bg-white/5 transition text-secondary dark:text-white">
         <MenuIcon v-if="!mobileOpen" class="h-6 w-6" />
         <XIcon v-else class="h-6 w-6" />
       </button>
     </div>
 
-    <!-- Mobile menu -->
     <Transition name="slide-down">
       <div v-if="mobileOpen" class="lg:hidden border-t border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900">
         <div class="container mx-auto px-4 py-3 flex flex-col gap-1">
@@ -64,15 +60,16 @@
 </template>
 
 <script setup lang="ts">
+import { ref, onMounted } from 'vue'
 import { BookOpenIcon, MenuIcon, XIcon } from 'lucide-vue-next'
+import { $fetch } from 'ofetch'
+import {useRuntimeConfig} from '#imports'
 
 const masehiDate = new Intl.DateTimeFormat('id-ID', {
   day: 'numeric', month: 'long', year: 'numeric'
 }).format(new Date())
 
-const hijriDate = new Intl.DateTimeFormat('id-ID-u-ca-islamic', {
-  day: 'numeric', month: 'long', year: 'numeric'
-}).format(new Date())
+const hijriDate = ref('')
 
 const navLinks = [
   { id: 'beranda', label: 'Beranda' },
@@ -89,7 +86,7 @@ const navLinks = [
 const activeSection = ref('beranda')
 const mobileOpen = ref(false)
 
-onMounted(() => {
+onMounted(async () => {
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) activeSection.value = entry.target.id
@@ -100,6 +97,41 @@ onMounted(() => {
     const el = document.getElementById(link.id)
     if (el) observer.observe(el)
   })
+
+  // Logika Hijriah yang sama dengan FloatingInspiration
+  const d = new Date()
+  let hijriFallback = new Intl.DateTimeFormat('id-ID-u-ca-islamic', { year: 'numeric', month: 'long', day: 'numeric' }).format(d)
+  try {
+    const numericStr = d.toLocaleDateString('en-GB-u-ca-islamic', { day: 'numeric', month: 'numeric', year: 'numeric' })
+    const digits = numericStr.match(/\d+/g)
+    if (digits && digits.length >= 3) {
+      const dNum = parseInt(digits[0] || '1')
+      const mNum = parseInt(digits[1] || '1')
+      const yNum = parseInt(digits[2] || '1400')
+      if (yNum > 1400 && yNum < 1500) {
+        const hijriMonths = ['Muharram', 'Safar', 'Rabiul Awal', 'Rabiul Akhir', 'Jumadil Awal', 'Jumadil Akhir', 'Rajab', "Sya'ban", 'Ramadhan', 'Syawal', "Dzulqa'dah", 'Dzulhijjah']
+        hijriFallback = `${dNum} ${hijriMonths[mNum - 1]} ${yNum} H`
+      }
+    }
+  } catch (e) {}
+  
+  hijriDate.value = hijriFallback
+
+  try {
+    const config = useRuntimeConfig()
+    const mm = d.getMonth() + 1
+    const yyyy = d.getFullYear()
+    const dateIndex = d.getDate() - 1
+    const res = await $fetch<any>(`${config.public.apiUrlHijri}/${mm}/${yyyy}`)
+    if (res && res.data && res.data[dateIndex] && res.data[dateIndex].hijri) {
+      const h = res.data[dateIndex].hijri
+      const mNum = parseInt(h.month.number)
+      const hijriMonths = ['Muharram', 'Safar', 'Rabiul Awal', 'Rabiul Akhir', 'Jumadil Awal', 'Jumadil Akhir', 'Rajab', "Sya'ban", 'Ramadhan', 'Syawal', "Dzulqa'dah", 'Dzulhijjah']
+      hijriDate.value = `${parseInt(h.day)} ${hijriMonths[mNum - 1]} ${h.year} H`
+    }
+  } catch (e) {
+    console.error('[LandingHeader] Gagal mengambil tanggal Hijriah dari API:', e)
+  }
 })
 </script>
 
