@@ -21,6 +21,12 @@
               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50"
               placeholder="Contoh: Kelompok 1, Kelompok Al-Ikhlas, ..." />
           </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Tahun Kurban</label>
+            <input v-model="form.tahun" type="text" required :disabled="isSubmitting"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50"
+              placeholder="Contoh: 2024, 1445 H, ..." />
+          </div>
         </div>
         <div class="mt-8 flex justify-end items-center gap-3">
           <NuxtLink to="/dashboard/kelompok-kurban"
@@ -50,7 +56,7 @@ definePageMeta({ layout: 'dashboard' as any });
 const router = useRouter();
 const { createKelompokKurban } = useKelompokKurban();
 
-const form = ref({ nama: '' });
+const form = ref({ nama: '', tahun: '' });
 const isSubmitting = ref(false);
 const errorMessage = ref('');
 const showSuccessModal = ref(false);
@@ -60,7 +66,8 @@ const submitForm = async () => {
   errorMessage.value = '';
   try {
     if (!form.value.nama.trim()) throw new Error('Nama kelompok tidak boleh kosong.');
-    await createKelompokKurban({ nama: form.value.nama.trim() });
+    if (!form.value.tahun.trim()) throw new Error('Tahun kurban tidak boleh kosong.');
+    await createKelompokKurban({ nama: form.value.nama.trim(), tahun: form.value.tahun.trim() });
     showSuccessModal.value = true;
   } catch (error: any) {
     errorMessage.value = error?.data?.message || error?.message || 'Gagal menyimpan kelompok kurban.';

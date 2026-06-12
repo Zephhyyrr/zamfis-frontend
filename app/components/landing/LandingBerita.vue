@@ -1,8 +1,7 @@
 <template>
   <section id="berita" class="scroll-mt-24">
     <div class="text-center mb-12">
-      <h3 class="text-3xl md:text-4xl font-extrabold text-secondary dark:text-white mb-2"
-        style="font-family: 'Plus Jakarta Sans', sans-serif;">
+      <h3 class="text-3xl md:text-4xl font-extrabold text-secondary dark:text-white mb-2">
         Berita &amp; Artikel
       </h3>
       <p class="text-emerald-700/70 dark:text-gray-400 font-medium">Informasi terkini seputar kegiatan Surau Zam Zam</p>

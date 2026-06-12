@@ -42,6 +42,7 @@
             <tr>
               <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-12">No</th>
               <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama</th>
+              <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tahun</th>
               <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tipe</th>
               <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nominal</th>
               <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Media Bayar</th>
@@ -51,7 +52,7 @@
           </thead>
           <tbody class="bg-white divide-y divide-gray-200">
             <tr v-if="filteredList.length === 0">
-              <td colspan="7" class="px-6 py-8">
+              <td colspan="8" class="px-6 py-8">
                 <div class="flex flex-col items-center justify-center text-center text-gray-500 text-sm">
                   <Icon icon="lucide:beef" class="w-12 h-12 text-gray-300 mb-2" />
                   <p>{{ activeTab === 'active' ? 'Belum ada peserta kurban.' : 'Tidak ada peserta di draft.' }}</p>
@@ -61,6 +62,7 @@
             <tr v-else v-for="(item, index) in filteredList" :key="item.id" class="hover:bg-gray-50">
               <td class="px-4 py-4 text-sm text-gray-500">{{ ((activeTab === 'active' ? activeParams.page : draftParams.page) - 1) * 10 + Number(index) + 1 }}</td>
               <td class="px-4 py-4 text-sm font-medium text-gray-900">{{ item.nama }}</td>
+              <td class="px-4 py-4 text-sm text-gray-700">{{ item.tahun || '2024' }}</td>
               <td class="px-4 py-4 text-sm text-gray-600">
                 <span class="inline-flex px-2 py-0.5 rounded-full text-xs font-medium"
                   :class="{

@@ -42,13 +42,14 @@
             <tr>
               <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-16">No</th>
               <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama Kelompok</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tahun</th>
               <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Dibuat</th>
               <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
             </tr>
           </thead>
           <tbody class="bg-white divide-y divide-gray-200">
             <tr v-if="filteredList.length === 0">
-              <td colspan="4" class="px-6 py-8">
+              <td colspan="5" class="px-6 py-8">
                 <div class="flex flex-col items-center justify-center text-center text-gray-500 text-sm">
                   <Icon icon="lucide:users" class="w-12 h-12 text-gray-300 mb-2" />
                   <p>{{ activeTab === 'active' ? 'Belum ada kelompok kurban.' : 'Tidak ada kelompok di draft.' }}</p>
@@ -62,6 +63,7 @@
                   {{ item.nama }}
                 </span>
               </td>
+              <td class="px-6 py-4 text-sm font-medium text-gray-900">{{ item.tahun || '2024' }}</td>
               <td class="px-6 py-4 text-sm text-gray-500">{{ formatDate(item.createdAt) }}</td>
               <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                 <button v-if="activeTab === 'active'" @click="openActionModal('edit', item)"

@@ -22,6 +22,12 @@
               placeholder="Nama lengkap peserta kurban" />
           </div>
           <div>
+            <label class="block text-sm font-medium text-gray-700">Tahun Kurban</label>
+            <input v-model="form.tahun" type="text" required :disabled="isSubmitting"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50"
+              placeholder="Contoh: 2024, 1445 H, ..." />
+          </div>
+          <div>
             <label class="block text-sm font-medium text-gray-700">Tipe Kurban</label>
             <select v-model="form.tipe" :disabled="isSubmitting"
               class="mt-1 block w-full border border-gray-300 bg-white rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50">
@@ -46,12 +52,15 @@
             </select>
           </div>
           <div v-if="form.tipe === 'kelompok'">
-            <label class="block text-sm font-medium text-gray-700">Kelompok Kurban <span class="text-gray-400">(opsional)</span></label>
-            <select v-model.number="form.kelompokKurbanId" :disabled="isSubmitting"
+            <label class="block text-sm font-medium text-gray-700">Kelompok Kurban</label>
+            <select v-model.number="form.kelompokKurbanId" :disabled="isSubmitting || !form.tahun"
               class="mt-1 block w-full border border-gray-300 bg-white rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50">
-              <option :value="null">-- Tanpa Kelompok --</option>
-              <option v-for="kel in kelompokList" :key="kel.id" :value="kel.id">{{ kel.nama }}</option>
+              <option :value="null">-- Pilih Kelompok Kurban --</option>
+              <option v-for="kel in filteredKelompokList" :key="kel.id" :value="kel.id" :disabled="(kel.peserta?.length || 0) >= 7">
+                {{ kel.nama }} ({{ kel.peserta?.length || 0 }}/7) {{ (kel.peserta?.length || 0) >= 7 ? ' - Penuh' : '' }}
+              </option>
             </select>
+            <p v-if="!form.tahun" class="mt-1 text-xs text-red-500">Isi "Tahun Kurban" terlebih dahulu untuk memilih kelompok.</p>
           </div>
         </div>
         <div class="mt-8 flex justify-end items-center gap-3">
@@ -87,7 +96,7 @@ const { createPesertaKurban } = usePesertaKurban();
 const { fetchMediaPembayaranList } = useMediaPembayaran();
 const { fetchKelompokKurbanList } = useKelompokKurban();
 
-const params = ref({ page: 1, limit: 10 });
+const params = ref({ page: 1, limit: 100 });
 const { data: mpData, refresh: refreshMP } = fetchMediaPembayaranList(params);
 const { data: kkData, refresh: refreshKK } = fetchKelompokKurbanList(params);
 
@@ -103,10 +112,15 @@ const extractList = (resData: any) => {
 const mediaPembayaranList = computed(() => extractList(mpData));
 const kelompokList = computed(() => extractList(kkData));
 
+const filteredKelompokList = computed(() => {
+  return kelompokList.value.filter(k => k.tahun === form.value.tahun);
+});
+
 const form = ref({
   nama: '',
   tipe: 'individu_kambing' as TipeKurban,
   nominalText: '',
+  tahun: '',
   mediaPembayaranId: 0,
   kelompokKurbanId: null as number | null,
 });
@@ -134,18 +148,27 @@ const handleCurrencyInput = (event: Event) => {
 };
 
 const submitForm = async () => {
+  const nominal = parseRupiah(form.value.nominalText);
+  if (!form.value.nama.trim()) { errorMessage.value = 'Nama peserta wajib diisi.'; return; }
+  if (!form.value.tahun.trim()) { errorMessage.value = 'Tahun kurban wajib diisi.'; return; }
+  if (isNaN(nominal) || nominal <= 0) { errorMessage.value = 'Nominal tidak valid.'; return; }
+  if (!form.value.mediaPembayaranId) { errorMessage.value = 'Silakan pilih media pembayaran.'; return; }
+  if (form.value.tipe === 'kelompok' && !form.value.kelompokKurbanId) { errorMessage.value = 'Silakan pilih kelompok kurban.'; return; }
+
+  const selectedKelompok = kelompokList.value.find(k => k.id === form.value.kelompokKurbanId);
+  if (form.value.tipe === 'kelompok' && selectedKelompok && (selectedKelompok.peserta?.length || 0) >= 7) {
+    errorMessage.value = 'Kelompok ini sudah penuh (Maksimal 7 peserta).';
+    return;
+  }
+
   isSubmitting.value = true;
   errorMessage.value = '';
   try {
-    if (!form.value.nama.trim()) throw new Error('Nama peserta wajib diisi.');
-    const nominal = parseRupiah(form.value.nominalText);
-    if (isNaN(nominal) || nominal <= 0) throw new Error('Nominal tidak valid.');
-    if (!form.value.mediaPembayaranId) throw new Error('Pilih media pembayaran.');
-
     await createPesertaKurban({
       nama: form.value.nama.trim(),
       tipe: form.value.tipe,
       nominal,
+      tahun: form.value.tahun,
       mediaPembayaranId: form.value.mediaPembayaranId,
       kelompokKurbanId: form.value.tipe === 'kelompok' ? form.value.kelompokKurbanId : null,
     });

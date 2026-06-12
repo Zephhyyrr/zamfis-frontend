@@ -1,8 +1,7 @@
 <template>
   <section id="imsakiyah" class="scroll-mt-24">
-    <!-- Section header -->
     <div class="text-center mb-12">
-      <h3 class="text-3xl md:text-4xl font-extrabold text-secondary dark:text-white mb-2" style="font-family: 'Plus Jakarta Sans', sans-serif;">
+      <h3 class="text-3xl md:text-4xl font-extrabold text-secondary dark:text-white mb-2">
         Jadwal Imsakiyah
       </h3>
       <p class="text-emerald-700/70 dark:text-gray-400 font-medium">
@@ -18,13 +17,8 @@
     </div>
     <div v-else class="flex justify-center">
       <div class="relative max-w-4xl w-full group">
-        <!-- Glow ring -->
         <div class="absolute -inset-1 bg-gradient-to-r from-primary/30 via-emerald-400/20 to-primary/30 rounded-3xl blur-xl opacity-60 group-hover:opacity-80 transition-opacity duration-500"></div>
-        <!-- Glass card -->
         <div class="relative glass-card rounded-3xl overflow-hidden hover:-translate-y-1 transition-transform duration-300">
-          <!-- Islamic top border pattern -->
-          <div class="h-2 w-full" style="background: repeating-linear-gradient(90deg, #064e3b 0px, #064e3b 8px, #d4a843 8px, #d4a843 16px, #10b981 16px, #10b981 24px, #d4a843 24px, #d4a843 32px);"></div>
-          <!-- Image -->
           <div class="relative overflow-hidden">
             <img v-if="imsakiyahList[0].gambarUrl"
               :src="resolveAssetUrl(imsakiyahList[0].gambarUrl)"

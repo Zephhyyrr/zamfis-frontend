@@ -2,7 +2,7 @@
   <section id="donasi" class="scroll-mt-24">
     <!-- Section header -->
     <div class="text-center mb-12">
-      <h3 class="text-3xl md:text-4xl font-extrabold text-secondary dark:text-white mb-2" style="font-family: 'Plus Jakarta Sans', sans-serif;">
+      <h3 class="text-3xl md:text-4xl font-extrabold text-secondary dark:text-white mb-2">
         Transparansi Donasi &amp; Kas
       </h3>
       <p class="text-emerald-700/80 dark:text-gray-400 font-medium">Total Uang Masuk dan Keluar pada Masing-masing Kas</p>

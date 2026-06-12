@@ -19,6 +19,15 @@
           class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm"
         />
       </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Tahun Kurban</label>
+        <input
+          v-model="form.tahun"
+          type="text"
+          placeholder="Contoh: 2024, 1445 H, ..."
+          class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm"
+        />
+      </div>
       <p v-if="errorMsg" class="text-sm text-red-600">{{ errorMsg }}</p>
     </div>
   </BaseModal>
@@ -39,15 +48,15 @@ const isLoading = ref(false);
 const errorMsg = ref('');
 const { updateKelompokKurban } = useKelompokKurban();
 
-const form = ref({ nama: '' });
+const form = ref({ nama: '', tahun: '' });
 
 watch(() => props.modelValue, async (val) => {
   if (val && props.editData?.id) {
     try {
       const res = await KelompokKurbanService.getById(props.editData.id);
-      form.value = { nama: res.data.nama || '' };
+      form.value = { nama: res.data.nama || '', tahun: res.data.tahun || '' };
     } catch (e) {
-      form.value = { nama: props.editData.nama || '' };
+      form.value = { nama: props.editData.nama || '', tahun: props.editData.tahun || '' };
     }
     errorMsg.value = '';
   }
@@ -61,7 +70,7 @@ const submitForm = async () => {
   }
   isLoading.value = true;
   try {
-    await updateKelompokKurban(props.editData.id, { nama: form.value.nama });
+    await updateKelompokKurban(props.editData.id, { nama: form.value.nama, tahun: form.value.tahun });
     emit('update:modelValue', false);
     emit('saved', 'Berhasil', `Kelompok kurban "${form.value.nama}" berhasil diperbarui.`);
   } catch (e: any) {

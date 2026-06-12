@@ -57,6 +57,7 @@
             <tr>
               <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-16">No</th>
               <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Judul</th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Jenis</th>
               <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Media</th>
               <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</th>
               <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
@@ -64,12 +65,12 @@
           </thead>
           <tbody class="bg-white divide-y divide-gray-200">
             <tr v-if="isTabPending" class="hover:bg-gray-50">
-              <td colspan="5" class="px-6 py-8 text-center">
+              <td colspan="6" class="px-6 py-8 text-center">
                 <Icon icon="lucide:loader-circle" class="w-8 h-8 animate-spin text-emerald-600 mx-auto" />
               </td>
             </tr>
             <tr v-else-if="filteredList.length === 0">
-              <td colspan="5" class="px-6 py-8 text-center text-gray-500">
+              <td colspan="6" class="px-6 py-8 text-center text-gray-500">
                 <div class="flex flex-col items-center justify-center">
                   <Icon icon="lucide:file-question" class="w-12 h-12 text-gray-300 mb-2" />
                   <p>{{ activeTab === 'active' ? 'Tidak ada data konten.' : 'Tidak ada konten di dalam draft.' }}</p>
@@ -81,6 +82,11 @@
               <td class="px-6 py-4">
                   <div class="text-sm font-medium text-gray-900 line-clamp-1">{{ item.judul }}</div>
                   <div class="text-xs text-gray-500 mt-1 truncate max-w-md">{{ stripHTML(item.isi) }}</div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <span class="px-2.5 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-emerald-100 text-emerald-800 capitalize">
+                  {{ item.jenis }}
+                </span>
               </td>
               <td class="px-6 py-4">
                   <div v-if="item.gambarUrl" class="w-12 h-12 flex-shrink-0 relative">

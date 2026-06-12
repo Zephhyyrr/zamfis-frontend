@@ -2,8 +2,7 @@
   <section id="transaksi" class="scroll-mt-24">
     <!-- Section header -->
     <div class="text-center mb-12">
-      <h3 class="text-3xl md:text-4xl font-extrabold text-secondary dark:text-white mb-2"
-        style="font-family: 'Plus Jakarta Sans', sans-serif;">
+      <h3 class="text-3xl md:text-4xl font-extrabold text-secondary dark:text-white mb-2">
         Riwayat Transaksi Terbaru
       </h3>
       <p class="text-emerald-700/70 dark:text-gray-400 font-medium">Transparansi pengelolaan keuangan Surau Zam Zam</p>
@@ -98,7 +97,6 @@
           </table>
         </div>
 
-        <!-- Pagination -->
         <div
           class="flex flex-col sm:flex-row items-center justify-between px-5 py-4 border-t border-emerald-50/80 dark:border-white/5 gap-4">
           <span class="text-xs text-gray-500 dark:text-gray-400">

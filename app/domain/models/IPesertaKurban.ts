@@ -7,6 +7,7 @@ export interface IPesertaKurban {
     id: number;
     nama: string;
     nominal: number;
+    tahun: string;
     tipe: TipeKurban;
     isDeleted: boolean;
     createdAt: string;
@@ -20,6 +21,7 @@ export interface IPesertaKurban {
 export interface ICreatePesertaKurbanPayload {
     nama: string;
     nominal: number;
+    tahun?: string;
     tipe: TipeKurban;
     mediaPembayaranId: number;
     kelompokKurbanId?: number | null;

@@ -8,11 +8,9 @@ export const resolveAssetUrl = (path: string | null | undefined): string => {
 
     const config = useRuntimeConfig();
     let baseUrl = config.public.apiBaseUrl || 'http://localhost:3000';
-    // Remove trailing slash if exists
     if (baseUrl.endsWith('/')) {
         baseUrl = baseUrl.slice(0, -1);
     }
-    // Remove /api if exists at the end
     if (baseUrl.endsWith('/api')) {
         baseUrl = baseUrl.slice(0, -4);
     }

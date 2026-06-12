@@ -17,7 +17,7 @@ export const useAuth = () => {
     const logout = async () => {
         await AuthService.logout();
         authStore.clearAuth();
-        router.push('/auth/login');
+        router.push('/');
     };
 
     const me = async () => {

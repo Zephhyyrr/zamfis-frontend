@@ -30,6 +30,13 @@
         </div>
       </div>
 
+      <!-- Section: Sejarah -->
+      <div class="py-20 bg-white/40 dark:bg-gray-900/40">
+        <div class="container mx-auto px-4 md:px-12">
+          <LandingSejarah />
+        </div>
+      </div>
+
       <!-- Section: Donasi — emerald tint -->
       <div class="py-20 bg-emerald-50/60 dark:bg-white/[0.02]">
         <div class="container mx-auto px-4 md:px-12">
@@ -41,6 +48,13 @@
       <div class="py-20">
         <div class="container mx-auto px-4 md:px-12">
           <LandingTransaksi />
+        </div>
+      </div>
+
+      <!-- Section: Data Kurban -->
+      <div class="py-20 bg-emerald-50 dark:bg-gray-900/40">
+        <div class="container mx-auto px-4 md:px-12">
+          <LandingQurban />
         </div>
       </div>
 

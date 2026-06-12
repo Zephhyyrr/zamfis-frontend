@@ -30,6 +30,7 @@
           <option value="berita">Berita</option>
           <option value="pengurus">Pengurus</option>
           <option value="imsakiyah">Imsakiyah</option>
+          <option value="sejarah">Sejarah</option>
         </select>
       </div>
 

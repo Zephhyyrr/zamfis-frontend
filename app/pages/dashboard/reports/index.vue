@@ -259,6 +259,7 @@
 import { computed, ref, watch } from 'vue';
 import { definePageMeta } from '#imports';
 import { DownloadIcon } from 'lucide-vue-next';
+import { $fetch } from 'ofetch';
 import { Icon } from '@iconify/vue';
 import * as XLSX from 'xlsx';
 import { useTransaksi } from '~/composables/useTransaksi';

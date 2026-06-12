@@ -2,7 +2,7 @@
   <section id="pengurus" class="scroll-mt-24">
     <!-- Section header -->
     <div class="text-center mb-12">
-      <h3 class="text-3xl md:text-4xl font-extrabold text-white mb-2" style="font-family: 'Plus Jakarta Sans', sans-serif;">
+      <h3 class="text-3xl md:text-4xl font-extrabold text-white mb-2">
         Susunan Pengurus
       </h3>
       <p class="text-emerald-200/80 font-medium">Takmir dan Pengurus Surau Zam Zam yang Berdedikasi</p>

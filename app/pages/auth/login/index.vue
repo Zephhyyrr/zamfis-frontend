@@ -38,7 +38,10 @@
         <BaseInput id="login-password" v-model="form.password" type="password" label="Password" icon="lucide:lock"
           placeholder="Masukkan password" autocomplete="current-password" :required="true" :disabled="isLoading" />
 
-        <div class="flex justify-end">
+        <div class="flex items-center justify-between">
+          <NuxtLink to="/" class="text-sm text-primary hover:text-secondary transition-colors duration-200 focus:outline-none focus:underline">
+            Kembali ke Home
+          </NuxtLink>
           <NuxtLink to="/auth/forgot-password"
             class="text-sm text-primary hover:text-secondary transition-colors duration-200 focus:outline-none focus:underline">
             Lupa password?

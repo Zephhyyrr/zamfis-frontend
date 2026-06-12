@@ -2,7 +2,6 @@
   <footer class="relative mt-8 bg-gradient-to-br from-secondary via-emerald-800 to-secondary">
     <div class="container mx-auto px-4 md:px-12 pt-14 pb-8">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
-        <!-- Brand -->
         <div>
           <div class="flex items-center gap-3 mb-5">
             <div class="relative w-12 h-12">
@@ -11,14 +10,13 @@
                 <BookOpenIcon class="h-6 w-6 text-white" />
               </div>
             </div>
-            <h4 class="text-2xl font-bold text-white" style="font-family: 'Plus Jakarta Sans', sans-serif;">Surau Zam Zam</h4>
+            <h4 class="text-2xl font-bold text-white">Surau Zam Zam</h4>
           </div>
           <p class="text-sm text-white/90 leading-relaxed">
             Sistem informasi manajemen surau untuk mendukung transparansi pengelolaan keuangan, informasi kegiatan, dan dakwah secara digital.
           </p>
         </div>
 
-        <!-- Quick links -->
         <div>
           <h5 class="text-base font-bold text-white mb-5">Tautan Cepat</h5>
           <ul class="space-y-2.5 text-sm">
@@ -38,7 +36,6 @@
           </ul>
         </div>
 
-        <!-- Contact -->
         <div>
           <h5 class="text-base font-bold text-white mb-5">Kontak Kami</h5>
           <ul class="space-y-4 text-sm">
@@ -64,7 +61,6 @@
         </div>
       </div>
 
-      <!-- Bottom bar -->
       <div class="pt-6 border-t border-white/20 text-center text-xs text-white/80">
         &copy; {{ new Date().getFullYear() }} Sistem Informasi Surau Zam Zam. Dikelola dengan penuh amanah.
       </div>
@@ -82,8 +78,10 @@ const isHome = computed(() => route.path === '/')
 const footerLinks = [
   { href: '#beranda', label: 'Beranda' },
   { href: '#jadwal', label: 'Jadwal Shalat' },
+  { href: '#sejarah', label: 'Sejarah' },
   { href: '#donasi', label: 'Donasi' },
   { href: '#transaksi', label: 'Riwayat Transaksi' },
+  { href: '#kurban', label: 'Data Kurban' },
   { href: '#berita', label: 'Berita & Artikel' },
   { href: '#pengurus', label: 'Pengurus' },
   { href: '#imsakiyah', label: 'Imsakiyah' },

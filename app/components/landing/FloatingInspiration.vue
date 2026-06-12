@@ -1,16 +1,18 @@
 <template>
   <div class="fixed bottom-6 right-6 z-50 flex flex-col items-end">
-    <BaseButton
-      @click="toggleModal"
-      :fullWidth="false"
-      variant="success"
-      class="!rounded-full !w-16 !h-16 !p-0 flex items-center justify-center shadow-2xl hover:shadow-emerald-900/50 transform hover:scale-110 group relative z-50 border-none"
-    >
-      <Icon icon="lucide:book-open" class="h-8 w-8 text-white group-hover:rotate-12 transition-transform duration-300" />
-      <span class="absolute right-full mr-4 bg-emerald-900/90 text-white text-xs font-bold px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap pointer-events-none tracking-normal font-sans">
-        {{ currentDate || 'Mutiara Harian' }}
-      </span>
-    </BaseButton>
+    <div class="animate-float-btn">
+      <BaseButton
+        @click="toggleModal"
+        :fullWidth="false"
+        variant="success"
+        class="!rounded-full !w-16 !h-16 !p-0 flex items-center justify-center shadow-2xl hover:shadow-emerald-900/50 transform hover:scale-110 group relative z-50 border-none"
+      >
+        <Icon icon="lucide:book-open" class="h-8 w-8 text-white group-hover:rotate-12 transition-transform duration-300" />
+        <span class="absolute right-full mr-4 bg-emerald-900/90 text-white text-xs font-bold px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap pointer-events-none tracking-normal font-sans">
+          {{ currentDate || 'Mutiara Harian' }}
+        </span>
+      </BaseButton>
+    </div>
 
     <Transition
       enter-active-class="transition duration-300 ease-out origin-bottom-right"
@@ -210,6 +212,15 @@ onMounted(() => {
 </script>
 
 <style scoped>
+@keyframes float-btn {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+  100% { transform: translateY(0px); }
+}
+.animate-float-btn {
+  animation: float-btn 3s ease-in-out infinite;
+}
+
 .fullscreen-modal-enter-active .fs-bg {
   transition: opacity 1.2s ease;
 }

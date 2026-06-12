@@ -78,6 +78,8 @@ export const endpoints = {
         DELETE: (id: number) => `peserta-kurban/${id}`,
         GET_DRAFT: 'peserta-kurban/draft',
         DELETE_PERMANENT: (id: number) => `peserta-kurban/${id}/delete-permanent`,
+        GET_PUBLIC_YEARS: 'peserta-kurban/public/years',
+        GET_PUBLIC_KURBAN: 'peserta-kurban/public/kurban',
     },
 
     TRANSAKSI: {

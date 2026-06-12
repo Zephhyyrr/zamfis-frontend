@@ -28,8 +28,7 @@
       </div>
 
       <!-- Main heading -->
-      <h2 class="text-4xl sm:text-5xl md:text-7xl font-extrabold text-white mb-6 leading-tight tracking-tight drop-shadow-xl"
-        style="font-family: 'Plus Jakarta Sans', sans-serif;">
+      <h2 class="text-4xl sm:text-5xl md:text-7xl font-extrabold text-white mb-6 leading-tight tracking-tight drop-shadow-xl">
         Selamat Datang di<br>
         <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary via-emerald-300 to-primary"
           style="text-shadow: none; filter: drop-shadow(0 0 30px rgba(16,185,129,0.6));">

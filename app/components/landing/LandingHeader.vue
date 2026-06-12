@@ -11,8 +11,8 @@
           </div>
         </div>
         <div class="flex flex-col">
-          <h1 class="text-lg font-bold text-secondary dark:text-white tracking-tight leading-tight" style="font-family: 'Plus Jakarta Sans', sans-serif;">Surau Zam Zam</h1>
-          <span class="text-[11px] text-primary font-semibold tracking-wide">{{ hijriDate }}</span>
+          <h1 class="text-lg font-bold text-secondary dark:text-white tracking-tight leading-tight">Surau Zam Zam</h1>
+          <span class="text-[11px] text-primary font-semibold tracking-wide">{{ masehiDate }} / {{ hijriDate }}</span>
         </div>
       </a>
 
@@ -66,6 +66,10 @@
 <script setup lang="ts">
 import { BookOpenIcon, MenuIcon, XIcon } from 'lucide-vue-next'
 
+const masehiDate = new Intl.DateTimeFormat('id-ID', {
+  day: 'numeric', month: 'long', year: 'numeric'
+}).format(new Date())
+
 const hijriDate = new Intl.DateTimeFormat('id-ID-u-ca-islamic', {
   day: 'numeric', month: 'long', year: 'numeric'
 }).format(new Date())
@@ -73,8 +77,10 @@ const hijriDate = new Intl.DateTimeFormat('id-ID-u-ca-islamic', {
 const navLinks = [
   { id: 'beranda', label: 'Beranda' },
   { id: 'jadwal', label: 'Jadwal Shalat' },
+  { id: 'sejarah', label: 'Sejarah' },
   { id: 'donasi', label: 'Donasi' },
   { id: 'transaksi', label: 'Transaksi' },
+  { id: 'kurban', label: 'Kurban' },
   { id: 'berita', label: 'Berita' },
   { id: 'pengurus', label: 'Pengurus' },
   { id: 'imsakiyah', label: 'Imsakiyah' },

@@ -50,4 +50,17 @@ export class PesertaKurbanService extends BaseService {
             method: 'DELETE',
         });
     }
+
+    static async getPublicYears(): Promise<IApiResponse<string[]>> {
+        return await this.api<IApiResponse<string[]>>(endpoints.PESERTA_KURBAN.GET_PUBLIC_YEARS, {
+            method: 'GET',
+        });
+    }
+
+    static async getPublicKurban(tahun: string): Promise<IApiResponse<{ kelompok: any[], individu: any[] }>> {
+        return await this.api<IApiResponse<{ kelompok: any[], individu: any[] }>>(endpoints.PESERTA_KURBAN.GET_PUBLIC_KURBAN, {
+            method: 'GET',
+            query: { tahun },
+        });
+    }
 }
