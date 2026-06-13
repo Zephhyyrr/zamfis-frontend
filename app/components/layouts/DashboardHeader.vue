@@ -18,14 +18,14 @@
         <SunIcon v-else class="w-5 h-5" />
       </button>
 
-      <div class="flex items-center space-x-2 mr-2">
+      <NuxtLink to="/dashboard/settings" class="flex items-center space-x-2 mr-2 hover:opacity-80 transition-opacity cursor-pointer">
         <div
           class="w-8 h-8 rounded-full bg-emerald-100 dark:bg-emerald-900 flex items-center justify-center text-emerald-600 dark:text-emerald-400 font-bold overflow-hidden border border-emerald-200 dark:border-emerald-800">
           <img v-if="userAvatar" :src="userAvatar" :alt="userDisplayName" class="w-full h-full object-cover" />
           <span v-else>{{ userInitials }}</span>
         </div>
         <span class="text-sm font-medium text-gray-700 dark:text-gray-200 hidden sm:block">{{ userDisplayName }}</span>
-      </div>
+      </NuxtLink>
 
       <BaseButton variant="danger" :fullWidth="false" class="flex items-center !py-2 !px-3"
         @click="showLogoutModal = true" icon="lucide:log-out">
@@ -51,6 +51,7 @@ import { MenuIcon, MoonIcon, SunIcon } from 'lucide-vue-next';
 import { useRoute } from '#imports';
 import { useAuth } from '~/composables/useAuth';
 import { useTheme } from '~/composables/useTheme';
+import { resolveAssetUrl } from '~/infrastructure/adapters/assets';
 import BaseButton from '~/components/base/BaseButton.vue';
 import BaseModal from '~/components/base/BaseModal.vue';
 import BaseAlert from '~/components/base/BaseAlert.vue';
@@ -72,7 +73,13 @@ const handleConfirmLogout = async () => {
 };
 
 const userDisplayName = computed(() => user.value?.nama || user.value?.email || 'Administrator');
-const userAvatar = computed(() => user.value?.fotoProfile || '');
+const userAvatar = computed(() => {
+  const path = user.value?.fotoProfile;
+  if (path && path !== 'null' && path.trim() !== '') {
+      return resolveAssetUrl(path);
+  }
+  return '';
+});
 
 const userInitials = computed(() => {
   if (user.value?.nama) {

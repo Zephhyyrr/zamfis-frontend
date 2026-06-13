@@ -9,7 +9,7 @@
                     class="w-[18px] h-[18px] text-font-color/60 dark:text-gray-400 group-focus-within:text-primary transition-colors duration-200" />
             </div>
 
-            <input :id="id" :value="modelValue" @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
+            <input :id="id" :value="modelValue" @input="handleInput"
                 :type="inputType" :required="required" :autocomplete="autocomplete" :placeholder="placeholder"
                 :disabled="disabled"
                 class="auth-input w-full pl-10 pr-12 py-3 rounded-xl text-sm text-font-color dark:text-white placeholder-font-color/55 dark:placeholder-gray-500 transition-all duration-200 focus:outline-none" />
@@ -45,9 +45,14 @@ const props = withDefaults(defineProps<{
     disabled: false
 });
 
-defineEmits<{
+const emit = defineEmits<{
     (e: 'update:modelValue', value: string | number): void
 }>();
+
+const handleInput = (event: Event) => {
+    const target = event.target as HTMLInputElement;
+    emit('update:modelValue', target.value);
+};
 
 const showPassword = ref(false);
 
