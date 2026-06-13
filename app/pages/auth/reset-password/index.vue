@@ -5,14 +5,14 @@
         class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-emerald-500/20 border border-emerald-500/30 mb-4 backdrop-blur-sm logo-glow">
         <Icon icon="lucide:building-2" class="w-8 h-8 text-primary" />
       </div>
-      <h1 class="text-2xl font-bold text-secondary mb-1">Surau Zam-Zam</h1>
-      <p class="text-font-color text-sm">Sistem Peramalan Donasi Masjid</p>
+      <h1 class="text-2xl font-bold text-secondary dark:text-white mb-1">Surau Zam-Zam</h1>
+      <p class="text-font-color dark:text-gray-300 text-sm">Sistem Peramalan Donasi Masjid</p>
     </div>
 
     <div class="auth-card rounded-2xl p-8">
       <div class="mb-6">
-        <h2 class="text-secondary text-xl font-semibold mb-1">Pembaruan Password</h2>
-        <p class="text-font-color text-sm">Masukkan password baru untuk mengamankan akun Anda.</p>
+        <h2 class="text-secondary dark:text-white text-xl font-semibold mb-1">Pembaruan Password</h2>
+        <p class="text-font-color dark:text-gray-300 text-sm">Masukkan password baru untuk mengamankan akun Anda.</p>
       </div>
 
       <BaseAlert :message="errorMessage" type="error" />

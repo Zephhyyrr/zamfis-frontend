@@ -2,30 +2,30 @@
   <div class="max-w-2xl mx-auto">
     <div class="mb-6 flex items-center gap-4">
       <NuxtLink to="/dashboard/content" class="p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors">
-        <Icon icon="lucide:arrow-left" class="w-5 h-5 text-gray-600" />
+        <Icon icon="lucide:arrow-left" class="w-5 h-5 text-gray-600 dark:text-gray-400" />
       </NuxtLink>
       <div>
-        <h1 class="text-2xl font-bold text-gray-800">Tambah Konten Baru</h1>
-        <p class="text-gray-600">Terbitkan konten atau simpan sebagai draft</p>
+        <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-100">Tambah Konten Baru</h1>
+        <p class="text-gray-600 dark:text-gray-400">Terbitkan konten atau simpan sebagai draft</p>
       </div>
     </div>
 
     <BaseAlert v-if="errorMessage" :message="errorMessage" type="error" class="mb-6" />
 
-    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+    <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
       <form @submit.prevent="submitForm">
         <div class="space-y-6">
           <div>
             <label class="block text-sm font-medium text-gray-700">Judul Konten</label>
             <input v-model="form.judul" type="text" required :disabled="isSubmitting"
-              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50"
               placeholder="Masukkan judul..." />
           </div>
 
           <div>
             <label class="block text-sm font-medium text-gray-700">Jenis Konten</label>
             <select v-model="form.jenis" required :disabled="isSubmitting"
-              class="mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50">
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50">
               <option value="berita">Berita & Artikel</option>
               <option value="pengurus" :disabled="existingPengurus">
                 Profil Pengurus <span v-if="existingPengurus">(Hanya bisa 1)</span>
@@ -46,7 +46,7 @@
 
               <div v-if="imagePreviews.length" class="mb-3 grid grid-cols-2 gap-3">
                 <div v-for="(preview, index) in imagePreviews" :key="preview.url"
-                  class="relative group rounded-xl overflow-hidden border border-gray-200 shadow-sm">
+                  class="relative group rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 shadow-sm">
                   <img :src="preview.url" alt="Preview Gambar" class="w-full h-40 object-cover" />
                   <button @click.prevent="removeImage(index)"
                     class="absolute top-2 right-2 bg-red-500 text-white p-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600">
@@ -56,18 +56,18 @@
               </div>
 
               <div
-                class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-xl hover:bg-gray-50 transition-colors">
+                class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 dark:border-gray-600 border-dashed rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700/50 dark:bg-gray-700/50 transition-colors">
                 <div class="space-y-1 text-center">
                   <Icon icon="lucide:image" class="mx-auto h-12 w-12 text-gray-400" />
-                  <div class="flex text-sm text-gray-600 justify-center">
+                  <div class="flex text-sm text-gray-600 dark:text-gray-400 justify-center">
                     <label for="gambar-upload"
-                      class="relative cursor-pointer bg-white rounded-md font-medium text-emerald-600 hover:text-emerald-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-emerald-500">
+                      class="relative cursor-pointer bg-white dark:bg-gray-800 rounded-md font-medium text-emerald-600 hover:text-emerald-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-emerald-500">
                       <span>Unggah gambar</span>
                       <input id="gambar-upload" ref="imageInputRef" type="file" multiple @change="onImageChange"
                         accept="image/jpeg, image/png, image/webp" class="sr-only" :disabled="isSubmitting" />
                     </label>
                   </div>
-                  <p class="text-xs text-gray-500">Bisa pilih lebih dari 1 file (PNG, JPG, WEBP hingga 5MB)</p>
+                  <p class="text-xs text-gray-500 dark:text-gray-400">Bisa pilih lebih dari 1 file (PNG, JPG, WEBP hingga 5MB)</p>
                 </div>
               </div>
             </div>
@@ -78,7 +78,7 @@
 
               <div v-if="videoPreviews.length" class="mb-3 grid grid-cols-1 gap-3">
                 <div v-for="(preview, index) in videoPreviews" :key="preview.url"
-                  class="relative group rounded-xl overflow-hidden border border-gray-200 shadow-sm bg-black">
+                  class="relative group rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 shadow-sm bg-black">
                   <video :src="preview.url" controls class="w-full h-40 object-contain"></video>
                   <button @click.prevent="removeVideo(index)"
                     class="absolute top-2 right-2 bg-red-500 text-white p-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity z-10 hover:bg-red-600">
@@ -88,18 +88,18 @@
               </div>
 
               <div
-                class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-xl hover:bg-gray-50 transition-colors">
+                class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 dark:border-gray-600 border-dashed rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700/50 dark:bg-gray-700/50 transition-colors">
                 <div class="space-y-1 text-center">
                   <Icon icon="lucide:film" class="mx-auto h-12 w-12 text-gray-400" />
-                  <div class="flex text-sm text-gray-600 justify-center">
+                  <div class="flex text-sm text-gray-600 dark:text-gray-400 justify-center">
                     <label for="video-upload"
-                      class="relative cursor-pointer bg-white rounded-md font-medium text-emerald-600 hover:text-emerald-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-emerald-500">
+                      class="relative cursor-pointer bg-white dark:bg-gray-800 rounded-md font-medium text-emerald-600 hover:text-emerald-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-emerald-500">
                       <span>Unggah video</span>
                       <input id="video-upload" ref="videoInputRef" type="file" multiple @change="onVideoChange"
                         accept="video/mp4, video/webm" class="sr-only" :disabled="isSubmitting" />
                     </label>
                   </div>
-                  <p class="text-xs text-gray-500">Bisa pilih lebih dari 1 file (MP4/WebM hingga 20MB)</p>
+                  <p class="text-xs text-gray-500 dark:text-gray-400">Bisa pilih lebih dari 1 file (MP4/WebM hingga 20MB)</p>
                 </div>
               </div>
             </div>
@@ -108,13 +108,13 @@
           <div>
             <label class="block text-sm font-medium text-gray-700">Isi Konten / Artikel</label>
             <textarea v-model="form.isi" required rows="6" :disabled="isSubmitting"
-              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50"
               placeholder="Isi artikel/konten Anda di sini..."></textarea>
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700">Status Publikasi</label>
             <select v-model="form.status" required :disabled="isSubmitting"
-              class="mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50">
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50">
               <option value="draft">Draft (Simpan sementara)</option>
               <option value="published">Published (Terbitkan)</option>
             </select>
@@ -123,7 +123,7 @@
 
         <div class="mt-8 flex justify-end items-center gap-3">
           <NuxtLink to="/dashboard/content"
-            class="px-4 py-2 bg-white text-gray-700 border border-gray-300 rounded-xl hover:bg-gray-50 font-medium transition-colors outline-none focus:ring-2 focus:ring-emerald-500/50">
+            class="px-4 py-2 bg-white dark:bg-gray-800 text-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700/50 font-medium transition-colors outline-none focus:ring-2 focus:ring-emerald-500/50">
             Batal
           </NuxtLink>
 

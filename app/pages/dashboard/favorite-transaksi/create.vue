@@ -2,29 +2,29 @@
   <div class="max-w-xl mx-auto">
     <div class="mb-6 flex items-center gap-4">
       <NuxtLink to="/dashboard/favorite-transaksi" class="p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors">
-        <Icon icon="lucide:arrow-left" class="w-5 h-5 text-gray-600" />
+        <Icon icon="lucide:arrow-left" class="w-5 h-5 text-gray-600 dark:text-gray-400" />
       </NuxtLink>
       <div>
-        <h1 class="text-2xl font-bold text-gray-800">Tambah Favorit Transaksi</h1>
-        <p class="text-gray-600">Tambahkan uraian transaksi yang sering digunakan</p>
+        <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-100">Tambah Favorit Transaksi</h1>
+        <p class="text-gray-600 dark:text-gray-400">Tambahkan uraian transaksi yang sering digunakan</p>
       </div>
     </div>
 
     <BaseAlert v-if="errorMessage" :message="errorMessage" type="error" class="mb-6" />
 
-    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+    <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
       <form @submit.prevent="submitForm">
         <div class="space-y-6">
           <div>
             <label class="block text-sm font-medium text-gray-700">Uraian Favorit</label>
             <input v-model="form.uraian" type="text" required :disabled="isSubmitting"
-              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50"
               placeholder="Contoh: Sedekah Jumat, Infak Harian, Pembayaran Listrik, ..." />
           </div>
         </div>
         <div class="mt-8 flex justify-end items-center gap-3">
           <NuxtLink to="/dashboard/favorite-transaksi"
-            class="px-4 py-2 bg-white text-gray-700 border border-gray-300 rounded-xl hover:bg-gray-50 font-medium transition-colors">
+            class="px-4 py-2 bg-white dark:bg-gray-800 text-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700/50 font-medium transition-colors">
             Batal
           </NuxtLink>
           <BaseButton type="submit" :isLoading="isSubmitting" text="Simpan" icon="lucide:save" :fullWidth="false" />

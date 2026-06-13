@@ -28,7 +28,7 @@
             </h3>
           </div>
           <button @click="closeModal"
-            class="text-white/70 hover:text-white hover:bg-white/10 p-1 rounded-full transition-colors">
+            class="text-white/70 hover:text-white hover:bg-white dark:bg-gray-800/10 p-1 rounded-full transition-colors">
             <Icon icon="lucide:x" class="h-6 w-6" />
           </button>
         </div>
@@ -80,7 +80,7 @@
                 </h3>
               </div>
               <button @click="closeModal"
-                class="text-white/70 hover:text-white hover:bg-white/10 p-1.5 rounded-full transition-colors">
+                class="text-white/70 hover:text-white hover:bg-white dark:bg-gray-800/10 p-1.5 rounded-full transition-colors">
                 <Icon icon="lucide:x" class="h-7 w-7" />
               </button>
             </div>

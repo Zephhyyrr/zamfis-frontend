@@ -40,19 +40,19 @@
           <h5 class="text-base font-bold text-white mb-5">Kontak Kami</h5>
           <ul class="space-y-4 text-sm">
             <li class="flex items-start gap-3 text-white">
-              <div class="w-8 h-8 shrink-0 bg-white/10 rounded-lg flex items-center justify-center mt-0.5">
+              <div class="w-8 h-8 shrink-0 bg-white dark:bg-gray-800/10 rounded-lg flex items-center justify-center mt-0.5">
                 <MapPinIcon class="h-4 w-4 text-white" />
               </div>
               <span>Kota Padang, Sumatera Barat, Indonesia</span>
             </li>
             <li class="flex items-center gap-3 text-white">
-              <div class="w-8 h-8 shrink-0 bg-white/10 rounded-lg flex items-center justify-center">
+              <div class="w-8 h-8 shrink-0 bg-white dark:bg-gray-800/10 rounded-lg flex items-center justify-center">
                 <PhoneIcon class="h-4 w-4 text-white" />
               </div>
               <span>(0751) 1234567</span>
             </li>
             <li class="flex items-center gap-3 text-white">
-              <div class="w-8 h-8 shrink-0 bg-white/10 rounded-lg flex items-center justify-center">
+              <div class="w-8 h-8 shrink-0 bg-white dark:bg-gray-800/10 rounded-lg flex items-center justify-center">
                 <MailIcon class="h-4 w-4 text-white" />
               </div>
               <span>info@surauzamzam.com</span>

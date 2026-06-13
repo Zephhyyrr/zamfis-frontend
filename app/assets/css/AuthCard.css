@@ -5,15 +5,33 @@
     box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.08), 0 16px 40px -18px rgba(22, 22, 22, 0.25);
 }
 
+.dark .auth-card {
+    background: rgba(17, 24, 39, 0.7);
+    border: 1px solid rgba(16, 185, 129, 0.15);
+    box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.05), 0 16px 40px -18px rgba(0, 0, 0, 0.4);
+}
+
 .auth-input {
     background: rgba(16, 185, 129, 0.04);
     border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.dark .auth-input {
+    background: rgba(17, 24, 39, 0.4);
+    border-color: rgba(16, 185, 129, 0.2);
+    color: #f3f4f6;
 }
 
 .auth-input:focus {
     background: #ffffff;
     border-color: rgba(16, 185, 129, 0.6);
     box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.14);
+}
+
+.dark .auth-input:focus {
+    background: rgba(17, 24, 39, 0.8);
+    border-color: rgba(16, 185, 129, 0.5);
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
 }
 
 .auth-input:disabled {

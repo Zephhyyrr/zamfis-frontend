@@ -13,15 +13,15 @@
       <div>
         <label class="block text-sm font-medium text-gray-700">Tanggal</label>
         <input v-model="form.tanggal" type="date"
-          class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm" />
+          class="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm" />
       </div>
       <div>
         <label class="block text-sm font-medium text-gray-700">Uraian</label>
         <div class="mt-1 flex rounded-md shadow-sm">
           <input v-model="form.uraian" type="text" list="edit-favorite-uraian-list" autocomplete="off"
-            class="flex-1 block w-full border border-gray-300 rounded-none rounded-l-md shadow-sm py-2 px-3 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm" />
+            class="flex-1 block w-full border border-gray-300 dark:border-gray-600 rounded-none rounded-l-md shadow-sm py-2 px-3 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm" />
           <button type="button" @click="saveAsFavorite" :disabled="!form.uraian || isSavingFavorite"
-            class="inline-flex items-center px-3 py-2 border border-l-0 border-gray-300 rounded-r-md bg-gray-50 text-gray-600 hover:bg-gray-100 hover:text-emerald-600 transition-colors disabled:opacity-50"
+            class="inline-flex items-center px-3 py-2 border border-l-0 border-gray-300 dark:border-gray-600 rounded-r-md bg-gray-50 dark:bg-gray-700/50 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-emerald-600 transition-colors disabled:opacity-50"
             title="Simpan uraian ini sebagai Favorit">
             <Icon :icon="isSavingFavorite ? 'lucide:loader-circle' : 'lucide:star'" :class="['w-4 h-4', isSavingFavorite && 'animate-spin']" />
           </button>
@@ -46,7 +46,7 @@
       <div>
         <label class="block text-sm font-medium text-gray-700">Jenis Kas</label>
         <select v-model.number="form.jenisKasId"
-          class="mt-1 block w-full border border-gray-300 bg-white rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm">
+          class="mt-1 block w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm">
           <option :value="0">-- Pilih --</option>
           <option v-for="ket in jenisKasList" :key="ket.id" :value="ket.id">{{ ket.nama }}</option>
         </select>
@@ -54,7 +54,7 @@
       <div>
         <label class="block text-sm font-medium text-gray-700">Media Pembayaran</label>
         <select v-model.number="form.mediaPembayaranId"
-          class="mt-1 block w-full border border-gray-300 bg-white rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm">
+          class="mt-1 block w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm">
           <option :value="0">-- Pilih --</option>
           <option v-for="mp in mediaPembayaranList" :key="mp.id" :value="mp.id">{{ mp.nama }}</option>
         </select>
@@ -62,7 +62,7 @@
       <div>
         <label class="block text-sm font-medium text-gray-700">Tipe Transaksi</label>
         <select v-model="form.tipe"
-          class="mt-1 block w-full border border-gray-300 bg-white rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm">
+          class="mt-1 block w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm">
           <option value="uang_masuk">Pemasukan / Uang Masuk</option>
           <option value="uang_keluar">Pengeluaran / Uang Keluar</option>
         </select>
@@ -70,13 +70,13 @@
       <div>
         <label class="block text-sm font-medium text-gray-700">Debet (Uang Masuk)</label>
         <input :value="form.debitText" @input="handleDebitInput" type="text" inputmode="numeric"
-          class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm"
+          class="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm"
           placeholder="Rp. 0" />
       </div>
       <div>
         <label class="block text-sm font-medium text-gray-700">Kredit (Uang Keluar)</label>
         <input :value="form.kreditText" @input="handleKreditInput" type="text" inputmode="numeric"
-          class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm"
+          class="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm"
           placeholder="Rp. 0" />
       </div>
       <p v-if="errorMsg" class="text-sm text-red-600">{{ errorMsg }}</p>

@@ -2,61 +2,61 @@
   <div>
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
       <div>
-        <h1 class="text-2xl font-bold text-gray-800">Favorit Transaksi</h1>
-        <p class="text-gray-600">Kelola uraian transaksi yang sering digunakan</p>
+        <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-100">Favorit Transaksi</h1>
+        <p class="text-gray-600 dark:text-gray-400">Kelola uraian transaksi yang sering digunakan</p>
       </div>
       <BaseButton text="Tambah Favorit" variant="primary" :fullWidth="false" icon="lucide:plus"
         @click="router.push('/dashboard/favorite-transaksi/create')" />
     </div>
 
-    <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 mb-6 flex items-center">
+    <div class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 mb-6 flex items-center">
       <div class="relative w-full max-w-md">
         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
           <SearchIcon class="h-5 w-5 text-gray-400" />
         </div>
         <input v-model="searchQuery" type="text"
-          class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm"
+          class="block w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg leading-5 bg-white dark:bg-gray-800 placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm"
           placeholder="Cari favorit transaksi..." />
       </div>
     </div>
 
-    <div class="mb-6 flex flex-wrap gap-2 rounded-xl bg-white p-2 shadow-sm border border-gray-100">
+    <div class="mb-6 flex flex-wrap gap-2 rounded-xl bg-white dark:bg-gray-800 p-2 shadow-sm border border-gray-100 dark:border-gray-700">
       <button type="button"
         class="inline-flex items-center rounded-lg px-4 py-2 text-sm font-medium transition-colors"
-        :class="activeTab === 'active' ? 'bg-emerald-600 text-white shadow-sm' : 'text-gray-600 hover:bg-gray-100'"
+        :class="activeTab === 'active' ? 'bg-emerald-600 text-white shadow-sm' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'"
         @click="activeTab = 'active'">
-        Aktif <span class="ml-2 rounded-full bg-white/20 px-2 py-0.5 text-xs">{{ activeMeta?.totalItems || 0 }}</span>
+        Aktif <span class="ml-2 rounded-full bg-white dark:bg-gray-800/20 px-2 py-0.5 text-xs">{{ activeMeta?.totalItems || 0 }}</span>
       </button>
       <button type="button"
         class="inline-flex items-center rounded-lg px-4 py-2 text-sm font-medium transition-colors"
-        :class="activeTab === 'draft' ? 'bg-amber-500 text-white shadow-sm' : 'text-gray-600 hover:bg-gray-100'"
+        :class="activeTab === 'draft' ? 'bg-amber-500 text-white shadow-sm' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'"
         @click="activeTab = 'draft'">
-        Draft <span class="ml-2 rounded-full bg-white/20 px-2 py-0.5 text-xs">{{ draftMeta?.totalItems || 0 }}</span>
+        Draft <span class="ml-2 rounded-full bg-white dark:bg-gray-800/20 px-2 py-0.5 text-xs">{{ draftMeta?.totalItems || 0 }}</span>
       </button>
     </div>
 
-    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col">
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden flex flex-col">
       <div class="overflow-x-auto flex-1">
-        <table class="min-w-full divide-y divide-gray-200">
-          <thead class="bg-gray-50">
+        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+          <thead class="bg-gray-50 dark:bg-gray-700/50">
             <tr>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-16">No</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Uraian Favorit</th>
-              <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider w-16">No</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Uraian Favorit</th>
+              <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Aksi</th>
             </tr>
           </thead>
-          <tbody class="bg-white divide-y divide-gray-200">
+          <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
             <tr v-if="filteredList.length === 0">
               <td colspan="3" class="px-6 py-8">
-                <div class="flex flex-col items-center justify-center text-center text-gray-500 text-sm">
+                <div class="flex flex-col items-center justify-center text-center text-gray-500 dark:text-gray-400 text-sm">
                   <Icon icon="lucide:star" class="w-12 h-12 text-gray-300 mb-2" />
                   <p>{{ activeTab === 'active' ? 'Belum ada favorit transaksi.' : 'Tidak ada favorit di draft.' }}</p>
                 </div>
               </td>
             </tr>
-            <tr v-else v-for="(item, index) in filteredList" :key="item.id" class="hover:bg-gray-50">
-              <td class="px-6 py-4 text-sm text-gray-500">{{ ((activeTab === 'active' ? activeParams.page : draftParams.page) - 1) * 10 + Number(index) + 1 }}</td>
-              <td class="px-6 py-4 text-sm font-medium text-gray-900">
+            <tr v-else v-for="(item, index) in filteredList" :key="item.id" class="hover:bg-gray-50 dark:hover:bg-gray-700/50 dark:bg-gray-700/50">
+              <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">{{ ((activeTab === 'active' ? activeParams.page : draftParams.page) - 1) * 10 + Number(index) + 1 }}</td>
+              <td class="px-6 py-4 text-sm font-medium text-gray-900 dark:text-gray-100">
                 <span class="inline-flex items-center gap-2">
                   <Icon icon="lucide:star" class="w-4 h-4 text-amber-400" />
                   {{ item.uraian }}
@@ -82,8 +82,8 @@
           </tbody>
         </table>
       </div>
-      <BasePagination v-if="activeTab === 'active'" v-model="activeParams.page" @update:modelValue="refresh" :meta="activeMeta" class="rounded-none border-t border-gray-100" />
-      <BasePagination v-if="activeTab === 'draft'" v-model="draftParams.page" @update:modelValue="refreshDraft" :meta="draftMeta" class="rounded-none border-t border-gray-100" />
+      <BasePagination v-if="activeTab === 'active'" v-model="activeParams.page" @update:modelValue="refresh" :meta="activeMeta" class="rounded-none border-t border-gray-100 dark:border-gray-700" />
+      <BasePagination v-if="activeTab === 'draft'" v-model="draftParams.page" @update:modelValue="refreshDraft" :meta="draftMeta" class="rounded-none border-t border-gray-100 dark:border-gray-700" />
     </div>
 
     <FeaturesFavoriteTransaksiEditModal v-model="showEditModal" :editData="selectedItem" @saved="handleSuccess" />

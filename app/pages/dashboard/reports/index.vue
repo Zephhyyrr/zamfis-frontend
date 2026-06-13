@@ -2,8 +2,8 @@
   <div class="space-y-6">
     <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
       <div>
-        <h1 class="text-2xl font-bold text-gray-800">Laporan Keuangan</h1>
-        <p class="text-sm text-gray-500">Tab mengikuti data Jenis Kas, lengkap dengan filter dan pencarian.</p>
+        <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-100">Laporan Keuangan</h1>
+        <p class="text-sm text-gray-500 dark:text-gray-400">Tab mengikuti data Jenis Kas, lengkap dengan filter dan pencarian.</p>
       </div>
       <BaseButton
         text="Export Excel"
@@ -15,23 +15,23 @@
       />
     </div>
 
-    <div class="rounded-xl border border-gray-100 bg-white p-4 shadow-sm">
+    <div class="rounded-xl border border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-800 p-4 shadow-sm">
       <div class="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-8">
         <div class="xl:col-span-2">
-          <label class="mb-1 block text-xs font-semibold uppercase tracking-wide text-gray-500">Cari</label>
+          <label class="mb-1 block text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">Cari</label>
           <input
             v-model="searchQuery"
             type="text"
             placeholder="Cari uraian atau Jenis Kas..."
-            class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-800 outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+            class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-800 dark:text-gray-100 outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
           >
         </div>
 
         <div>
-          <label class="mb-1 block text-xs font-semibold uppercase tracking-wide text-gray-500">Jenis Kas</label>
+          <label class="mb-1 block text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">Jenis Kas</label>
           <select
             v-model="activejenisKasId"
-            class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-800 outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+            class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-800 dark:text-gray-100 outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
           >
             <option value="all">Semua Jenis Kas</option>
             <option v-for="tab in JenisKasTabs" :key="tab.id" :value="tab.id">{{ tab.nama }}</option>
@@ -39,10 +39,10 @@
         </div>
 
         <div>
-          <label class="mb-1 block text-xs font-semibold uppercase tracking-wide text-gray-500">Kategori</label>
+          <label class="mb-1 block text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">Kategori</label>
           <select
             v-model="transactionType"
-            class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-800 outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+            class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-800 dark:text-gray-100 outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
           >
             <option value="all">Semua</option>
             <option value="income">Uang Masuk</option>
@@ -51,28 +51,28 @@
         </div>
 
         <div>
-          <label class="mb-1 block text-xs font-semibold uppercase tracking-wide text-gray-500">Tanggal Mulai</label>
+          <label class="mb-1 block text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">Tanggal Mulai</label>
           <input
             v-model="startDate"
             type="date"
-            class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-800 outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+            class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-800 dark:text-gray-100 outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
           >
         </div>
 
         <div>
-          <label class="mb-1 block text-xs font-semibold uppercase tracking-wide text-gray-500">Tanggal Akhir</label>
+          <label class="mb-1 block text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">Tanggal Akhir</label>
           <input
             v-model="endDate"
             type="date"
-            class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-800 outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+            class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-800 dark:text-gray-100 outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
           >
         </div>
 
         <div>
-          <label class="mb-1 block text-xs font-semibold uppercase tracking-wide text-gray-500">Bulan</label>
+          <label class="mb-1 block text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">Bulan</label>
           <select
             v-model="selectedMonth"
-            class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-800 outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+            class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-800 dark:text-gray-100 outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
           >
             <option value="all">Semua Bulan</option>
             <option v-for="month in monthOptions" :key="month.value" :value="month.value">{{ month.label }}</option>
@@ -80,10 +80,10 @@
         </div>
 
         <div>
-          <label class="mb-1 block text-xs font-semibold uppercase tracking-wide text-gray-500">Tahun</label>
+          <label class="mb-1 block text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">Tahun</label>
           <select
             v-model="selectedYear"
-            class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-800 outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+            class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-800 dark:text-gray-100 outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
           >
             <option value="all">Semua Tahun</option>
             <option v-for="year in availableYears" :key="year" :value="year">{{ year }}</option>
@@ -94,7 +94,7 @@
       <div class="mt-3 flex justify-end">
         <button
           type="button"
-          class="rounded-lg border border-gray-300 px-3 py-1.5 text-xs font-semibold text-gray-700 transition-colors hover:bg-gray-50"
+          class="rounded-lg border border-gray-300 dark:border-gray-600 px-3 py-1.5 text-xs font-semibold text-gray-700 transition-colors hover:bg-gray-50 dark:hover:bg-gray-700/50 dark:bg-gray-700/50"
           @click="resetFilters"
         >
           Reset Filter
@@ -102,7 +102,7 @@
       </div>
     </div>
 
-    <div class="rounded-xl border border-gray-100 bg-white p-2 shadow-sm">
+    <div class="rounded-xl border border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-800 p-2 shadow-sm">
       <div class="flex flex-wrap gap-2">
         <button
           type="button"
@@ -146,17 +146,17 @@
       </div>
     </div>
 
-    <div class="overflow-hidden rounded-xl border border-gray-100 bg-white shadow-sm">
-      <div class="flex items-center justify-between border-b border-gray-100 px-6 py-4">
-        <h2 class="text-lg font-semibold text-gray-800">Data Transaksi</h2>
+    <div class="overflow-hidden rounded-xl border border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm">
+      <div class="flex items-center justify-between border-b border-gray-100 dark:border-gray-700 px-6 py-4">
+        <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-100">Data Transaksi</h2>
         <div class="flex items-center gap-3">
-          <span class="text-xs text-gray-500">{{ meta?.totalItems || 0 }} data ditemukan</span>
+          <span class="text-xs text-gray-500 dark:text-gray-400">{{ meta?.totalItems || 0 }} data ditemukan</span>
         </div>
       </div>
 
       <div class="overflow-x-auto">
-        <table class="min-w-full divide-y divide-gray-200 text-sm">
-          <thead class="bg-gray-50 text-xs uppercase tracking-wide text-gray-600">
+        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 text-sm">
+          <thead class="bg-gray-50 dark:bg-gray-700/50 text-xs uppercase tracking-wide text-gray-600 dark:text-gray-400">
             <tr>
               <th class="px-6 py-3 text-left">No</th>
               <th class="px-6 py-3 text-left">Tanggal</th>
@@ -168,17 +168,17 @@
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-100">
-            <tr v-if="pending" class="hover:bg-gray-50">
+            <tr v-if="pending" class="hover:bg-gray-50 dark:hover:bg-gray-700/50 dark:bg-gray-700/50">
               <td colspan="7" class="px-6 py-8 text-center">
                 <Icon icon="lucide:loader-circle" class="mx-auto h-8 w-8 animate-spin text-emerald-600" />
               </td>
             </tr>
             <tr v-else-if="transactions.length === 0">
-              <td colspan="7" class="px-6 py-8 text-center text-sm text-gray-500">Tidak ada data yang cocok dengan filter.</td>
+              <td colspan="7" class="px-6 py-8 text-center text-sm text-gray-500 dark:text-gray-400">Tidak ada data yang cocok dengan filter.</td>
             </tr>
-            <tr v-else v-for="(row, index) in transactions" :key="row.id" class="hover:bg-gray-50">
-              <td class="px-6 py-4 text-gray-500">{{ (currentPage - 1) * pageSize + index + 1 }}</td>
-              <td class="px-6 py-4 text-gray-900">{{ formatDate(row.tanggal) }}</td>
+            <tr v-else v-for="(row, index) in transactions" :key="row.id" class="hover:bg-gray-50 dark:hover:bg-gray-700/50 dark:bg-gray-700/50">
+              <td class="px-6 py-4 text-gray-500 dark:text-gray-400">{{ (currentPage - 1) * pageSize + index + 1 }}</td>
+              <td class="px-6 py-4 text-gray-900 dark:text-gray-100">{{ formatDate(row.tanggal) }}</td>
               <td class="px-6 py-4">
                 <span
                   :class="[
@@ -189,14 +189,14 @@
                   {{ row.jenisKas?.nama || '-' }}
                 </span>
               </td>
-              <td class="px-6 py-4 text-gray-800">{{ row.uraian }}</td>
+              <td class="px-6 py-4 text-gray-800 dark:text-gray-100">{{ row.uraian }}</td>
               <td class="px-6 py-4 text-right font-semibold" :class="getDebit(row) > 0 ? 'text-emerald-600' : 'text-gray-400'">
                 {{ formatCurrency(getDebit(row)) }}
               </td>
               <td class="px-6 py-4 text-right font-semibold" :class="getKredit(row) > 0 ? 'text-red-600' : 'text-gray-400'">
                 {{ formatCurrency(getKredit(row)) }}
               </td>
-              <td class="px-6 py-4 text-center text-gray-800">
+              <td class="px-6 py-4 text-center text-gray-800 dark:text-gray-100">
                 {{ row.mediaPembayaran?.nama || '-' }}
               </td>
             </tr>
@@ -221,10 +221,10 @@
     >
       <div class="space-y-4">
         <div>
-          <label class="mb-1 block text-xs font-semibold uppercase tracking-wide text-gray-500">Mode Export</label>
+          <label class="mb-1 block text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">Mode Export</label>
           <select
             v-model="exportMode"
-            class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-800 outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+            class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-800 dark:text-gray-100 outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
           >
             <option value="monthly">Per Bulan (1 Sheet)</option>
             <option value="yearly">Per Tahun (12 Sheet)</option>
@@ -232,20 +232,20 @@
         </div>
 
         <div>
-          <label class="mb-1 block text-xs font-semibold uppercase tracking-wide text-gray-500">Tahun</label>
+          <label class="mb-1 block text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">Tahun</label>
           <select
             v-model="exportYear"
-            class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-800 outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+            class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-800 dark:text-gray-100 outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
           >
             <option v-for="year in exportYears" :key="year" :value="year">{{ year }}</option>
           </select>
         </div>
 
         <div v-if="exportMode === 'monthly'">
-          <label class="mb-1 block text-xs font-semibold uppercase tracking-wide text-gray-500">Bulan</label>
+          <label class="mb-1 block text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">Bulan</label>
           <select
             v-model="exportMonth"
-            class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-800 outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+            class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-800 dark:text-gray-100 outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
           >
             <option v-for="month in monthOptions" :key="month.value" :value="month.value">{{ month.label }}</option>
           </select>

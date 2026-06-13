@@ -2,113 +2,113 @@
   <div>
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
       <div>
-        <h1 class="text-2xl font-bold text-gray-800">Catatan Keuangan</h1>
-        <p class="text-gray-600">Kelola Catatan Keuangan Masjid</p>
+        <h1 class="text-2xl font-bold text-gray-800 dark:text-white">Catatan Keuangan</h1>
+        <p class="text-gray-600 dark:text-gray-400">Kelola Catatan Keuangan Masjid</p>
       </div>
       <BaseButton text="Tambah Keuangan" variant="primary" :fullWidth="false" icon="lucide:plus"
         @click="openCreateModal" />
     </div>
 
     <!-- Stats/Tabs -->
-    <div class="mb-6 flex flex-wrap gap-2 rounded-xl bg-white p-2 shadow-sm border border-gray-100">
+    <div class="mb-6 flex flex-wrap gap-2 rounded-xl bg-white dark:bg-gray-800 p-2 shadow-sm border border-gray-100 dark:border-gray-700">
       <button type="button" class="inline-flex items-center rounded-lg px-4 py-2 text-sm font-medium transition-colors"
         :class="activeTab === 'active'
           ? 'bg-emerald-600 text-white shadow-sm'
-          : 'text-gray-600 hover:bg-gray-100'" @click="activeTab = 'active'">
+          : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'" @click="activeTab = 'active'">
         Aktif
-        <span class="ml-2 rounded-full bg-white/20 px-2 py-0.5 text-xs">{{ activeMeta?.totalItems || 0 }}</span>
+        <span class="ml-2 rounded-full bg-white/20 dark:bg-gray-700 px-2 py-0.5 text-xs" :class="activeTab !== 'active' ? 'bg-gray-100 text-gray-500 dark:text-gray-400' : ''">{{ activeMeta?.totalItems || 0 }}</span>
       </button>
       <button type="button" class="inline-flex items-center rounded-lg px-4 py-2 text-sm font-medium transition-colors"
         :class="activeTab === 'draft'
           ? 'bg-amber-500 text-white shadow-sm'
-          : 'text-gray-600 hover:bg-gray-100'" @click="activeTab = 'draft'">
+          : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'" @click="activeTab = 'draft'">
         Draft
-        <span class="ml-2 rounded-full bg-white/20 px-2 py-0.5 text-xs">{{ draftMeta?.totalItems || 0 }}</span>
+        <span class="ml-2 rounded-full bg-white/20 dark:bg-gray-700 px-2 py-0.5 text-xs" :class="activeTab !== 'draft' ? 'bg-gray-100 text-gray-500 dark:text-gray-400' : ''">{{ draftMeta?.totalItems || 0 }}</span>
       </button>
     </div>
 
     <!-- Search / Filter -->
-    <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 mb-6 flex items-center">
+    <div class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 mb-6 flex items-center">
       <div class="relative w-full max-w-md">
         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-          <SearchIcon class="h-5 w-5 text-gray-400" />
+          <SearchIcon class="h-5 w-5 text-gray-400 dark:text-gray-500 dark:text-gray-400" />
         </div>
         <input v-model="searchQuery" type="text"
-          class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm"
+          class="block w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg leading-5 bg-white dark:bg-gray-900 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm transition-colors"
           placeholder="Cari uraian keuangan...">
       </div>
     </div>
 
     <!-- Table -->
-    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col">
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden flex flex-col">
       <div class="overflow-x-auto flex-1">
-        <table class="min-w-full divide-y divide-gray-200">
-          <thead class="bg-gray-50">
+        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+          <thead class="bg-gray-50 dark:bg-gray-700/50">
             <tr>
               <th scope="col"
-                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-16">No</th>
-              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider w-16">No</th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                 Tanggal</th>
-              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                 Uraian</th>
-              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                 Sumber (Jenis Kas)</th>
-              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                 Media Pembayaran</th>
-              <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                 Debet (Masuk)</th>
-              <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                 Kredit (Keluar)</th>
-              <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                 Aksi</th>
             </tr>
           </thead>
-          <tbody class="bg-white divide-y divide-gray-200">
+          <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
             <tr v-if="filteredList.length === 0">
-              <td colspan="8" class="px-6 py-8 text-center text-gray-500 text-sm">
-                  <div class="flex flex-col items-center justify-center text-center text-gray-500 text-sm">
-                  <Icon icon="lucide:file-question" class="w-12 h-12 text-gray-300 mb-2" />
+              <td colspan="8" class="px-6 py-8 text-center text-gray-500 dark:text-gray-400 text-sm">
+                  <div class="flex flex-col items-center justify-center text-center text-gray-500 dark:text-gray-400 text-sm">
+                  <Icon icon="lucide:file-question" class="w-12 h-12 text-gray-300 dark:text-gray-600 dark:text-gray-400 mb-2" />
                   {{ activeTab === 'active' ? 'Belum ada data keuangan aktif.' : 'Tidak ada data keuangan draft.' }}
                 </div>
               </td>
             </tr>
-            <tr v-else v-for="(item, index) in filteredList" :key="item.id || index" class="hover:bg-gray-50">
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ ((currentParams.page - 1) *
+            <tr v-else v-for="(item, index) in filteredList" :key="item.id || index" class="hover:bg-gray-50 dark:bg-gray-700/50 dark:hover:bg-gray-700/50">
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{{ ((currentParams.page - 1) *
                 currentParams.limit) + index + 1 }}</td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ formatDate(item.tanggal) }}</td>
-              <td class="px-6 py-4 text-sm text-gray-900">{{ item.uraian }}</td>
-              <td class="px-6 py-4 text-sm text-gray-500">
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{{ formatDate(item.tanggal) }}</td>
+              <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-100">{{ item.uraian }}</td>
+              <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">
                 <span class="inline-flex px-2 py-1 rounded-md text-xs font-medium" :class="Number(item.nominal || 0) > 0
-                  ? 'bg-emerald-100 text-emerald-700'
+                  ? 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300'
                   : Number(item.nominal || 0) > 0
-                    ? 'bg-red-100 text-red-700'
-                    : 'bg-gray-100 text-gray-600'">
+                    ? 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300'
+                    : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300'">
                   {{ item.jenisKas?.nama || 'Uncategorized' }}
                 </span>
               </td>
-              <td class="px-6 py-4 text-sm text-gray-500">
-                <span class="inline-flex px-2 py-1 rounded-md text-xs font-medium bg-blue-50 text-blue-700">
+              <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">
+                <span class="inline-flex px-2 py-1 rounded-md text-xs font-medium bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300">
                   {{ item.mediaPembayaran?.nama || 'Belum Diatur' }}
                 </span>
               </td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-emerald-600 text-right" :class="getDebit(item) <= 0 && 'text-gray-400'">{{
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-emerald-600 dark:text-emerald-400 text-right" :class="getDebit(item) <= 0 && 'text-gray-400 dark:text-gray-600 dark:text-gray-400'">{{
                 formatCurrency(getDebit(item)) }}</td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-red-600 text-right" :class="getKredit(item) <= 0 && 'text-gray-400'">{{
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-red-600 dark:text-red-400 text-right" :class="getKredit(item) <= 0 && 'text-gray-400 dark:text-gray-600 dark:text-gray-400'">{{
                 formatCurrency(getKredit(item)) }}</td>
               <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                 <button v-if="activeTab === 'active'" @click="openEditModal(item)"
-                  class="text-blue-600 hover:text-blue-800 p-1.5 hover:bg-blue-50 rounded-lg mr-2 transition-colors outline-none focus:ring-2 focus:ring-blue-500/50"
+                  class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 p-1.5 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-lg mr-2 transition-colors outline-none focus:ring-2 focus:ring-blue-500/50"
                   title="Edit">
                   <PencilIcon class="w-4 h-4" />
                 </button>
                 <button v-if="activeTab === 'draft'" @click="openDeleteModal(item, 'restore')"
-                  class="text-emerald-700 hover:text-emerald-800 p-1.5 hover:bg-emerald-50 rounded-lg mr-2 transition-colors outline-none focus:ring-2 focus:ring-emerald-500/50"
+                  class="text-emerald-700 dark:text-emerald-500 hover:text-emerald-800 dark:hover:text-emerald-400 p-1.5 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 rounded-lg mr-2 transition-colors outline-none focus:ring-2 focus:ring-emerald-500/50"
                   title="Pulihkan">
                   <Icon icon="lucide:rotate-ccw" class="w-4 h-4" />
                 </button>
                 <button
                   @click="activeTab === 'draft' ? openDeleteModal(item, 'permanent') : openDeleteModal(item, 'archive')"
-                  class="text-amber-700 hover:text-amber-800 p-1.5 hover:bg-amber-50 rounded-lg transition-colors outline-none focus:ring-2 focus:ring-amber-500/50"
+                  class="text-amber-700 dark:text-amber-500 hover:text-amber-800 dark:hover:text-amber-400 p-1.5 hover:bg-amber-50 dark:hover:bg-amber-900/30 rounded-lg transition-colors outline-none focus:ring-2 focus:ring-amber-500/50"
                   :title="activeTab === 'active' ? 'Arsipkan' : 'Hapus Permanen'">
                   <Icon icon="lucide:trash-2" class="w-4 h-4" />
                 </button>
@@ -120,9 +120,9 @@
 
       <!-- Pagination Component -->
       <BasePagination v-if="activeTab === 'active'" v-model="activeParams.page" @update:modelValue="refreshActive"
-        :meta="activeMeta" class="rounded-none border-t border-gray-100" />
+        :meta="activeMeta" class="rounded-none border-t border-gray-100 dark:border-gray-700" />
       <BasePagination v-if="activeTab === 'draft'" v-model="draftParams.page" @update:modelValue="refreshDraft"
-        :meta="draftMeta" class="rounded-none border-t border-gray-100" />
+        :meta="draftMeta" class="rounded-none border-t border-gray-100 dark:border-gray-700" />
     </div>
 
     <KeuanganEditModal v-model="showEditModal" :editData="editData" @saved="refreshAll" />

@@ -11,7 +11,7 @@
     <div v-if="pendingSejarah" class="flex justify-center my-10">
       <div class="animate-spin rounded-full h-12 w-12 border-b-4 border-primary"></div>
     </div>
-    <div v-else-if="!sejarahContent" class="text-center text-gray-500 glass-card p-10 rounded-2xl">
+    <div v-else-if="!sejarahContent" class="text-center text-gray-500 dark:text-gray-400 glass-card p-10 rounded-2xl">
       Belum ada data sejarah saat ini.
     </div>
     <div v-else class="glass-card rounded-3xl overflow-hidden shadow-xl shadow-emerald-900/5">

@@ -13,6 +13,8 @@
       <LandingHeader />
       <LandingHero />
 
+      <LandingRekening />
+
       <div class="py-20">
         <div class="container mx-auto px-4 md:px-12">
           <LandingJadwal />

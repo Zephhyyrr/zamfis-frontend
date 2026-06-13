@@ -8,22 +8,22 @@
 
                 <Transition name="zoom" appear>
                     <div v-if="modelValue"
-                        :class="['relative w-full bg-white rounded-2xl shadow-xl overflow-hidden max-h-[90vh] flex flex-col', maxWidth]" role="dialog">
+                        :class="['relative w-full bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden max-h-[90vh] flex flex-col', maxWidth]" role="dialog">
 
-                        <div class="px-6 py-5 border-b border-gray-100 flex items-center justify-between">
+                        <div class="px-6 py-5 border-b border-gray-100 dark:border-gray-700 flex items-center justify-between">
                             <div class="flex items-center gap-3">
                                 <div v-if="icon" :class="iconContainerClass">
                                     <Icon :icon="icon" class="w-5 h-5" />
                                 </div>
-                                <h3 class="text-lg font-semibold text-secondary">{{ title }}</h3>
+                                <h3 class="text-lg font-semibold text-secondary dark:text-white">{{ title }}</h3>
                             </div>
                             <button @click="close"
-                                class="text-font-color/50 hover:text-font-color hover:bg-gray-100 p-2 rounded-full transition-colors">
+                                class="text-font-color/50 dark:text-gray-400 hover:text-font-color dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 p-2 rounded-full transition-colors">
                                 <Icon icon="lucide:x" class="w-5 h-5" />
                             </button>
                         </div>
 
-                        <div class="px-6 py-6 text-font-color text-sm leading-relaxed overflow-y-auto min-h-0">
+                        <div class="px-6 py-6 text-font-color dark:text-gray-300 text-sm leading-relaxed overflow-y-auto min-h-0">
                             <div v-if="isLoading" class="flex items-center justify-center py-8">
                                 <Icon icon="lucide:loader-circle" class="w-8 h-8 animate-spin text-primary" />
                             </div>
@@ -32,10 +32,10 @@
                             </div>
                         </div>
 
-                        <div class="px-6 py-4 bg-gray-50 flex items-center justify-end gap-3 rounded-b-2xl">
+                        <div class="px-6 py-4 bg-gray-50 dark:bg-gray-700/50 flex items-center justify-end gap-3 rounded-b-2xl border-t border-gray-100 dark:border-gray-700">
                             <slot name="footer">
                                 <button @click="close" :disabled="isLoading"
-                                    class="px-4 py-2 text-sm font-medium text-font-color hover:bg-gray-200 bg-gray-100 rounded-xl transition-colors outline-none disabled:opacity-50 disabled:cursor-not-allowed">
+                                    class="px-4 py-2 text-sm font-medium text-font-color dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 bg-gray-100 dark:bg-gray-700 rounded-xl transition-colors outline-none disabled:opacity-50 disabled:cursor-not-allowed">
                                     Batal
                                 </button>
 

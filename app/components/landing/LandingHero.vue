@@ -18,7 +18,7 @@
       </div>
       <div class="flex justify-center mb-6">
         <span
-          class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold tracking-widest uppercase text-emerald-300 border border-emerald-400/30 bg-white/5 backdrop-blur-md">
+          class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold tracking-widest uppercase text-emerald-300 border border-emerald-400/30 bg-white dark:bg-gray-800/5 backdrop-blur-md">
           <span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse inline-block"></span>
           Sistem Informasi Surau Digital
         </span>

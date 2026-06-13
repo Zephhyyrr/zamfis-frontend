@@ -2,32 +2,32 @@
   <div class="max-w-2xl mx-auto">
     <div class="mb-6 flex items-center gap-4">
       <NuxtLink to="/dashboard/keuangan" class="p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors">
-        <Icon icon="lucide:arrow-left" class="w-5 h-5 text-gray-600" />
+        <Icon icon="lucide:arrow-left" class="w-5 h-5 text-gray-600 dark:text-gray-400" />
       </NuxtLink>
       <div>
-        <h1 class="text-2xl font-bold text-gray-800">Tambah Data Keuangan</h1>
-        <p class="text-gray-600">Isi formulir untuk mencatat data keuangan baru</p>
+        <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-100">Tambah Data Keuangan</h1>
+        <p class="text-gray-600 dark:text-gray-400">Isi formulir untuk mencatat data keuangan baru</p>
       </div>
     </div>
 
     <BaseAlert v-if="errorMessage" :message="errorMessage" type="error" class="mb-6" />
 
-    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+    <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
       <form @submit.prevent="submitForm">
         <div class="space-y-6">
           <div>
             <label class="block text-sm font-medium text-gray-700">Tanggal</label>
             <input v-model="form.tanggal" type="date" required :disabled="isSubmitting"
-              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50" />
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50" />
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700">Uraian</label>
             <div class="mt-1 flex rounded-md shadow-sm">
               <input v-model="form.uraian" type="text" required :disabled="isSubmitting" list="favorite-uraian-list"
-                class="flex-1 block w-full px-3 py-2 border border-gray-300 rounded-none rounded-l-md focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50"
+                class="flex-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-none rounded-l-md focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50"
                 placeholder="Contoh: Pembelian alat tulis" autocomplete="off" />
               <button type="button" @click="saveAsFavorite" :disabled="!form.uraian || isSavingFavorite"
-                class="inline-flex items-center px-3 py-2 border border-l-0 border-gray-300 rounded-r-md bg-gray-50 text-gray-600 hover:bg-gray-100 hover:text-emerald-600 transition-colors disabled:opacity-50"
+                class="inline-flex items-center px-3 py-2 border border-l-0 border-gray-300 dark:border-gray-600 rounded-r-md bg-gray-50 dark:bg-gray-700/50 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-emerald-600 transition-colors disabled:opacity-50"
                 title="Simpan uraian ini sebagai Favorit">
                 <Icon :icon="isSavingFavorite ? 'lucide:loader-circle' : 'lucide:star'"
                   :class="['w-4 h-4', isSavingFavorite && 'animate-spin']" />
@@ -50,7 +50,7 @@
           <div>
             <label class="block text-sm font-medium text-gray-700">Jenis Kas</label>
             <select v-model.number="form.jenisKasId" required :disabled="isSubmitting"
-              class="mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50">
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50">
               <option :value="0">-- Pilih Jenis Kas --</option>
               <option v-for="ket in jenisKasList" :key="ket.id" :value="ket.id">{{ ket.nama }}</option>
             </select>
@@ -58,7 +58,7 @@
           <div>
             <label class="block text-sm font-medium text-gray-700">Media Pembayaran</label>
             <select v-model.number="form.mediaPembayaranId" required :disabled="isSubmitting"
-              class="mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50">
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50">
               <option :value="0">-- Pilih Media Pembayaran --</option>
               <option v-for="mp in mediaPembayaranList" :key="mp.id" :value="mp.id">{{ mp.nama }}</option>
             </select>
@@ -66,7 +66,7 @@
           <div>
             <label class="block text-sm font-medium text-gray-700">Tipe Transaksi</label>
             <select v-model="form.tipe"
-              class="mt-1 block w-full border border-gray-300 bg-white rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm">
+              class="mt-1 block w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm">
               <option value="uang_masuk">Uang Masuk</option>
               <option value="uang_keluar">Uang Keluar</option>
             </select>
@@ -75,21 +75,21 @@
             <label class="block text-sm font-medium text-gray-700">Debet (Uang Masuk)</label>
             <input :value="form.debitText" @input="handleDebitInput" type="text" inputmode="numeric"
               :disabled="isSubmitting"
-              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50"
               placeholder="Rp. 0" />
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700">Kredit (Uang Keluar)</label>
             <input :value="form.kreditText" @input="handleKreditInput" type="text" inputmode="numeric"
               :disabled="isSubmitting"
-              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50"
               placeholder="Rp. 0" />
           </div>
         </div>
 
         <div class="mt-8 flex justify-end items-center gap-3">
           <NuxtLink to="/dashboard/keuangan"
-            class="px-4 py-2 bg-white text-gray-700 border border-gray-300 rounded-xl hover:bg-gray-50 font-medium transition-colors">
+            class="px-4 py-2 bg-white dark:bg-gray-800 text-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700/50 font-medium transition-colors">
             Batal
           </NuxtLink>
           <BaseButton type="submit" :isLoading="isSubmitting" text="Simpan Data" icon="lucide:save"

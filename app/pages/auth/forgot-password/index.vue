@@ -5,14 +5,14 @@
       <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-emerald-500/20 border border-emerald-500/30 mb-4 backdrop-blur-sm logo-glow">
         <Icon icon="lucide:building-2" class="w-8 h-8 text-primary" />
       </div>
-      <h1 class="text-2xl font-bold text-secondary mb-1">Surau Zam-Zam</h1>
-      <p class="text-font-color text-sm">Sistem Peramalan Donasi Masjid</p>
+      <h1 class="text-2xl font-bold text-secondary dark:text-white mb-1">Surau Zam-Zam</h1>
+      <p class="text-font-color dark:text-gray-300 text-sm">Sistem Peramalan Donasi Masjid</p>
     </div>
     <div class="auth-card rounded-2xl p-8">
       <template v-if="!isSubmitted">
         <div class="mb-6">
-          <h2 class="text-secondary text-xl font-semibold mb-1">Lupa Password</h2>
-          <p class="text-font-color text-sm leading-relaxed">
+          <h2 class="text-secondary dark:text-white text-xl font-semibold mb-1">Lupa Password</h2>
+          <p class="text-font-color dark:text-gray-300 text-sm leading-relaxed">
             Masukkan alamat email yang terdaftar. Kami akan mengirimkan tautan untuk mengatur ulang password Anda.
           </p>
         </div>
@@ -44,7 +44,7 @@
         <div class="mt-6 text-center">
           <NuxtLink
             to="/auth/login"
-            class="inline-flex items-center gap-1.5 text-sm text-primary hover:text-secondary transition-colors duration-200"
+            class="inline-flex items-center gap-1.5 text-sm text-primary hover:text-secondary dark:hover:text-emerald-400 dark:text-white transition-colors duration-200"
           >
             <Icon icon="lucide:arrow-left" class="w-4 h-4" />
             Kembali ke halaman masuk
@@ -58,14 +58,14 @@
             <Icon icon="lucide:circle-check-big" class="w-8 h-8 text-emerald-400 success-icon" />
           </div>
 
-          <h2 class="text-secondary text-xl font-semibold mb-2">Email Terkirim!</h2>
-          <p class="text-font-color text-sm leading-relaxed mb-2">
+          <h2 class="text-secondary dark:text-white text-xl font-semibold mb-2">Email Terkirim!</h2>
+          <p class="text-font-color dark:text-gray-300 text-sm leading-relaxed mb-2">
             Kami telah mengirimkan tautan reset password ke:
           </p>
           <p class="text-success font-medium text-sm mb-6 break-all">
             {{ email }}
           </p>
-          <p class="text-font-color/70 text-xs leading-relaxed mb-6">
+          <p class="text-font-color dark:text-gray-300/70 text-xs leading-relaxed mb-6">
             Periksa folder inbox dan spam email Anda. Tautan akan kedaluwarsa dalam 60 menit.
           </p>
 
@@ -86,7 +86,7 @@
 
             <NuxtLink
               to="/auth/login"
-              class="block w-full py-3 px-4 rounded-xl text-sm font-medium text-font-color hover:text-secondary hover:bg-font-color/5 transition-all duration-200 text-center"
+              class="block w-full py-3 px-4 rounded-xl text-sm font-medium text-font-color hover:text-secondary dark:hover:text-emerald-400 dark:text-white hover:bg-font-color/5 transition-all duration-200 text-center"
             >
               <span class="inline-flex items-center gap-1.5">
                 <Icon icon="lucide:arrow-left" class="w-4 h-4" />

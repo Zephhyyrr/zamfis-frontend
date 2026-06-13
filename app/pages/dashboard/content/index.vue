@@ -2,39 +2,39 @@
   <div>
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
       <div>
-        <h1 class="text-2xl font-bold text-gray-800">Manajemen Konten</h1>
-        <p class="text-gray-600">Kelola artikel, berita, atau konten informasi terbaru</p>
+        <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-100">Manajemen Konten</h1>
+        <p class="text-gray-600 dark:text-gray-400">Kelola artikel, berita, atau konten informasi terbaru</p>
       </div>
       <BaseButton text="Tambah Konten" variant="primary" :fullWidth="false" icon="lucide:plus" @click="openCreateModal" />
     </div>
 
     <!-- Search Bar -->
-    <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 mb-6 flex items-center">
+    <div class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 mb-6 flex items-center">
       <div class="relative w-full max-w-md">
         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
           <SearchIcon class="h-5 w-5 text-gray-400" />
         </div>
         <input v-model="searchQuery" type="text"
-          class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm"
+          class="block w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg leading-5 bg-white dark:bg-gray-800 placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm"
           placeholder="Cari judul konten...">
       </div>
     </div>
 
     <!-- Tabs -->
-    <div class="mb-6 flex flex-wrap gap-2 rounded-xl bg-white p-2 shadow-sm border border-gray-100">
+    <div class="mb-6 flex flex-wrap gap-2 rounded-xl bg-white dark:bg-gray-800 p-2 shadow-sm border border-gray-100 dark:border-gray-700">
       <button type="button" class="inline-flex items-center rounded-lg px-4 py-2 text-sm font-medium transition-colors"
         :class="activeTab === 'active'
           ? 'bg-emerald-600 text-white shadow-sm'
-          : 'text-gray-600 hover:bg-gray-100'" @click="activeTab = 'active'">
+          : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'" @click="activeTab = 'active'">
         Aktif
-        <span class="ml-2 rounded-full bg-white/20 px-2 py-0.5 text-xs">{{ activeMeta?.totalItems || 0 }}</span>
+        <span class="ml-2 rounded-full bg-white dark:bg-gray-800/20 px-2 py-0.5 text-xs">{{ activeMeta?.totalItems || 0 }}</span>
       </button>
       <button type="button" class="inline-flex items-center rounded-lg px-4 py-2 text-sm font-medium transition-colors"
         :class="activeTab === 'draft'
           ? 'bg-amber-500 text-white shadow-sm'
-          : 'text-gray-600 hover:bg-gray-100'" @click="activeTab = 'draft'">
+          : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'" @click="activeTab = 'draft'">
         Konten Dihapus
-        <span class="ml-2 rounded-full bg-white/20 px-2 py-0.5 text-xs">{{ draftMeta?.totalItems || 0 }}</span>
+        <span class="ml-2 rounded-full bg-white dark:bg-gray-800/20 px-2 py-0.5 text-xs">{{ draftMeta?.totalItems || 0 }}</span>
       </button>
     </div>
 
@@ -50,38 +50,38 @@
     </div>
 
     <!-- Table Section -->
-    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
       <div class="overflow-x-auto">
-        <table class="min-w-full divide-y divide-gray-200">
-          <thead class="bg-gray-50">
+        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+          <thead class="bg-gray-50 dark:bg-gray-700/50">
             <tr>
-              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-16">No</th>
-              <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Judul</th>
-              <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Jenis</th>
-              <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Media</th>
-              <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</th>
-              <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider w-16">No</th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Judul</th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Jenis</th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Media</th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Status</th>
+              <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Aksi</th>
             </tr>
           </thead>
-          <tbody class="bg-white divide-y divide-gray-200">
-            <tr v-if="isTabPending" class="hover:bg-gray-50">
+          <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+            <tr v-if="isTabPending" class="hover:bg-gray-50 dark:hover:bg-gray-700/50 dark:bg-gray-700/50">
               <td colspan="6" class="px-6 py-8 text-center">
                 <Icon icon="lucide:loader-circle" class="w-8 h-8 animate-spin text-emerald-600 mx-auto" />
               </td>
             </tr>
             <tr v-else-if="filteredList.length === 0">
-              <td colspan="6" class="px-6 py-8 text-center text-gray-500">
+              <td colspan="6" class="px-6 py-8 text-center text-gray-500 dark:text-gray-400">
                 <div class="flex flex-col items-center justify-center">
                   <Icon icon="lucide:file-question" class="w-12 h-12 text-gray-300 mb-2" />
                   <p>{{ activeTab === 'active' ? 'Tidak ada data konten.' : 'Tidak ada konten di dalam draft.' }}</p>
                 </div>
               </td>
             </tr>
-            <tr v-else v-for="(item, index) in filteredList" :key="item.id || index" class="hover:bg-gray-50">
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ getRowNumber(index) }}</td>
+            <tr v-else v-for="(item, index) in filteredList" :key="item.id || index" class="hover:bg-gray-50 dark:hover:bg-gray-700/50 dark:bg-gray-700/50">
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{{ getRowNumber(index) }}</td>
               <td class="px-6 py-4">
-                  <div class="text-sm font-medium text-gray-900 line-clamp-1">{{ item.judul }}</div>
-                  <div class="text-xs text-gray-500 mt-1 truncate max-w-md">{{ stripHTML(item.isi) }}</div>
+                  <div class="text-sm font-medium text-gray-900 dark:text-gray-100 line-clamp-1">{{ item.judul }}</div>
+                  <div class="text-xs text-gray-500 dark:text-gray-400 mt-1 truncate max-w-md">{{ stripHTML(item.isi) }}</div>
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
                 <span class="px-2.5 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-emerald-100 text-emerald-800 capitalize">
@@ -90,7 +90,7 @@
               </td>
               <td class="px-6 py-4">
                   <div v-if="item.gambarUrl" class="w-12 h-12 flex-shrink-0 relative">
-                    <img :src="resolveAssetUrl(item.gambarUrl)" alt="Media" class="w-full h-full rounded object-cover border border-gray-200" />
+                    <img :src="resolveAssetUrl(item.gambarUrl)" alt="Media" class="w-full h-full rounded object-cover border border-gray-200 dark:border-gray-700" />
                     <!-- Video icon badge if both exist -->
                     <div v-if="item.videoUrl" class="absolute -bottom-1 -right-1 bg-emerald-500 rounded-full p-0.5 border border-white">
                       <Icon icon="lucide:film" class="w-3 h-3 text-white" />
@@ -102,7 +102,7 @@
                   </div>
                   <!-- No media -->
                   <div v-else class="flex flex-col items-center justify-center space-y-1">
-                    <div class="w-12 h-12 bg-gray-100 rounded flex items-center justify-center border border-gray-200">
+                    <div class="w-12 h-12 bg-gray-100 rounded flex items-center justify-center border border-gray-200 dark:border-gray-700">
                       <Icon icon="lucide:image-off" class="w-5 h-5 text-gray-400" />
                     </div>
                     <span class="text-[10px] text-gray-400 font-medium whitespace-nowrap">Tidak ada media</span>
@@ -132,8 +132,8 @@
         </table>
       </div>
       <!-- General Pagination Component -->
-      <BasePagination v-if="activeTab === 'active'" v-model="activeParams.page" @update:modelValue="refresh" :meta="activeMeta" class="rounded-none border-t border-gray-100" />
-      <BasePagination v-if="activeTab === 'draft'" v-model="draftParams.page" @update:modelValue="refreshDraft" :meta="draftMeta" class="rounded-none border-t border-gray-100" />
+      <BasePagination v-if="activeTab === 'active'" v-model="activeParams.page" @update:modelValue="refresh" :meta="activeMeta" class="rounded-none border-t border-gray-100 dark:border-gray-700" />
+      <BasePagination v-if="activeTab === 'draft'" v-model="draftParams.page" @update:modelValue="refreshDraft" :meta="draftMeta" class="rounded-none border-t border-gray-100 dark:border-gray-700" />
     </div>
 
     <FeaturesContentEditModal

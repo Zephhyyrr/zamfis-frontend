@@ -5,14 +5,14 @@
       <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-emerald-500/20 border border-emerald-500/30 mb-4 backdrop-blur-sm logo-glow">
         <Icon icon="lucide:building-2" class="w-8 h-8 text-primary" />
       </div>
-      <h1 class="text-2xl font-bold text-secondary mb-1">Surau Zam-Zam</h1>
-      <p class="text-font-color text-sm">Sistem Peramalan Donasi Masjid</p>
+      <h1 class="text-2xl font-bold text-secondary dark:text-white mb-1">Surau Zam-Zam</h1>
+      <p class="text-font-color dark:text-gray-300 text-sm">Sistem Peramalan Donasi Masjid</p>
     </div>
 
     <div class="auth-card rounded-2xl p-8">
       <div class="mb-6">
-        <h2 class="text-secondary text-xl font-semibold mb-1">Selamat Datang</h2>
-        <p class="text-font-color text-sm">Masuk ke akun Anda untuk melanjutkan</p>
+        <h2 class="text-secondary dark:text-white text-xl font-semibold mb-1">Selamat Datang</h2>
+        <p class="text-font-color dark:text-gray-300 text-sm">Masuk ke akun Anda untuk melanjutkan</p>
       </div>
 
       <Transition name="shake">
@@ -39,11 +39,11 @@
           placeholder="Masukkan password" autocomplete="current-password" :required="true" :disabled="isLoading" />
 
         <div class="flex items-center justify-between">
-          <NuxtLink to="/" class="text-sm text-primary hover:text-secondary transition-colors duration-200 focus:outline-none focus:underline">
+          <NuxtLink to="/" class="text-sm text-primary hover:text-secondary dark:hover:text-emerald-400 dark:text-white transition-colors duration-200 focus:outline-none focus:underline">
             Kembali ke Home
           </NuxtLink>
           <NuxtLink to="/auth/forgot-password"
-            class="text-sm text-primary hover:text-secondary transition-colors duration-200 focus:outline-none focus:underline">
+            class="text-sm text-primary hover:text-secondary dark:hover:text-emerald-400 dark:text-white transition-colors duration-200 focus:outline-none focus:underline">
             Lupa password?
           </NuxtLink>
         </div>

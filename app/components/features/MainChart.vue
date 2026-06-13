@@ -1,18 +1,18 @@
 <template>
-  <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 h-96 relative">
+  <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 h-96 relative">
     <div class="flex items-start justify-between mb-4">
       <div>
-        <h3 class="text-lg font-semibold text-gray-800">{{ title }}</h3>
+        <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100">{{ title }}</h3>
 
         <!-- Metrics Display -->
         <div class="mt-2 flex items-center space-x-4">
-          <div class="bg-gray-50 px-3 py-1.5 rounded-lg border border-gray-100">
-            <span class="text-xs text-gray-500 block">WMAPE</span>
+          <div class="bg-gray-50 dark:bg-gray-700/50 px-3 py-1.5 rounded-lg border border-gray-100 dark:border-gray-700">
+            <span class="text-xs text-gray-500 dark:text-gray-400 block">WMAPE</span>
             <span :class="['text-sm font-bold', type === 'income' ? 'text-emerald-600' : 'text-red-600']">{{ wmape
               }}%</span>
           </div>
-          <div class="bg-gray-50 px-3 py-1.5 rounded-lg border border-gray-100">
-            <span class="text-xs text-gray-500 block">RMSE</span>
+          <div class="bg-gray-50 dark:bg-gray-700/50 px-3 py-1.5 rounded-lg border border-gray-100 dark:border-gray-700">
+            <span class="text-xs text-gray-500 dark:text-gray-400 block">RMSE</span>
             <div class="flex flex-col">
               <span :class="['text-sm font-bold', type === 'income' ? 'text-emerald-600' : 'text-red-600']">{{
                 formatCurrency(rmse) }}</span>
@@ -23,11 +23,11 @@
       </div>
 
       <div class="flex items-center space-x-2">
-        <span class="flex items-center text-xs text-gray-500">
+        <span class="flex items-center text-xs text-gray-500 dark:text-gray-400">
           <span :class="['w-3 h-3 rounded-full mr-1', type === 'income' ? 'bg-emerald-500' : 'bg-red-500']"></span>
           Aktual
         </span>
-        <span class="flex items-center text-xs text-gray-500">
+        <span class="flex items-center text-xs text-gray-500 dark:text-gray-400">
           <span :class="['w-3 h-3 rounded-full mr-1', type === 'income' ? 'bg-blue-500' : 'bg-orange-500']"></span>
           Prediksi
         </span>

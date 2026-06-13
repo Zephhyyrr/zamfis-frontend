@@ -12,7 +12,7 @@
     <div class="space-y-4">
       <div>
         <label class="block text-sm font-medium text-gray-700">Nama Sumber Jenis Kas</label>
-        <input v-model="form.nama" type="text" class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm" />
+        <input v-model="form.nama" type="text" class="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm" />
       </div>
     </div>
   </BaseModal>

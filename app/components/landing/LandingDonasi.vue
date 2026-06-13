@@ -7,10 +7,18 @@
       <p class="text-emerald-700/80 dark:text-gray-400 font-medium">Total Uang Masuk dan Keluar pada Masing-masing Kas</p>
     </div>
 
+
+
+    <!-- LAPORAN KAS -->
+    <div class="text-center mb-8">
+      <h3 class="text-2xl font-bold text-secondary dark:text-white mb-1">Laporan Keuangan</h3>
+      <p class="text-emerald-700/80 dark:text-gray-400 text-sm">Transparansi pemasukan & pengeluaran</p>
+    </div>
+
     <div v-if="pendingDashboard" class="flex justify-center my-10">
       <div class="animate-spin rounded-full h-12 w-12 border-b-4 border-primary"></div>
     </div>
-    <div v-else-if="kasSummaryList.length === 0" class="text-center text-gray-500 glass-card p-8 rounded-2xl">
+    <div v-else-if="kasSummaryList.length === 0" class="text-center text-gray-500 dark:text-gray-400 glass-card p-8 rounded-2xl">
       Data kas belum tersedia.
     </div>
     <div v-else class="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -41,7 +49,7 @@
               <span class="font-bold text-red-600 dark:text-red-300 text-sm">{{ formatRupiah(kas.expense) }}</span>
             </div>
             <div class="relative overflow-hidden bg-gradient-to-r from-secondary to-emerald-700 p-4 rounded-xl shadow-lg shadow-emerald-900/20 text-white">
-              <div class="absolute inset-0 bg-white/5"></div>
+              <div class="absolute inset-0 bg-white dark:bg-gray-800/5"></div>
               <div class="relative flex justify-between items-center">
                 <span class="text-sm font-semibold opacity-90">Sisa Saldo</span>
                 <span class="text-lg font-extrabold">{{ formatRupiah(kas.balance) }}</span>

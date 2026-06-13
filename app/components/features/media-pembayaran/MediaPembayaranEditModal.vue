@@ -16,7 +16,7 @@
           v-model="form.nama"
           type="text"
           placeholder="Contoh: Cash, Transfer BRI, ..."
-          class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm"
+          class="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm"
         />
       </div>
       <p v-if="errorMsg" class="text-sm text-red-600">{{ errorMsg }}</p>

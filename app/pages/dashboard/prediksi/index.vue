@@ -2,12 +2,12 @@
     <div>
         <div class="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div>
-                <h1 class="text-2xl font-bold text-gray-800">Halaman Prediksi Keuangan</h1>
-                <p class="text-sm text-gray-500">Prediksi dipisah dari dashboard utama agar proses model lebih stabil.
+                <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-100">Halaman Prediksi Keuangan</h1>
+                <p class="text-sm text-gray-500 dark:text-gray-400">Prediksi dipisah dari dashboard utama agar proses model lebih stabil.
                 </p>
             </div>
             <NuxtLink to="/dashboard"
-                class="inline-flex items-center rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-colors">
+                class="inline-flex items-center rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                 Kembali ke Dashboard
             </NuxtLink>
         </div>

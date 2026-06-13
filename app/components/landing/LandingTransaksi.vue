@@ -10,13 +10,13 @@
       <div
         class="p-5 border-b border-emerald-100/60 dark:border-white/5 flex flex-col sm:flex-row gap-3 items-center justify-between">
         <div
-          class="flex items-center gap-2 bg-white/60 dark:bg-white/5 border border-emerald-100 dark:border-white/10 rounded-xl px-4 py-2.5 w-full sm:w-auto sm:min-w-[260px] backdrop-blur-md">
+          class="flex items-center gap-2 bg-white/60 dark:bg-gray-800/50 border border-emerald-100 dark:border-white/10 rounded-xl px-4 py-2.5 w-full sm:w-auto sm:min-w-[260px] backdrop-blur-md">
           <SearchIcon class="h-4 w-4 text-emerald-500 shrink-0" />
           <input type="text" v-model="searchQuery" placeholder="Cari uraian transaksi..."
             class="bg-transparent border-none focus:outline-none focus:ring-0 text-sm text-gray-700 dark:text-gray-200 w-full placeholder-gray-400" />
         </div>
         <div
-          class="flex items-center gap-2 bg-white/60 dark:bg-white/5 border border-emerald-100 dark:border-white/10 rounded-xl px-4 py-2.5 w-full sm:w-auto backdrop-blur-md">
+          class="flex items-center gap-2 bg-white/60 dark:bg-gray-800/50 border border-emerald-100 dark:border-white/10 rounded-xl px-4 py-2.5 w-full sm:w-auto backdrop-blur-md">
           <FilterIcon class="h-4 w-4 text-emerald-500 shrink-0" />
           <select v-model="filterJenisKasId"
             class="bg-transparent border-none focus:outline-none text-sm font-semibold text-gray-700 dark:text-gray-200 w-full">
@@ -50,7 +50,7 @@
             </thead>
             <tbody class="divide-y divide-emerald-50/80 dark:divide-white/5">
               <tr v-for="trx in paginatedTransaksiList" :key="trx.id"
-                class="hover:bg-emerald-50/50 dark:hover:bg-white/3 transition-colors duration-150 group">
+                class="hover:bg-emerald-50/50 dark:hover:bg-gray-700/50 dark:bg-gray-800/3 transition-colors duration-150 group">
                 <td class="px-5 py-3.5 text-xs text-gray-500 dark:text-gray-400 whitespace-nowrap">{{
                   formatDate(trx.tanggal) }}</td>
                 <td class="px-5 py-3.5 text-sm font-medium text-gray-800 dark:text-gray-100 max-w-[200px] truncate">{{

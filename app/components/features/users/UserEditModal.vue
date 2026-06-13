@@ -5,17 +5,17 @@
             <div>
                 <label class="block mb-1 text-sm font-medium text-gray-700">Nama Lengkap</label>
                 <input v-model="editData.nama" type="text"
-                    class="block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm" />
+                    class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm" />
             </div>
             <div>
                 <label class="block mb-1 text-sm font-medium text-gray-700">Alamat Email</label>
                 <input v-model="editData.email" type="email" readonly
-                    class="block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm bg-gray-100" />
+                    class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm bg-gray-100" />
             </div>
             <div>
                 <label class="block mb-1 text-sm font-medium text-gray-700">Role</label>
                 <select v-model="editData.role"
-                    class="block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm">
+                    class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm">
                     <option value="superadmin">Super Admin</option>
                     <option value="admin">Admin</option>
                 </select>
@@ -23,7 +23,7 @@
             <div>
                 <label class="block mb-1 text-sm font-medium text-gray-700">Status</label>
                 <select v-model="editData.isActive"
-                    class="block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm">
+                    class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm">
                     <option :value="true">Active</option>
                     <option :value="false">Inactive</option>
                 </select>

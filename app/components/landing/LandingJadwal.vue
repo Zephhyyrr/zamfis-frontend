@@ -32,8 +32,8 @@
                 class="absolute inset-0 -skew-x-12 bg-gradient-to-r from-transparent via-white/40 to-transparent w-[150%] animate-sweep pointer-events-none">
               </div>
               <span v-if="name === nextPrayer"
-                class="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-white shadow-[0_0_8px_rgba(255,255,255,0.9)]">
-                <span class="absolute inset-0 rounded-full bg-white animate-ping"></span>
+                class="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-white dark:bg-gray-800 shadow-[0_0_8px_rgba(255,255,255,0.9)]">
+                <span class="absolute inset-0 rounded-full bg-white dark:bg-gray-800 animate-ping"></span>
               </span>
 
               <h4

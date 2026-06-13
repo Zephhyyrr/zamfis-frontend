@@ -1,9 +1,9 @@
 <template>
   <div>
     <div class="flex flex-col md:flex-row md:items-center justify-between mb-8">
-      <h1 class="text-2xl font-bold text-gray-800">Dashboard Keuangan</h1>
+      <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-100">Dashboard Keuangan</h1>
       <div class="mt-4 md:mt-0 flex items-center gap-3">
-        <span class="text-sm text-gray-500 bg-white px-3 py-1.5 rounded-md border border-gray-200 shadow-sm">
+        <span class="text-sm text-gray-500 dark:text-gray-300 bg-white dark:bg-gray-800 px-3 py-1.5 rounded-md border border-gray-200 dark:border-gray-700 shadow-sm">
           {{ currentDate }}
         </span>
       </div>
@@ -17,7 +17,7 @@
             <div class="w-48 h-48 bg-emerald-50 rounded-full animate-pulse"></div>
           </template>
         </ClientOnly>
-        <p class="mt-4 text-base font-medium text-gray-500 animate-pulse">Memuat data keuangan...</p>
+        <p class="mt-4 text-base font-medium text-gray-500 dark:text-gray-400 animate-pulse">Memuat data keuangan...</p>
       </div>
     </Transition>
 
@@ -27,47 +27,47 @@
           <div
             v-for="kas in perKasCards"
             :key="kas.jenisKasId"
-            class="rounded-2xl border p-5 shadow-sm"
+            class="rounded-2xl border p-5 shadow-sm dark:bg-gray-800 dark:border-gray-700"
             :class="kasGroupStyle(kas.jenisKasId).wrapper"
           >
             <div class="flex items-center gap-2 mb-4">
               <span class="inline-block w-2.5 h-2.5 rounded-full flex-shrink-0"
                 :class="kasGroupStyle(kas.jenisKasId).dot"></span>
-              <h3 class="text-sm font-bold uppercase tracking-wider" :class="kasGroupStyle(kas.jenisKasId).title">
+              <h3 class="text-sm font-bold uppercase tracking-wider dark:text-gray-100" :class="kasGroupStyle(kas.jenisKasId).title">
                 {{ kas.nama }}
               </h3>
             </div>
 
             <div class="grid grid-cols-3 gap-3">
-              <div class="bg-white rounded-xl p-4 border border-emerald-100 shadow-xs hover:shadow-md transition-shadow">
-                <p class="text-xs font-semibold uppercase tracking-wide text-emerald-600">Uang Masuk</p>
-                <p class="mt-1.5 text-lg font-bold text-emerald-700 leading-tight">{{ formatCurrency(kas.income) }}</p>
+              <div class="bg-white dark:bg-gray-700 rounded-xl p-4 border border-emerald-100 dark:border-gray-600 shadow-xs hover:shadow-md transition-shadow">
+                <p class="text-xs font-semibold uppercase tracking-wide text-emerald-600 dark:text-emerald-400">Uang Masuk</p>
+                <p class="mt-1.5 text-lg font-bold text-emerald-700 dark:text-emerald-300 leading-tight">{{ formatCurrency(kas.income) }}</p>
               </div>
-              <div class="bg-white rounded-xl p-4 border border-red-100 shadow-xs hover:shadow-md transition-shadow">
-                <p class="text-xs font-semibold uppercase tracking-wide text-red-500">Uang Keluar</p>
-                <p class="mt-1.5 text-lg font-bold text-red-600 leading-tight">{{ formatCurrency(kas.expense) }}</p>
+              <div class="bg-white dark:bg-gray-700 rounded-xl p-4 border border-red-100 dark:border-gray-600 shadow-xs hover:shadow-md transition-shadow">
+                <p class="text-xs font-semibold uppercase tracking-wide text-red-500 dark:text-red-400">Uang Keluar</p>
+                <p class="mt-1.5 text-lg font-bold text-red-600 dark:text-red-400 leading-tight">{{ formatCurrency(kas.expense) }}</p>
               </div>
-              <div class="bg-white rounded-xl p-4 border border-blue-100 shadow-xs hover:shadow-md transition-shadow">
-                <p class="text-xs font-semibold uppercase tracking-wide text-blue-500">Saldo</p>
-                <p class="mt-1.5 text-lg font-bold leading-tight" :class="kas.balance >= 0 ? 'text-blue-700' : 'text-orange-600'">
+              <div class="bg-white dark:bg-gray-700 rounded-xl p-4 border border-blue-100 dark:border-gray-600 shadow-xs hover:shadow-md transition-shadow">
+                <p class="text-xs font-semibold uppercase tracking-wide text-blue-500 dark:text-blue-400">Saldo</p>
+                <p class="mt-1.5 text-lg font-bold leading-tight" :class="kas.balance >= 0 ? 'text-blue-700 dark:text-blue-400' : 'text-orange-600 dark:text-orange-400'">
                   {{ formatCurrency(kas.balance) }}
                 </p>
               </div>
             </div>
           </div>
         </div>
-        <div class="mb-8 bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+        <div class="mb-8 bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
           <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-5">
             <div>
-              <h3 class="text-lg font-semibold text-gray-800">Grafik Kas Surau</h3>
-              <p class="text-xs text-gray-400 mt-0.5">
+              <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100">Grafik Kas Surau</h3>
+              <p class="text-xs text-gray-400 dark:text-gray-500 dark:text-gray-400 mt-0.5">
                 {{ selectedChartYear === 'all' ? 'Menampilkan semua tahun' : `Menampilkan data tahun ${selectedChartYear}` }}
               </p>
             </div>
             <div class="flex items-center gap-2">
-              <label class="text-xs text-gray-500 font-medium">Periode</label>
+              <label class="text-xs text-gray-500 dark:text-gray-400 font-medium">Periode</label>
               <select v-model="selectedChartYear"
-                class="rounded-md border border-gray-300 bg-white px-3 py-1.5 text-xs text-gray-700 outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-colors">
+                class="rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-700 bg-white px-3 py-1.5 text-xs text-gray-700 dark:text-gray-200 outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-colors">
                 <option value="all">Semua Tahun</option>
                 <option v-for="year in availableYears" :key="year" :value="year">{{ year }}</option>
               </select>
@@ -75,7 +75,7 @@
           </div>
 
           <div class="grid grid-cols-1 gap-4 lg:grid-cols-2">
-            <div class="rounded-xl border border-emerald-100 p-3">
+            <div class="rounded-xl border border-emerald-100 dark:border-gray-700 p-3 bg-gray-50/30 dark:bg-gray-800/50">
               <p class="mb-2 text-sm font-semibold text-emerald-700">Chart Uang Masuk</p>
               <div class="h-72">
                 <ClientOnly>
@@ -86,36 +86,36 @@
                 </ClientOnly>
               </div>
             </div>
-            <div class="rounded-xl border border-red-100 p-3">
-              <p class="mb-2 text-sm font-semibold text-red-700">Chart Uang Keluar</p>
+            <div class="rounded-xl border border-red-100 dark:border-gray-700 p-3 bg-gray-50/30 dark:bg-gray-800/50">
+              <p class="mb-2 text-sm font-semibold text-red-700 dark:text-red-400">Chart Uang Keluar</p>
               <div class="h-72">
                 <ClientOnly>
                   <Bar :key="`expense-${selectedChartYear}`" :data="expenseChartData" :options="expenseChartOptions" />
                   <template #fallback>
-                    <div class="h-72 bg-gray-100 rounded-xl animate-pulse"></div>
+                    <div class="h-72 bg-gray-100 dark:bg-gray-700 rounded-xl animate-pulse"></div>
                   </template>
                 </ClientOnly>
               </div>
             </div>
           </div>
         </div>
-        <div class="mb-8 bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+        <div class="mb-8 bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
           <div class="mb-5">
-            <h3 class="text-lg font-semibold text-gray-800">Rekapitulasi Pertahun</h3>
-            <p class="text-xs text-gray-400 mt-0.5">Distribusi pemasukan &amp; pengeluaran per tahun (Kas Anak Yatim &amp; TPQ)</p>
+            <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100">Rekapitulasi Pertahun</h3>
+            <p class="text-xs text-gray-400 dark:text-gray-500 dark:text-gray-400 mt-0.5">Distribusi pemasukan &amp; pengeluaran per tahun (Kas Anak Yatim &amp; TPQ)</p>
           </div>
 
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div class="rounded-xl border border-purple-100 bg-purple-50/40 p-4">
+            <div class="rounded-xl border border-purple-100 dark:border-gray-700 bg-purple-50/40 dark:bg-gray-800/50 p-4">
               <div class="flex items-center gap-2 mb-4">
                 <span class="inline-block w-2.5 h-2.5 rounded-full bg-purple-500 flex-shrink-0"></span>
-                <p class="text-sm font-bold text-purple-800">Kas Anak Yatim</p>
+                <p class="text-sm font-bold text-purple-800 dark:text-purple-400">Kas Anak Yatim</p>
               </div>
 
               <div class="flex items-center gap-2 mb-3">
-                <label class="text-xs text-gray-500 font-medium">Tahun:</label>
+                <label class="text-xs text-gray-500 dark:text-gray-400 font-medium">Tahun:</label>
                 <select v-model="selectedYearYatim"
-                  class="rounded-md border border-purple-300 bg-white px-2 py-1 text-xs text-gray-700 outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-400 transition-colors">
+                  class="rounded-md border border-purple-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-2 py-1 text-xs text-gray-700 dark:text-gray-200 outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-400 transition-colors">
                   <option value="all">Semua Tahun</option>
                   <option v-for="r in pieYatimData" :key="r.year" :value="r.year">{{ r.year }}</option>
                 </select>
@@ -125,7 +125,7 @@
                 <ClientOnly>
                   <Pie :key="`yatim-${selectedYearYatim}`" :data="yatimPieChartData" :options="pieChartOptions" />
                   <template #fallback>
-                    <div class="h-64 bg-purple-50 rounded-xl animate-pulse"></div>
+                    <div class="h-64 bg-purple-50 dark:bg-gray-700 rounded-xl animate-pulse"></div>
                   </template>
                 </ClientOnly>
               </div>
@@ -134,27 +134,27 @@
               </div>
 
               <div v-if="selectedYatimRow" class="mt-3 grid grid-cols-2 gap-2">
-                <div class="text-center bg-white rounded-lg p-2 border border-purple-100">
-                  <p class="text-xs text-emerald-600 font-semibold">Masuk</p>
-                  <p class="text-sm font-bold text-emerald-700">{{ formatCurrency(selectedYatimRow.income) }}</p>
+                <div class="text-center bg-white dark:bg-gray-700 rounded-lg p-2 border border-purple-100 dark:border-gray-600">
+                  <p class="text-xs text-emerald-600 dark:text-emerald-400 font-semibold">Masuk</p>
+                  <p class="text-sm font-bold text-emerald-700 dark:text-emerald-300">{{ formatCurrency(selectedYatimRow.income) }}</p>
                 </div>
-                <div class="text-center bg-white rounded-lg p-2 border border-purple-100">
-                  <p class="text-xs text-red-500 font-semibold">Keluar</p>
-                  <p class="text-sm font-bold text-red-600">{{ formatCurrency(selectedYatimRow.expense) }}</p>
+                <div class="text-center bg-white dark:bg-gray-700 rounded-lg p-2 border border-purple-100 dark:border-gray-600">
+                  <p class="text-xs text-red-500 dark:text-red-400 font-semibold">Keluar</p>
+                  <p class="text-sm font-bold text-red-600 dark:text-red-400">{{ formatCurrency(selectedYatimRow.expense) }}</p>
                 </div>
               </div>
             </div>
 
-            <div class="rounded-xl border border-teal-100 bg-teal-50/40 p-4">
+            <div class="rounded-xl border border-teal-100 dark:border-gray-700 bg-teal-50/40 dark:bg-gray-800/50 p-4">
               <div class="flex items-center gap-2 mb-4">
                 <span class="inline-block w-2.5 h-2.5 rounded-full bg-teal-500 flex-shrink-0"></span>
-                <p class="text-sm font-bold text-teal-800">Kas TPQ</p>
+                <p class="text-sm font-bold text-teal-800 dark:text-teal-400">Kas TPQ</p>
               </div>
               <!-- Selector tahun TPQ -->
               <div class="flex items-center gap-2 mb-3">
-                <label class="text-xs text-gray-500 font-medium">Tahun:</label>
+                <label class="text-xs text-gray-500 dark:text-gray-400 font-medium">Tahun:</label>
                 <select v-model="selectedYearTpq"
-                  class="rounded-md border border-teal-300 bg-white px-2 py-1 text-xs text-gray-700 outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-400 transition-colors">
+                  class="rounded-md border border-teal-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-2 py-1 text-xs text-gray-700 dark:text-gray-200 outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-400 transition-colors">
                   <option value="all">Semua Tahun</option>
                   <option v-for="r in pieTpqData" :key="r.year" :value="r.year">{{ r.year }}</option>
                 </select>
@@ -164,7 +164,7 @@
                 <ClientOnly>
                   <Pie :key="`tpq-${selectedYearTpq}`" :data="tpqPieChartData" :options="pieChartOptions" />
                   <template #fallback>
-                    <div class="h-64 bg-teal-50 rounded-xl animate-pulse"></div>
+                    <div class="h-64 bg-teal-50 dark:bg-gray-700 rounded-xl animate-pulse"></div>
                   </template>
                 </ClientOnly>
               </div>
@@ -173,25 +173,25 @@
               </div>
 
               <div v-if="selectedTpqRow" class="mt-3 grid grid-cols-2 gap-2">
-                <div class="text-center bg-white rounded-lg p-2 border border-teal-100">
-                  <p class="text-xs text-emerald-600 font-semibold">Masuk</p>
-                  <p class="text-sm font-bold text-emerald-700">{{ formatCurrency(selectedTpqRow.income) }}</p>
+                <div class="text-center bg-white dark:bg-gray-700 rounded-lg p-2 border border-teal-100 dark:border-gray-600">
+                  <p class="text-xs text-emerald-600 dark:text-emerald-400 font-semibold">Masuk</p>
+                  <p class="text-sm font-bold text-emerald-700 dark:text-emerald-300">{{ formatCurrency(selectedTpqRow.income) }}</p>
                 </div>
-                <div class="text-center bg-white rounded-lg p-2 border border-teal-100">
-                  <p class="text-xs text-red-500 font-semibold">Keluar</p>
-                  <p class="text-sm font-bold text-red-600">{{ formatCurrency(selectedTpqRow.expense) }}</p>
+                <div class="text-center bg-white dark:bg-gray-700 rounded-lg p-2 border border-teal-100 dark:border-gray-600">
+                  <p class="text-xs text-red-500 dark:text-red-400 font-semibold">Keluar</p>
+                  <p class="text-sm font-bold text-red-600 dark:text-red-400">{{ formatCurrency(selectedTpqRow.expense) }}</p>
                 </div>
               </div>
             </div>
 
           </div>
         </div>
-        <div class="rounded-2xl border border-emerald-200 bg-gradient-to-r from-emerald-50 via-white to-teal-50 p-5 shadow-sm">
+        <div class="rounded-2xl border border-emerald-200 dark:border-gray-700 bg-gradient-to-r from-emerald-50 via-white to-teal-50 dark:from-gray-800 dark:via-gray-800 dark:to-gray-800 p-5 shadow-sm">
           <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <p class="text-xs font-semibold uppercase tracking-wide text-emerald-700">Prediksi Keuangan</p>
-              <h3 class="mt-1 text-lg font-bold text-gray-800">Lanjutkan Analisis ke Halaman Prediksi</h3>
-              <p class="mt-1 text-sm text-gray-600">Lakukan Prediksi untuk Merencanakan Kegiatan Mendatang.</p>
+              <p class="text-xs font-semibold uppercase tracking-wide text-emerald-700 dark:text-emerald-400">Prediksi Keuangan</p>
+              <h3 class="mt-1 text-lg font-bold text-gray-800 dark:text-gray-100">Lanjutkan Analisis ke Halaman Prediksi</h3>
+              <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">Lakukan Prediksi untuk Merencanakan Kegiatan Mendatang.</p>
             </div>
             <NuxtLink
               to="/dashboard/prediksi"

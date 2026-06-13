@@ -2,35 +2,35 @@
   <div class="max-w-2xl mx-auto">
     <div class="mb-6 flex items-center gap-4">
       <NuxtLink to="/dashboard/peserta-kurban" class="p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors">
-        <Icon icon="lucide:arrow-left" class="w-5 h-5 text-gray-600" />
+        <Icon icon="lucide:arrow-left" class="w-5 h-5 text-gray-600 dark:text-gray-400" />
       </NuxtLink>
       <div>
-        <h1 class="text-2xl font-bold text-gray-800">Tambah Peserta Kurban</h1>
-        <p class="text-gray-600">Daftarkan peserta kurban baru</p>
+        <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-100">Tambah Peserta Kurban</h1>
+        <p class="text-gray-600 dark:text-gray-400">Daftarkan peserta kurban baru</p>
       </div>
     </div>
 
     <BaseAlert v-if="errorMessage" :message="errorMessage" type="error" class="mb-6" />
 
-    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+    <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
       <form @submit.prevent="submitForm">
         <div class="space-y-6">
           <div>
             <label class="block text-sm font-medium text-gray-700">Nama Peserta</label>
             <input v-model="form.nama" type="text" required :disabled="isSubmitting"
-              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50"
               placeholder="Nama lengkap peserta kurban" />
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700">Tahun Kurban</label>
             <input v-model="form.tahun" type="text" required :disabled="isSubmitting"
-              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50"
               placeholder="Contoh: 2024, 1445 H, ..." />
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700">Tipe Kurban</label>
             <select v-model="form.tipe" :disabled="isSubmitting"
-              class="mt-1 block w-full border border-gray-300 bg-white rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50">
+              class="mt-1 block w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50">
               <option value="individu_sapi">Individu - Sapi</option>
               <option value="individu_kambing">Individu - Kambing</option>
               <option value="kelompok">Kelompok (Sapi Bersama)</option>
@@ -40,13 +40,13 @@
             <label class="block text-sm font-medium text-gray-700">Nominal</label>
             <input :value="form.nominalText" @input="handleCurrencyInput" type="text" inputmode="numeric"
               :disabled="isSubmitting"
-              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50"
               placeholder="Rp. 0" />
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700">Media Pembayaran</label>
             <select v-model.number="form.mediaPembayaranId" required :disabled="isSubmitting"
-              class="mt-1 block w-full border border-gray-300 bg-white rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50">
+              class="mt-1 block w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50">
               <option :value="0">-- Pilih Media Pembayaran --</option>
               <option v-for="mp in mediaPembayaranList" :key="mp.id" :value="mp.id">{{ mp.nama }}</option>
             </select>
@@ -54,7 +54,7 @@
           <div v-if="form.tipe === 'kelompok'">
             <label class="block text-sm font-medium text-gray-700">Kelompok Kurban</label>
             <select v-model.number="form.kelompokKurbanId" :disabled="isSubmitting || !form.tahun"
-              class="mt-1 block w-full border border-gray-300 bg-white rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50">
+              class="mt-1 block w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50">
               <option :value="null">-- Pilih Kelompok Kurban --</option>
               <option v-for="kel in filteredKelompokList" :key="kel.id" :value="kel.id" :disabled="(kel.peserta?.length || 0) >= 7">
                 {{ kel.nama }} ({{ kel.peserta?.length || 0 }}/7) {{ (kel.peserta?.length || 0) >= 7 ? ' - Penuh' : '' }}
@@ -65,7 +65,7 @@
         </div>
         <div class="mt-8 flex justify-end items-center gap-3">
           <NuxtLink to="/dashboard/peserta-kurban"
-            class="px-4 py-2 bg-white text-gray-700 border border-gray-300 rounded-xl hover:bg-gray-50 font-medium transition-colors">
+            class="px-4 py-2 bg-white dark:bg-gray-800 text-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700/50 font-medium transition-colors">
             Batal
           </NuxtLink>
           <BaseButton type="submit" :isLoading="isSubmitting" text="Simpan Data" icon="lucide:save" :fullWidth="false" />

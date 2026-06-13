@@ -25,7 +25,7 @@
                     :class="isDark ? 'bg-emerald-600' : 'bg-gray-200'">
                     <span class="sr-only">Use setting</span>
                     <span aria-hidden="true"
-                        class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"
+                        class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white dark:bg-gray-800 shadow ring-0 transition duration-200 ease-in-out"
                         :class="isDark ? 'translate-x-5' : 'translate-x-0'" />
                 </button>
             </div>

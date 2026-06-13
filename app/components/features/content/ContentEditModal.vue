@@ -14,19 +14,19 @@
       <div>
         <label class="block text-sm font-medium text-gray-700">Judul Konten</label>
         <input v-model="form.judul" type="text" required
-          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm" />
+          class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm" />
       </div>
 
       <div>
         <label class="block text-sm font-medium text-gray-700">Isi Konten / Artikel</label>
         <textarea v-model="form.isi" required rows="5"
-          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm" placeholder="Isi artikel/konten Anda di sini..."></textarea>
+          class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm" placeholder="Isi artikel/konten Anda di sini..."></textarea>
       </div>
 
       <div>
         <label class="block text-sm font-medium text-gray-700">Jenis Konten</label>
         <select v-model="form.jenis"
-          class="mt-1 block w-full border border-gray-300 bg-white rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm">
+          class="mt-1 block w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm">
           <option value="berita">Berita</option>
           <option value="pengurus">Pengurus</option>
           <option value="imsakiyah">Imsakiyah</option>
@@ -37,25 +37,25 @@
       <!-- Gambar Upload -->
       <div>
         <label class="block text-sm font-medium text-gray-700 mb-2">Gambar</label>
-        <div v-if="imagePreview" class="mb-3 relative group rounded-xl overflow-hidden border border-gray-200 shadow-sm">
+        <div v-if="imagePreview" class="mb-3 relative group rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 shadow-sm">
           <img :src="imagePreview" alt="Preview Gambar" class="w-full h-48 object-cover" />
           <button @click.prevent="removeImage"
             class="absolute top-2 right-2 bg-red-500 text-white p-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600">
             <Icon icon="lucide:x" class="w-4 h-4" />
           </button>
         </div>
-        <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-xl hover:bg-gray-50 transition-colors">
+        <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 dark:border-gray-600 border-dashed rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700/50 dark:bg-gray-700/50 transition-colors">
           <div class="space-y-1 text-center">
             <Icon icon="lucide:image" class="mx-auto h-10 w-10 text-gray-400" />
-            <div class="flex text-sm text-gray-600 justify-center">
+            <div class="flex text-sm text-gray-600 dark:text-gray-400 justify-center">
               <label for="edit-gambar-upload"
-                class="relative cursor-pointer bg-white rounded-md font-medium text-emerald-600 hover:text-emerald-500">
+                class="relative cursor-pointer bg-white dark:bg-gray-800 rounded-md font-medium text-emerald-600 hover:text-emerald-500">
                 <span>{{ imagePreview ? 'Ganti gambar' : 'Unggah gambar' }}</span>
                 <input id="edit-gambar-upload" ref="imageInputRef" type="file" @change="onImageChange"
                   accept="image/*" class="sr-only" />
               </label>
             </div>
-            <p class="text-xs text-gray-500">PNG, JPG, WEBP hingga 5MB</p>
+            <p class="text-xs text-gray-500 dark:text-gray-400">PNG, JPG, WEBP hingga 5MB</p>
           </div>
         </div>
       </div>
@@ -66,7 +66,7 @@
           class="relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
           :class="form.isTampil ? 'bg-emerald-600' : 'bg-gray-200'"
           @click="form.isTampil = !form.isTampil">
-          <span class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"
+          <span class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white dark:bg-gray-800 shadow ring-0 transition duration-200 ease-in-out"
             :class="form.isTampil ? 'translate-x-5' : 'translate-x-0'" />
         </button>
         <label class="text-sm text-gray-700 font-medium">

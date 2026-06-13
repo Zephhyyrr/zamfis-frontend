@@ -3,17 +3,12 @@ export const useTheme = () => {
 
     const initTheme = () => {
         if (import.meta.client) {
-            // Strictly enforce light mode default
-            // Ignore system preferences (matchMedia)
-            // Only respect explicit user choice if it exists in localStorage
             const storedTheme = localStorage.getItem('theme');
 
             if (storedTheme === 'dark') {
                 isDark.value = true;
             } else {
-                // Default to light for everyone else
                 isDark.value = false;
-                // Optional: Ensure localStorage is explicit or just leave it null
                 if (storedTheme !== 'light') {
                     localStorage.setItem('theme', 'light');
                 }

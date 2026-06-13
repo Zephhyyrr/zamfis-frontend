@@ -9,7 +9,7 @@
     <div v-if="pendingBerita" class="flex justify-center my-10">
       <div class="animate-spin rounded-full h-12 w-12 border-b-4 border-primary"></div>
     </div>
-    <div v-else-if="beritaList.length === 0" class="text-center text-gray-500 glass-card p-10 rounded-2xl">
+    <div v-else-if="beritaList.length === 0" class="text-center text-gray-500 dark:text-gray-400 glass-card p-10 rounded-2xl">
       Belum ada berita terbaru saat ini.
     </div>
     <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
