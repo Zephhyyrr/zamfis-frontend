@@ -49,7 +49,7 @@
               <span class="font-bold text-red-600 dark:text-red-300 text-sm">{{ formatRupiah(kas.expense) }}</span>
             </div>
             <div class="relative overflow-hidden bg-gradient-to-r from-secondary to-emerald-700 p-4 rounded-xl shadow-lg shadow-emerald-900/20 text-white">
-              <div class="absolute inset-0 bg-white dark:bg-gray-800/5"></div>
+              <div class="absolute inset-0 bg-white/5 dark:bg-black/10"></div>
               <div class="relative flex justify-between items-center">
                 <span class="text-sm font-semibold opacity-90">Sisa Saldo</span>
                 <span class="text-lg font-extrabold">{{ formatRupiah(kas.balance) }}</span>
