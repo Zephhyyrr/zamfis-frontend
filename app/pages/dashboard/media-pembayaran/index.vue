@@ -9,7 +9,6 @@
         @click="router.push('/dashboard/media-pembayaran/create')" />
     </div>
 
-    <!-- Search Bar -->
     <div class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 mb-6 flex items-center">
       <div class="relative w-full max-w-md">
         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -21,7 +20,6 @@
       </div>
     </div>
 
-    <!-- Tabs -->
     <div class="mb-6 flex flex-wrap gap-2 rounded-xl bg-white dark:bg-gray-800 p-2 shadow-sm border border-gray-100 dark:border-gray-700">
       <button type="button"
         class="inline-flex items-center rounded-lg px-4 py-2 text-sm font-medium transition-colors"
@@ -39,8 +37,6 @@
       </button>
     </div>
 
-    <!-- Undo Banner -->
-    <!-- Table -->
     <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden flex flex-col">
       <div class="overflow-x-auto flex-1">
         <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">

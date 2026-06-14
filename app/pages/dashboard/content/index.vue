@@ -7,8 +7,6 @@
       </div>
       <BaseButton text="Tambah Konten" variant="primary" :fullWidth="false" icon="lucide:plus" @click="openCreateModal" />
     </div>
-
-    <!-- Search Bar -->
     <div class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 mb-6 flex items-center">
       <div class="relative w-full max-w-md">
         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -19,8 +17,6 @@
           placeholder="Cari judul konten...">
       </div>
     </div>
-
-    <!-- Tabs -->
     <div class="mb-6 flex flex-wrap gap-2 rounded-xl bg-white dark:bg-gray-800 p-2 shadow-sm border border-gray-100 dark:border-gray-700">
       <button type="button" class="inline-flex items-center rounded-lg px-4 py-2 text-sm font-medium transition-colors"
         :class="activeTab === 'active'
@@ -37,8 +33,6 @@
         <span class="ml-2 rounded-full bg-white dark:bg-gray-800/20 px-2 py-0.5 text-xs">{{ draftMeta?.totalItems || 0 }}</span>
       </button>
     </div>
-
-    <!-- Undo Delete Banner -->
     <div v-if="showUndoBanner"
       class="mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3">
       <p class="text-sm text-amber-800">Konten dipindahkan ke draft. Ingin memulihkan sekarang?</p>
@@ -48,8 +42,6 @@
         {{ undoLoading ? 'Memulihkan...' : 'Pulihkan Sekarang' }}
       </button>
     </div>
-
-    <!-- Table Section -->
     <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
       <div class="overflow-x-auto">
         <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
@@ -100,7 +92,6 @@
                   <div v-else-if="item.videoUrl" class="w-12 h-12 bg-black rounded flex items-center justify-center border border-gray-800">
                     <Icon icon="lucide:play" class="w-5 h-5 text-white" />
                   </div>
-                  <!-- No media -->
                   <div v-else class="flex flex-col items-center justify-center space-y-1">
                     <div class="w-12 h-12 bg-gray-100 rounded flex items-center justify-center border border-gray-200 dark:border-gray-700">
                       <Icon icon="lucide:image-off" class="w-5 h-5 text-gray-400" />
@@ -131,7 +122,6 @@
           </tbody>
         </table>
       </div>
-      <!-- General Pagination Component -->
       <BasePagination v-if="activeTab === 'active'" v-model="activeParams.page" @update:modelValue="refresh" :meta="activeMeta" class="rounded-none border-t border-gray-100 dark:border-gray-700" />
       <BasePagination v-if="activeTab === 'draft'" v-model="draftParams.page" @update:modelValue="refreshDraft" :meta="draftMeta" class="rounded-none border-t border-gray-100 dark:border-gray-700" />
     </div>

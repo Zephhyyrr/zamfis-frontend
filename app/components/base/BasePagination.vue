@@ -46,7 +46,6 @@
       </div>
     </div>
     
-    <!-- Mobile view simplified -->
     <div class="flex flex-1 justify-between sm:hidden w-full">
       <button
         @click="prevPage"

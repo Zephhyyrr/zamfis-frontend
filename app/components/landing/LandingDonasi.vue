@@ -7,9 +7,6 @@
       <p class="text-emerald-700/80 dark:text-gray-400 font-medium">Total Uang Masuk dan Keluar pada Masing-masing Kas</p>
     </div>
 
-
-
-    <!-- LAPORAN KAS -->
     <div class="text-center mb-8">
       <h3 class="text-2xl font-bold text-secondary dark:text-white mb-1">Laporan Keuangan</h3>
       <p class="text-emerald-700/80 dark:text-gray-400 text-sm">Transparansi pemasukan & pengeluaran</p>

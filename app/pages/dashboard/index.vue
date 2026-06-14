@@ -228,8 +228,11 @@ import {
 import { Bar } from 'vue-chartjs';
 import { Pie } from 'vue-chartjs';
 import { useTransaksi } from '~/composables/useTransaksi';
+import { useTheme } from '~/application/utils/useTheme';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, ArcElement, Title, Tooltip, Legend);
+
+const { isDark } = useTheme();
 
 // --- Lottie loading animation ---
 const loadingAnimation = {
@@ -327,18 +330,21 @@ const tpqPieChartData = computed(() =>
   buildPieData(selectedTpqRow.value, '#14b8a6', '#fb923c')
 );
 
-const pieChartOptions = {
-  responsive: true,
-  maintainAspectRatio: false,
-  plugins: {
-    legend: { position: 'bottom', labels: { padding: 16, font: { size: 12 } } },
-    tooltip: {
-      callbacks: {
-        label: (ctx) => ` ${ctx.label}: ${new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(ctx.raw)}`
+const pieChartOptions = computed(() => {
+  const textColor = isDark?.value ? '#ffffff' : '#6b7280';
+  return {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'bottom', labels: { padding: 16, font: { size: 12 }, color: textColor } },
+      tooltip: {
+        callbacks: {
+          label: (ctx) => ` ${ctx.label}: ${new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(ctx.raw)}`
+        }
       }
     }
   }
-};
+});
 
 // --- Bar Chart (Kas Umum) ---
 const activeLabels = computed(() => summaryData.value?.chart?.labels ?? []);
@@ -356,11 +362,14 @@ const expenseChartData = computed(() => ({
 }));
 
 
-const buildChartOptions = (datasetLabel) => ({
+const buildChartOptions = (datasetLabel, textColor, gridColor) => ({
   responsive: true,
   maintainAspectRatio: false,
   plugins: {
-    legend: { position: 'top' },
+    legend: { 
+      position: 'top',
+      labels: { color: textColor }
+    },
     tooltip: {
       callbacks: {
         label: (ctx) => `${ctx.dataset.label ?? datasetLabel}: ${formatCurrency(ctx.raw)}`
@@ -368,15 +377,32 @@ const buildChartOptions = (datasetLabel) => ({
     }
   },
   scales: {
+    x: {
+      ticks: { color: textColor },
+      grid: { display: false }
+    },
     y: {
       beginAtZero: true,
-      ticks: { callback: (value) => `Rp ${(Number(value) / 1_000_000).toFixed(1)}jt` }
+      grid: { color: gridColor },
+      ticks: { 
+        color: textColor,
+        callback: (value) => `Rp ${(Number(value) / 1_000_000).toFixed(1)}jt` 
+      }
     }
   }
 });
 
-const incomeChartOptions = buildChartOptions('Uang Masuk');
-const expenseChartOptions = buildChartOptions('Uang Keluar');
+const incomeChartOptions = computed(() => {
+  const textColor = isDark?.value ? '#ffffff' : '#6b7280';
+  const gridColor = isDark?.value ? '#374151' : '#f3f4f6';
+  return buildChartOptions('Uang Masuk', textColor, gridColor);
+});
+
+const expenseChartOptions = computed(() => {
+  const textColor = isDark?.value ? '#ffffff' : '#6b7280';
+  const gridColor = isDark?.value ? '#374151' : '#f3f4f6';
+  return buildChartOptions('Uang Keluar', textColor, gridColor);
+});
 
 // --- Styling helper per jenisKas ---
 const kasGroupStyle = (id) => {

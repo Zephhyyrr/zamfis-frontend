@@ -17,6 +17,12 @@ export default defineNuxtConfig({
   ],
   app: {
     head: {
+      script: [
+        {
+          innerHTML: `if (localStorage.getItem('theme') === 'dark') { document.documentElement.classList.add('dark'); }`,
+          type: 'text/javascript'
+        }
+      ],
       link: [
         { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
         { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },

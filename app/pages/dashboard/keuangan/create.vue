@@ -36,7 +36,6 @@
             <datalist id="favorite-uraian-list">
               <option v-for="fav in favoriteTransaksiList" :key="fav.id" :value="fav.uraian"></option>
             </datalist>
-            <!-- Favorite Chips -->
             <div class="mt-2 flex flex-wrap gap-2" v-if="favoriteTransaksiList.length > 0">
               <button type="button" v-for="fav in favoriteTransaksiList" :key="'btn-' + fav.id"
                 @click="form.uraian = fav.uraian"

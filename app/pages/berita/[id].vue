@@ -16,7 +16,6 @@
         </NuxtLink>
       </div>
       <article v-else class="max-w-4xl mx-auto py-4">
-        <!-- Featured Image -->
         <div
           class="w-full aspect-video rounded-2xl overflow-hidden mb-8 shadow-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
           <img
@@ -24,7 +23,6 @@
             :alt="item.judul" class="w-full h-full object-cover">
         </div>
 
-        <!-- Header: Title and Date -->
         <div class="mb-10 border-b border-gray-200 dark:border-gray-800 pb-8">
           <h1 class="text-3xl md:text-5xl font-extrabold text-secondary dark:text-white mb-6 leading-tight">
             {{ item.judul }}
@@ -39,7 +37,6 @@
           </div>
         </div>
 
-        <!-- Content Body -->
         <div
           class="prose prose-lg prose-emerald dark:prose-invert max-w-none text-gray-700 dark:text-gray-300 leading-loose"
           v-html="item.isi"></div>

@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!-- Branding -->
     <div class="text-center mb-8">
       <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-emerald-500/20 border border-emerald-500/30 mb-4 backdrop-blur-sm logo-glow">
         <Icon icon="lucide:building-2" class="w-8 h-8 text-primary" />

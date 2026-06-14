@@ -39,7 +39,6 @@
             </select>
           </div>
 
-          <!-- File Upload Section - Gambar -->
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-2">Gambar (Opsional)</label>
@@ -72,7 +71,6 @@
               </div>
             </div>
 
-            <!-- File Upload Section - Video -->
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-2">Video (Opsional)</label>
 

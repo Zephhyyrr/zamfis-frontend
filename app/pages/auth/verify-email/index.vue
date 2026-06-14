@@ -32,7 +32,6 @@ const handleVerification = async () => {
         }
     } catch (err: any) {
         const errorMsg = err?.data?.message?.toLowerCase() || '';
-        // Cek jika API merespon bahwa email sudah terverifikasi sebelumnya
         if (errorMsg.includes('already verified') || errorMsg.includes('sudah diverifikasi') || errorMsg.includes('has been verified')) {
             router.push('/auth/login?verify=already');
         } else {

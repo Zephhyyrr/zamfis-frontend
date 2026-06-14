@@ -9,7 +9,6 @@
         @click="openCreateModal" />
     </div>
 
-    <!-- Search Bar -->
     <div class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 mb-6 flex items-center">
       <div class="relative w-full max-w-md">
         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -21,7 +20,6 @@
       </div>
     </div>
 
-    <!-- Tabs -->
     <div class="mb-6 flex flex-wrap gap-2 rounded-xl bg-white dark:bg-gray-800 p-2 shadow-sm border border-gray-100 dark:border-gray-700">
       <button type="button" class="inline-flex items-center rounded-lg px-4 py-2 text-sm font-medium transition-colors"
         :class="activeTab === 'active'
@@ -39,7 +37,6 @@
       </button>
     </div>
 
-    <!-- Undo Delete Banner -->
     <div v-if="showUndoBanner"
       class="mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3">
       <p class="text-sm text-amber-800">Jenis Kas dipindahkan ke draft. Ingin memulihkan sekarang?</p>
@@ -49,8 +46,6 @@
         {{ undoLoading ? 'Memulihkan...' : 'Pulihkan Sekarang' }}
       </button>
     </div>
-
-    <!-- Table Section -->
     <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden flex flex-col">
       <div class="overflow-x-auto flex-1">
         <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
@@ -107,7 +102,6 @@
         </table>
       </div>
 
-      <!-- Pagination Component -->
       <BasePagination v-if="activeTab === 'active'" v-model="activeParams.page" @update:modelValue="refresh"
         :meta="activeMeta" class="rounded-none border-t border-gray-100 dark:border-gray-700" />
       <BasePagination v-if="activeTab === 'draft'" v-model="draftParams.page" @update:modelValue="refreshDraft"

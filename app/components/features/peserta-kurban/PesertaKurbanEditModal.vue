@@ -99,7 +99,7 @@ const mediaPembayaranList = computed(() => extractList(mpData));
 const kelompokList = computed(() => extractList(kkData));
 
 const filteredKelompokList = computed(() => {
-  return kelompokList.value.filter(k => k.tahun === form.value.tahun);
+  return kelompokList.value.filter((k: any) => k.tahun === form.value.tahun);
 });
 
 const form = ref({
@@ -169,7 +169,7 @@ const submitForm = async () => {
   if (!form.value.mediaPembayaranId) { errorMsg.value = 'Pilih media pembayaran.'; return; }
   if (form.value.tipe === 'kelompok' && !form.value.kelompokKurbanId) { errorMsg.value = 'Pilih kelompok kurban.'; return; }
 
-  const selectedKelompok = kelompokList.value.find(k => k.id === form.value.kelompokKurbanId);
+  const selectedKelompok = kelompokList.value.find((k: any) => k.id === form.value.kelompokKurbanId);
   if (
     form.value.tipe === 'kelompok' && 
     selectedKelompok && 

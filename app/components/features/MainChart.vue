@@ -95,42 +95,53 @@ const formatCurrency = (value) => {
   }).format(value);
 };
 
-const chartOptions = {
-  responsive: true,
-  maintainAspectRatio: false,
-  plugins: {
-    legend: {
-      display: false
-    },
-    tooltip: {
-      mode: 'index',
-      intersect: false,
-    }
-  },
-  scales: {
-    y: {
-      beginAtZero: true,
-      grid: {
-        color: '#f3f4f6'
+const { isDark } = useTheme();
+
+const chartOptions = computed(() => {
+  const textColor = isDark?.value ? '#ffffff' : '#6b7280';
+  const gridColor = isDark?.value ? '#374151' : '#f3f4f6';
+
+  return {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        display: false
       },
-      ticks: {
-        callback: function (value) {
-          return 'Rp ' + (value / 1000).toFixed(0) + 'k';
+      tooltip: {
+        mode: 'index',
+        intersect: false,
+      }
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        grid: {
+          color: gridColor
+        },
+        ticks: {
+          color: textColor,
+          callback: function (value) {
+            return 'Rp ' + (value / 1000).toFixed(0) + 'k';
+          }
+        }
+      },
+      x: {
+        grid: {
+          display: false
+        },
+        ticks: {
+          color: textColor
         }
       }
     },
-    x: {
-      grid: {
-        display: false
-      }
+    interaction: {
+      mode: 'nearest',
+      axis: 'x',
+      intersect: false
     }
-  },
-  interaction: {
-    mode: 'nearest',
-    axis: 'x',
-    intersect: false
   }
-}
+});
 
 // Dummy data generation based on duration
 const chartData = computed(() => {

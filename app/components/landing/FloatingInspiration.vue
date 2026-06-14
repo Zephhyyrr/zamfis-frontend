@@ -18,7 +18,6 @@
       leave-from-class="transform scale-100 opacity-100" leave-to-class="transform scale-50 opacity-0">
       <div v-if="modalState === 'FLOATING'"
         class="absolute bottom-20 right-0 w-80 sm:w-[450px] bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border border-emerald-100 dark:border-gray-700 overflow-hidden flex flex-col max-h-[75vh]">
-        <!-- Header -->
         <div
           class="bg-gradient-to-r from-secondary to-emerald-800 p-4 sm:p-5 flex justify-between items-center text-white shrink-0">
           <div class="flex items-start sm:items-center gap-2 sm:gap-3 flex-1 mr-2">
