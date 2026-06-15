@@ -83,4 +83,3 @@ Contoh isinya: ada pada .env.example
 ```bash
 npm run dev
 ```
-Aplikasi akan berjalan di `http://localhost:3000`. Buka link tersebut di browser.
