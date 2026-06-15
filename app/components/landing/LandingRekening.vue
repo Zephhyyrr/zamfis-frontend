@@ -26,7 +26,7 @@
               </h2>
             </div>
             <div
-              class="bg-white dark:bg-gray-800/10 backdrop-blur-xl p-6 md:p-8 rounded-3xl border border-white/20 w-full md:w-auto text-center md:text-right shadow-inner transform transition-transform duration-500 group-hover:scale-105">
+              class="bg-white/10 dark:bg-gray-800/10 backdrop-blur-xl p-6 md:p-8 rounded-3xl border border-white/20 w-full md:w-auto text-center md:text-right shadow-inner transform transition-transform duration-500 group-hover:scale-105">
               <p class="text-emerald-100/70 text-sm font-semibold uppercase tracking-wider mb-3">Nomor Rekening</p>
               <div class="flex flex-col sm:flex-row items-center justify-center md:justify-end gap-3 mb-2">
                 <span

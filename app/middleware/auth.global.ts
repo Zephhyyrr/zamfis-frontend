@@ -7,6 +7,10 @@ export default defineNuxtRouteMiddleware((to, from) => {
         return navigateTo({ path: '/auth/verify-email', query: to.query });
     }
 
+    if (to.matched.length === 0) {
+        return;
+    }
+
     const token = useCookie('token');
     const isPublic = to.path === '/' || to.path.startsWith('/auth') || to.path.startsWith('/berita');
 

@@ -31,6 +31,6 @@ const { isDark, toggleTheme } = useTheme();
 
 <style scoped>
 .auth-layout {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 </style>

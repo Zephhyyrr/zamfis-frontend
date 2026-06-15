@@ -3,26 +3,16 @@
     <div class="flex flex-col md:flex-row md:items-center justify-between mb-8">
       <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-100">Dashboard Keuangan</h1>
       <div class="mt-4 md:mt-0 flex items-center gap-3">
-        <span class="text-sm text-gray-500 dark:text-gray-300 bg-white dark:bg-gray-800 px-3 py-1.5 rounded-md border border-gray-200 dark:border-gray-700 shadow-sm">
-          {{ currentDate }}
+        <span class="text-sm text-gray-500 dark:text-gray-300 bg-white dark:bg-gray-800 px-3 py-1.5 rounded-md border border-gray-200 dark:border-gray-700 shadow-sm flex items-center gap-2">
+          <span>{{ currentDate }}</span>
+          <span class="text-gray-300 dark:text-gray-600">|</span>
+          <span class="text-emerald-600 dark:text-emerald-400 font-medium">{{ currentHijriDate }}</span>
         </span>
       </div>
     </div>
 
     <Transition name="fade">
-      <div v-if="summaryPending" class="flex flex-col items-center justify-center py-24">
-        <ClientOnly>
-          <BaseLottiePlayer :animationData="loadingAnimation" :size="200" />
-          <template #fallback>
-            <div class="w-48 h-48 bg-emerald-50 rounded-full animate-pulse"></div>
-          </template>
-        </ClientOnly>
-        <p class="mt-4 text-base font-medium text-gray-500 dark:text-gray-400 animate-pulse">Memuat data keuangan...</p>
-      </div>
-    </Transition>
-
-    <Transition name="fade">
-      <div v-if="!summaryPending">
+      <div>
         <div class="mb-8 space-y-4">
           <div
             v-for="kas in perKasCards"
@@ -38,7 +28,7 @@
               </h3>
             </div>
 
-            <div class="grid grid-cols-3 gap-3">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div class="bg-white dark:bg-gray-700 rounded-xl p-4 border border-emerald-100 dark:border-gray-600 shadow-xs hover:shadow-md transition-shadow">
                 <p class="text-xs font-semibold uppercase tracking-wide text-emerald-600 dark:text-emerald-400">Uang Masuk</p>
                 <p class="mt-1.5 text-lg font-bold text-emerald-700 dark:text-emerald-300 leading-tight">{{ formatCurrency(kas.income) }}</p>
@@ -214,7 +204,9 @@ definePageMeta({
   layout: 'dashboard'
 });
 
-import { ref, computed, watch } from 'vue';
+import { ref, computed, watch, onMounted } from 'vue';
+import { $fetch } from 'ofetch';
+import { useRuntimeConfig, useNuxtApp } from '#imports';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -234,25 +226,7 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, ArcElement, Title, Tool
 
 const { isDark } = useTheme();
 
-// --- Lottie loading animation ---
-const loadingAnimation = {
-  v: "5.7.4", fr: 30, ip: 0, op: 60, w: 200, h: 200, nm: "Loading", ddd: 0, assets: [],
-  layers: [{
-    ddd: 0, ind: 1, ty: 4, nm: "Circle", sr: 1,
-    ks: {
-      o: { a: 0, k: 100 },
-      r: { a: 1, k: [{ i: { x: [0.833], y: [0.833] }, o: { x: [0.167], y: [0.167] }, t: 0, s: [0] }, { t: 60, s: [360] }] },
-      p: { a: 0, k: [100, 100, 0] }, a: { a: 0, k: [0, 0, 0] }, s: { a: 0, k: [100, 100, 100] }
-    },
-    ao: 0,
-    shapes: [
-      { ty: "el", s: { a: 0, k: [80, 80] }, p: { a: 0, k: [0, 0] }, nm: "Ellipse" },
-      { ty: "st", c: { a: 0, k: [0.063, 0.725, 0.506, 1] }, o: { a: 0, k: 100 }, w: { a: 0, k: 8 }, lc: 2, lj: 2, d: [{ n: "d", nm: "dash", v: { a: 0, k: 188 } }, { n: "o", nm: "offset", v: { a: 1, k: [{ i: { x: [0.833], y: [0.833] }, o: { x: [0.167], y: [0.167] }, t: 0, s: [0] }, { t: 60, s: [-376] }] } }], nm: "Stroke" },
-      { ty: "tr", p: { a: 0, k: [0, 0] }, a: { a: 0, k: [0, 0] }, s: { a: 0, k: [100, 100] }, r: { a: 0, k: 0 }, o: { a: 0, k: 100 } }
-    ],
-    ip: 0, op: 60, st: 0
-  }]
-};
+const { $globalLoading } = useNuxtApp();
 
 // --- State ---
 const selectedChartYear = ref('all');
@@ -267,6 +241,14 @@ const yearParam = computed(() =>
 );
 
 const { data: summaryResponse, pending: summaryPending } = fetchDashboardSummary(yearParam, 'dashboard-summary');
+
+watch(summaryPending, (isPending) => {
+  if (isPending) {
+    $globalLoading?.show();
+  } else {
+    $globalLoading?.hide();
+  }
+}, { immediate: true });
 
 const overallYearParam = ref('all');
 const { data: overallSummaryResponse } = fetchDashboardSummary(overallYearParam, 'dashboard-overall');
@@ -428,6 +410,44 @@ const kasGroupStyle = (id) => {
 
 const currentDate = new Date().toLocaleDateString('id-ID', {
   weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+});
+
+const currentHijriDate = ref('');
+
+onMounted(async () => {
+  const d = new Date();
+  let hijriFallback = new Intl.DateTimeFormat('id-ID-u-ca-islamic', { year: 'numeric', month: 'long', day: 'numeric' }).format(d);
+  try {
+    const numericStr = d.toLocaleDateString('en-GB-u-ca-islamic', { day: 'numeric', month: 'numeric', year: 'numeric' });
+    const digits = numericStr.match(/\d+/g);
+    if (digits && digits.length >= 3) {
+      const dNum = parseInt(digits[0] || '1');
+      const mNum = parseInt(digits[1] || '1');
+      const yNum = parseInt(digits[2] || '1400');
+      if (yNum > 1400 && yNum < 1500) {
+        const hijriMonths = ['Muharram', 'Safar', 'Rabiul Awal', 'Rabiul Akhir', 'Jumadil Awal', 'Jumadil Akhir', 'Rajab', "Sya'ban", 'Ramadhan', 'Syawal', "Dzulqa'dah", 'Dzulhijjah'];
+        hijriFallback = `${dNum} ${hijriMonths[mNum - 1]} ${yNum} H`;
+      }
+    }
+  } catch (e) {}
+  
+  currentHijriDate.value = hijriFallback;
+
+  try {
+    const config = useRuntimeConfig();
+    const mm = d.getMonth() + 1;
+    const yyyy = d.getFullYear();
+    const dateIndex = d.getDate() - 1;
+    const res = await $fetch(`${config.public.apiUrlHijri}/${mm}/${yyyy}`);
+    if (res && res.data && res.data[dateIndex] && res.data[dateIndex].hijri) {
+      const h = res.data[dateIndex].hijri;
+      const mNum = parseInt(h.month.number);
+      const hijriMonths = ['Muharram', 'Safar', 'Rabiul Awal', 'Rabiul Akhir', 'Jumadil Awal', 'Jumadil Akhir', 'Rajab', "Sya'ban", 'Ramadhan', 'Syawal', "Dzulqa'dah", 'Dzulhijjah'];
+      currentHijriDate.value = `${parseInt(h.day)} ${hijriMonths[mNum - 1]} ${h.year} H`;
+    }
+  } catch (e) {
+    console.error('[Dashboard] Gagal mengambil tanggal Hijriah dari API:', e);
+  }
 });
 </script>
 

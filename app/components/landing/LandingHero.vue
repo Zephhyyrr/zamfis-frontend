@@ -1,7 +1,6 @@
 <template>
   <section id="beranda" class="relative min-h-[92vh] flex items-center overflow-hidden">
-    <div class="absolute inset-0 bg-cover bg-center bg-no-repeat scale-105"
-      style="background-image: url('https://images.unsplash.com/photo-1564683214965-3619addd900d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');">
+    <div class="absolute inset-0 bg-cover bg-center bg-no-repeat scale-105 hero-bg">
     </div>
     <div class="absolute inset-0 bg-gradient-to-br from-secondary/90 via-emerald-800/85 to-emerald-950/90"></div>
     <div
@@ -11,16 +10,16 @@
       style="background: rgba(212,168,67,0.15);"></div>
     <div class="relative z-10 container mx-auto px-4 md:px-12 py-20 text-center">
       <div class="mb-8 inline-block group">
-        <p class="text-3xl md:text-5xl text-emerald-200/90 drop-shadow-2xl group-hover:text-white transition duration-500 tracking-wider"
-          style="font-family: 'Amiri', serif; text-shadow: 0 0 40px rgba(16,185,129,0.4);" dir="rtl">
+        <p class="text-3xl md:text-5xl text-emerald-200/90 drop-shadow-2xl group-hover:text-white transition duration-500 tracking-wider font-sans"
+          style="text-shadow: 0 0 40px rgba(16,185,129,0.4);" dir="rtl">
           بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيم
         </p>
       </div>
       <div class="flex justify-center mb-6">
         <span
-          class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold tracking-widest uppercase text-emerald-300 border border-emerald-400/30 bg-white dark:bg-gray-800/5 backdrop-blur-md">
+          class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold tracking-widest uppercase text-emerald-300 border border-emerald-400/30 bg-white/10 dark:bg-gray-800/5 backdrop-blur-md">
           <span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse inline-block"></span>
-          Sistem Informasi Surau Digital
+          Sistem Informasi Surau Zam - Zam
         </span>
       </div>
       <h2
@@ -32,7 +31,7 @@
         </span>
       </h2>
       <p class="text-base md:text-xl text-emerald-100/80 max-w-2xl mx-auto mb-12 leading-relaxed">
-        Menjalin Ukhuwah, Membangun Ummah — menuju Ridho Allah SWT dengan transparansi dan kebersamaan.
+        Menjalin Ukhuwah, Membangun Ummah — menuju Ridho Allah SWT
       </p>
       <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-emerald-300/60">
         <span class="text-xs font-semibold tracking-widest uppercase">Scroll</span>
@@ -43,3 +42,9 @@
     </div>
   </section>
 </template>
+
+<style scoped>
+.hero-bg {
+  background-image: url('../../assets/images/foto_surau.jpg');
+}
+</style>

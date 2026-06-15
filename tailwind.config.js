@@ -16,6 +16,7 @@ export default {
         sans: ['Poppins'],
         serif: ['Poppins'],
         mono: ['Poppins'],
+        Amiri: ['Poppins'],
       },
       colors: {
         primary: '#10b981',

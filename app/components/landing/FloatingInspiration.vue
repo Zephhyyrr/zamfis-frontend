@@ -27,7 +27,7 @@
             </h3>
           </div>
           <button @click="closeModal"
-            class="text-white/70 hover:text-white hover:bg-white dark:bg-gray-800/10 p-1 rounded-full transition-colors">
+            class="text-white/70 hover:text-white hover:bg-red-500 dark:bg-red-500/10 p-1 rounded-full transition-colors">
             <Icon icon="lucide:x" class="h-6 w-6" />
           </button>
         </div>
@@ -43,8 +43,8 @@
               <p class="font-extrabold text-emerald-800 dark:text-emerald-400 uppercase tracking-wider text-sm">{{
                 contentData.source }}</p>
             </div>
-            <p class="text-2xl sm:text-3xl text-right leading-[2.5] text-gray-900 dark:text-gray-100"
-              style="font-family: 'Amiri', serif;" dir="rtl">{{ contentData.arabicText }}</p>
+            <p class="text-2xl sm:text-3xl text-right leading-[2.5] text-gray-900 dark:text-gray-100 font-sans"
+              dir="rtl">{{ contentData.arabicText }}</p>
             <p
               class="text-gray-600 dark:text-gray-400 italic leading-relaxed text-justify border-t border-emerald-50 dark:border-gray-800 pt-6">
               "{{ contentData.indonesianTranslation }}"</p>
@@ -79,7 +79,7 @@
                 </h3>
               </div>
               <button @click="closeModal"
-                class="text-white/70 hover:text-white hover:bg-white dark:bg-gray-800/10 p-1.5 rounded-full transition-colors">
+                class="text-white/70 hover:text-white hover:bg-red-500 dark:bg-red-500/10 p-1.5 rounded-full transition-colors">
                 <Icon icon="lucide:x" class="h-7 w-7" />
               </button>
             </div>
@@ -95,10 +95,10 @@
                   <p class="font-extrabold text-emerald-800 dark:text-emerald-400 uppercase tracking-wider text-sm">{{
                     contentData.source }}</p>
                 </div>
-                <p class="text-3xl sm:text-4xl text-right leading-[2.5] text-gray-900 dark:text-gray-100"
-                  style="font-family: 'Amiri', serif;" dir="rtl">{{ contentData.arabicText }}</p>
+                <p class="text-3xl sm:text-4xl text-right leading-[2.5] text-gray-900 dark:text-gray-100 font-sans"
+                  dir="rtl">{{ contentData.arabicText }}</p>
                 <p
-                  class="text-gray-600 dark:text-gray-400 italic leading-relaxed text-justify border-t border-emerald-50 dark:border-gray-800 pt-6">
+                  class="text-gray-600 dark:text-white italic leading-relaxed text-justify border-t border-emerald-50 dark:border-gray-800 pt-6">
                   "{{ contentData.indonesianTranslation }}"</p>
               </div>
             </div>

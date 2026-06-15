@@ -4,8 +4,8 @@
       <div>
         <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100">{{ title }}</h3>
 
-        <!-- Metrics Display -->
-        <div class="mt-2 flex items-center space-x-4">
+        <!-- Metrics Display (Opsional, hanya jika wmape/rmse diberikan) -->
+        <div v-if="wmape > 0 || rmse > 0" class="mt-2 flex items-center space-x-4">
           <div class="bg-gray-50 dark:bg-gray-700/50 px-3 py-1.5 rounded-lg border border-gray-100 dark:border-gray-700">
             <span class="text-xs text-gray-500 dark:text-gray-400 block">WMAPE</span>
             <span :class="['text-sm font-bold', type === 'income' ? 'text-emerald-600' : 'text-red-600']">{{ wmape
@@ -16,20 +16,15 @@
             <div class="flex flex-col">
               <span :class="['text-sm font-bold', type === 'income' ? 'text-emerald-600' : 'text-red-600']">{{
                 formatCurrency(rmse) }}</span>
-              <span class="text-[10px] text-gray-400 leading-tight">(bisa lebih, atau bisa kurang)</span>
             </div>
           </div>
         </div>
       </div>
 
       <div class="flex items-center space-x-2">
-        <span class="flex items-center text-xs text-gray-500 dark:text-gray-400">
+        <span class="flex items-center text-xs text-gray-500 dark:text-gray-400 font-semibold">
           <span :class="['w-3 h-3 rounded-full mr-1', type === 'income' ? 'bg-emerald-500' : 'bg-red-500']"></span>
-          Aktual
-        </span>
-        <span class="flex items-center text-xs text-gray-500 dark:text-gray-400">
-          <span :class="['w-3 h-3 rounded-full mr-1', type === 'income' ? 'bg-blue-500' : 'bg-orange-500']"></span>
-          Prediksi
+          Prediksi Final (Hybrid)
         </span>
       </div>
     </div>
@@ -66,7 +61,8 @@ ChartJS.register(
 const props = defineProps({
   duration: {
     type: String,
-    required: true
+    required: false,
+    default: 'month-1'
   },
   title: {
     type: String,
@@ -84,6 +80,10 @@ const props = defineProps({
   rmse: {
     type: Number,
     default: 0
+  },
+  realData: {
+    type: Object,
+    default: null
   }
 });
 
@@ -95,12 +95,7 @@ const formatCurrency = (value) => {
   }).format(value);
 };
 
-const { isDark } = useTheme();
-
 const chartOptions = computed(() => {
-  const textColor = isDark?.value ? '#ffffff' : '#6b7280';
-  const gridColor = isDark?.value ? '#374151' : '#f3f4f6';
-
   return {
     responsive: true,
     maintainAspectRatio: false,
@@ -117,12 +112,12 @@ const chartOptions = computed(() => {
       y: {
         beginAtZero: true,
         grid: {
-          color: gridColor
+          color: '#f3f4f6'
         },
         ticks: {
-          color: textColor,
+          color: '#6b7280',
           callback: function (value) {
-            return 'Rp ' + (value / 1000).toFixed(0) + 'k';
+            return 'Rp ' + (value / 1000000).toFixed(1) + 'M';
           }
         }
       },
@@ -131,7 +126,7 @@ const chartOptions = computed(() => {
           display: false
         },
         ticks: {
-          color: textColor
+          color: '#6b7280'
         }
       }
     },
@@ -143,73 +138,31 @@ const chartOptions = computed(() => {
   }
 });
 
-// Dummy data generation based on duration
+// Use real data if provided, else dummy data
 const chartData = computed(() => {
-  let labels = [];
-  let dataActual = [];
-  let dataPredicted = [];
-
-  const today = new Date();
-
-  let monthsToAdd = 12;
-  if (props.duration.startsWith('month-')) {
-    monthsToAdd = parseInt(props.duration.split('-')[1]);
-  } else if (props.duration === 'year-2') {
-    monthsToAdd = 24;
-  } else if (props.duration === 'year-3') {
-    monthsToAdd = 36;
-  }
-
-  // Configuration based on type
-  const isIncome = props.type === 'income';
-  const baseValue = isIncome ? 15000000 : 8000000;
-  const trendBase = isIncome ? 200000 : 150000;
-  const colorActual = isIncome ? '#10b981' : '#ef4444'; // Emerald vs Red
-  const colorPredicted = isIncome ? '#3b82f6' : '#f97316'; // Blue vs Orange
-
-  // Generate labels and data
-  for (let i = 0; i <= monthsToAdd; i++) {
-    const d = new Date(today.getFullYear(), today.getMonth() + i, 1);
-    const monthName = d.toLocaleString('id-ID', { month: 'short', year: '2-digit' });
-    labels.push(monthName);
-
-    // Simulate data
-    const trend = i * trendBase;
-    const random = Math.random() * (baseValue * 0.2) - (baseValue * 0.1);
-
-    if (i === 0) {
-      dataActual.push(baseValue);
-      dataPredicted.push(null);
-    } else {
-      if (i === 1) dataPredicted.push(baseValue);
-
-      dataActual.push(null);
-      dataPredicted.push(baseValue + trend + random);
+  if (props.realData && props.realData.labels) {
+    const isIncome = props.type === 'income';
+    const colorActual = isIncome ? '#10b981' : '#ef4444'; 
+    
+    return {
+      labels: props.realData.labels,
+      datasets: [
+        {
+          label: 'Prediksi Hybrid',
+          backgroundColor: colorActual,
+          borderColor: colorActual,
+          data: props.realData.hybrid,
+          tension: 0.4,
+          pointRadius: 5,
+          borderWidth: 3
+        }
+      ]
     }
   }
 
-  return {
-    labels: labels,
-    datasets: [
-      {
-        label: 'Aktual',
-        backgroundColor: colorActual,
-        borderColor: colorActual,
-        data: dataActual,
-        tension: 0.4,
-        pointRadius: 4
-      },
-      {
-        label: 'Prediksi',
-        backgroundColor: colorPredicted,
-        borderColor: colorPredicted,
-        data: dataPredicted,
-        borderDash: [5, 5],
-        tension: 0.4,
-        pointRadius: 4
-      }
-    ]
-  }
+  // Fallback to dummy data
+  let labels = [];
+  return { labels, datasets: [] };
 })
 
 </script>
