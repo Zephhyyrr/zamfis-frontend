@@ -1,7 +1,7 @@
 <template>
     <BaseModal :modelValue="modelValue" @update:modelValue="$emit('update:modelValue', $event)" :title="modalTitle"
         :icon="modalIcon" :type="modalType" :confirmText="confirmText" @confirm="submitDelete">
-        <p class="text-sm text-gray-700">
+        <p class="text-sm text-gray-700 dark:text-white">
             {{ modalDescription }}
             <strong>{{ item?.uraian }}</strong>
             ?

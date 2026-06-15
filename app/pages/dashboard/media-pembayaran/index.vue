@@ -32,9 +32,23 @@
         class="inline-flex items-center rounded-lg px-4 py-2 text-sm font-medium transition-colors"
         :class="activeTab === 'draft' ? 'bg-amber-500 text-white shadow-sm' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'"
         @click="activeTab = 'draft'">
-        Draft Tersimpan
+        Draft
         <span class="ml-2 rounded-full px-2 py-0.5 text-xs" :class="activeTab === 'draft' ? 'bg-white/20 text-white' : 'bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-400'">{{ draftMeta?.totalItems || 0 }}</span>
       </button>
+    </div>
+
+    
+    <div v-if="showUndoBanner"
+      class="mb-4 bg-amber-50 dark:bg-amber-900/30 border border-amber-200 dark:border-amber-700/50 rounded-xl p-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-full flex items-center justify-center bg-amber-100 dark:bg-amber-800 text-amber-600 dark:text-amber-400">
+          <Icon icon="lucide:archive-restore" class="w-5 h-5" />
+        </div>
+        <div>
+          <h4 class="text-sm font-semibold text-amber-900 dark:text-amber-100">Data Diarsipkan</h4>
+          <p class="text-xs text-amber-700 dark:text-amber-300">Data telah dipindahkan ke draft. Anda dapat memulihkannya dari tab Draft.</p>
+        </div>
+      </div>
     </div>
 
     <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden flex flex-col">
@@ -76,10 +90,15 @@
                   class="text-emerald-700 hover:text-emerald-800 p-1.5 hover:bg-emerald-50 rounded-lg mr-2 transition-colors" title="Pulihkan">
                   <Icon icon="lucide:rotate-ccw" class="w-4 h-4" />
                 </button>
-                <button
-                  @click="activeTab === 'draft' ? openActionModal('delete', item, 'permanent') : openActionModal('delete', item, 'archive')"
-                  class="text-amber-700 hover:text-amber-800 p-1.5 hover:bg-amber-50 rounded-lg transition-colors"
-                  :title="activeTab === 'active' ? 'Arsipkan' : 'Hapus Permanen'">
+                
+                <button v-if="activeTab === 'active'" @click="openActionModal('delete', item, 'archive')"
+                  class="text-amber-700 dark:text-amber-500 hover:text-amber-800 dark:hover:text-amber-400 p-1.5 hover:bg-amber-50 dark:hover:bg-amber-900/30 rounded-lg transition-colors outline-none focus:ring-2 focus:ring-amber-500/50"
+                  title="Arsipkan">
+                  <Icon icon="lucide:trash-2" class="w-4 h-4" />
+                </button>
+                <button v-if="activeTab === 'draft'" @click="openActionModal('delete-permanent', item)"
+                  class="text-red-700 dark:text-red-500 hover:text-red-800 dark:hover:text-red-400 p-1.5 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg transition-colors outline-none focus:ring-2 focus:ring-red-500/50"
+                  title="Hapus Permanen">
                   <Icon icon="lucide:trash-2" class="w-4 h-4" />
                 </button>
               </td>
@@ -94,8 +113,15 @@
     <FeaturesMediaPembayaranEditModal v-model="showEditModal" :editData="selectedItem" @saved="handleSuccess" />
     <FeaturesMediaPembayaranDeleteModal v-model="showDeleteModal" :item="selectedItem" :mode="deleteMode" @success="handleSuccess" />
 
-    <BaseModal v-model="showResultModal" :title="resultTitle" icon="lucide:badge-check" type="success" confirmText="Tutup">
-      <p class="text-sm text-gray-700">{{ resultMessage }}</p>
+    
+    <FeaturesMediaPembayaranDeletePermanentModal
+      v-model="showDeletePermanentModal"
+      :item="selectedItem"
+      @success="handleSuccess"
+    />
+
+    <BaseModal v-model="showResultModal" :title="resultTitle" icon="lucide:badge-check" type="success" confirmText="Tutup" :showCancel="false">
+      <p class="text-sm text-gray-700 dark:text-white">{{ resultMessage }}</p>
     </BaseModal>
   </div>
 </template>
@@ -152,11 +178,12 @@ const filteredList = computed(() => {
 
 const showEditModal = ref(false);
 const showDeleteModal = ref(false);
+const showDeletePermanentModal = ref(false);
 const selectedItem = ref<any>(null);
-const currentAction = ref<'edit' | 'delete' | null>(null);
+const currentAction = ref<'edit' | 'delete' | 'delete-permanent' | null>(null);
 const deleteMode = ref<'archive' | 'restore' | 'permanent'>('archive');
 
-const openActionModal = (action: 'edit' | 'delete', item: any, mode?: 'archive' | 'restore' | 'permanent') => {
+const openActionModal = (action: 'edit' | 'delete' | 'delete-permanent', item: any, mode?: 'archive' | 'restore' | 'permanent') => {
   currentAction.value = action;
   selectedItem.value = { ...item };
   if (action === 'edit') showEditModal.value = true;
@@ -164,6 +191,7 @@ const openActionModal = (action: 'edit' | 'delete', item: any, mode?: 'archive' 
     deleteMode.value = mode || (activeTab.value === 'draft' ? 'restore' : 'archive');
     showDeleteModal.value = true;
   }
+  if (action === 'delete-permanent') showDeletePermanentModal.value = true;
 };
 
 const showUndoBanner = ref(false);

@@ -36,6 +36,19 @@
       </button>
     </div>
 
+    <div v-if="showUndoBanner"
+      class="mb-4 bg-amber-50 dark:bg-amber-900/30 border border-amber-200 dark:border-amber-700/50 rounded-xl p-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-full flex items-center justify-center bg-amber-100 dark:bg-amber-800 text-amber-600 dark:text-amber-400">
+          <Icon icon="lucide:archive-restore" class="w-5 h-5" />
+        </div>
+        <div>
+          <h4 class="text-sm font-semibold text-amber-900 dark:text-amber-100">Data Diarsipkan</h4>
+          <p class="text-xs text-amber-700 dark:text-amber-300">Data telah dipindahkan ke draft. Anda dapat memulihkannya dari tab Draft.</p>
+        </div>
+      </div>
+    </div>
+
     <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
       <div class="overflow-x-auto">
         <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
@@ -97,8 +110,14 @@
                 </button>
                 <button @click="openActionModal('delete', user)"
                   class="text-amber-700 dark:text-amber-500 hover:text-amber-800 dark:hover:text-amber-400 p-1.5 hover:bg-amber-50 dark:hover:bg-amber-900/30 rounded-lg transition-colors outline-none focus:ring-2 focus:ring-amber-500/50"
+                  :class="{'mr-2': activeTab === 'draft'}"
                   :title="activeTab === 'active' ? 'Hapus' : 'Pulihkan'">
                   <Icon :icon="activeTab === 'active' ? 'lucide:trash-2' : 'lucide:rotate-ccw'" class="w-4 h-4" />
+                </button>
+                <button v-if="activeTab === 'draft'" @click="openActionModal('delete-permanent', user)"
+                  class="text-red-700 dark:text-red-500 hover:text-red-800 dark:hover:text-red-400 p-1.5 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg transition-colors outline-none focus:ring-2 focus:ring-red-500/50"
+                  title="Hapus Permanen">
+                  <Icon icon="lucide:trash-2" class="w-4 h-4" />
                 </button>
               </td>
             </tr>
@@ -120,9 +139,15 @@
       @success="handleSuccess"
     />
 
-    <BaseModal v-model="showResultModal" :title="resultTitle" icon="lucide:badge-check" type="success"
-      confirmText="Tutup">
-      <p class="text-sm text-gray-700">{{ resultMessage }}</p>
+    <FeaturesUsersUserDeletePermanentModal
+      v-model="showDeletePermanentModal"
+      :user="selectedUser"
+      @success="handleSuccess"
+    />
+
+    <BaseModal v-model="showResultModal" :title="resultTitle" :icon="resultIcon" :type="resultType"
+      confirmText="Tutup" :showCancel="false">
+      <p class="text-sm text-gray-700 dark:text-white">{{ resultMessage }}</p>
     </BaseModal>
 
   </div>
@@ -183,11 +208,12 @@ const goToCreate = () => router.push('/dashboard/users/create');
 const showEditModal = ref(false);
 const showDeleteModal = ref(false);
 const showStatusModal = ref(false);
+const showDeletePermanentModal = ref(false);
 const selectedUser = ref<IUser | null>(null);
-const currentAction = ref<'edit' | 'delete' | 'status' | null>(null);
+const currentAction = ref<'edit' | 'delete' | 'status' | 'delete-permanent' | null>(null);
 const deleteMode = ref<'archive' | 'restore'>('archive');
 
-const openActionModal = (action: 'edit' | 'delete' | 'status', user: IUser) => {
+const openActionModal = (action: 'edit' | 'delete' | 'status' | 'delete-permanent', user: IUser) => {
   currentAction.value = action;
   selectedUser.value = user;
   if (action === 'edit') showEditModal.value = true;
@@ -195,17 +221,15 @@ const openActionModal = (action: 'edit' | 'delete' | 'status', user: IUser) => {
     deleteMode.value = activeTab.value === 'draft' ? 'restore' : 'archive';
     showDeleteModal.value = true;
   }
+  if (action === 'delete-permanent') showDeletePermanentModal.value = true;
   if (action === 'status') showStatusModal.value = true;
 };
 
 const showUndoBanner = ref(false);
-const undoLoading = ref(false);
-const lastDeletedUserId = ref<number | null>(null);
 let undoTimer: ReturnType<typeof setTimeout> | null = null;
 
 const clearUndoState = () => {
   showUndoBanner.value = false;
-  lastDeletedUserId.value = null;
   if (undoTimer) {
     clearTimeout(undoTimer);
     undoTimer = null;
@@ -214,35 +238,25 @@ const clearUndoState = () => {
 
 const showDeleteUndo = (id: number) => {
   if (undoTimer) clearTimeout(undoTimer);
-  lastDeletedUserId.value = id;
   showUndoBanner.value = true;
   undoTimer = setTimeout(() => {
     clearUndoState();
   }, 8000);
 };
 
-const undoDelete = async () => {
-  if (!lastDeletedUserId.value) return;
-  undoLoading.value = true;
-  try {
-    await deleteUser(lastDeletedUserId.value);
-    await refresh();
-    clearUndoState();
-    resultTitle.value = 'Akun Dipulihkan';
-    resultMessage.value = 'Akun sudah dipulihkan, silahkan cek email untuk veritifikasi ulang.';
-    showResultModal.value = true;
-  } catch (error) {
-    console.error('Gagal memulihkan user:', error);
-  } finally {
-    undoLoading.value = false;
-  }
-};
+onBeforeUnmount(() => {
+  if (undoTimer) clearTimeout(undoTimer);
+});
 
 const showResultModal = ref(false);
 const resultTitle = ref('');
 const resultMessage = ref('');
+const resultType = ref<'success' | 'danger' | 'warning'>('success');
+const resultIcon = ref('lucide:badge-check');
 
 const handleSuccess = async (title: string, message: string) => {
+  resultType.value = 'success';
+  resultIcon.value = 'lucide:badge-check';
   await refresh();
   await refreshDraft();
 
@@ -259,7 +273,5 @@ const handleSuccess = async (title: string, message: string) => {
   showResultModal.value = true;
 };
 
-onBeforeUnmount(() => {
-  if (undoTimer) clearTimeout(undoTimer);
-});
+
 </script>

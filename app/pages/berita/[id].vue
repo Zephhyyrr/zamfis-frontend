@@ -38,7 +38,7 @@
         </div>
 
         <div
-          class="prose prose-lg prose-emerald dark:prose-invert max-w-none text-gray-700 dark:text-gray-300 leading-loose"
+          class="prose prose-lg prose-emerald dark:prose-invert max-w-none text-gray-700 dark:text-white leading-loose"
           v-html="item.isi"></div>
       </article>
     </main>

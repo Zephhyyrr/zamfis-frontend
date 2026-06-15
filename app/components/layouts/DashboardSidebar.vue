@@ -25,7 +25,7 @@
     <nav class="mt-4 flex-1 overflow-y-auto space-y-1 pb-6" :class="isCollapsed ? 'px-2' : 'px-4'">
       <NuxtLink to="/dashboard/"
         :class="[
-          'flex items-center py-3 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors',
+          'flex items-center py-3 text-gray-700 dark:text-white rounded-lg hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors',
           isCollapsed ? 'justify-center px-0' : 'px-4'
         ]"
         active-class="bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 font-medium"
@@ -37,7 +37,7 @@
       
       <NuxtLink to="/dashboard/reports"
         :class="[
-          'flex items-center py-3 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors',
+          'flex items-center py-3 text-gray-700 dark:text-white rounded-lg hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors',
           isCollapsed ? 'justify-center px-0 mt-2' : 'px-4'
         ]"
         active-class="bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 font-medium"
@@ -48,7 +48,7 @@
 
       <NuxtLink to="/dashboard/keuangan"
         :class="[
-          'flex items-center py-3 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors',
+          'flex items-center py-3 text-gray-700 dark:text-white rounded-lg hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors',
           isCollapsed ? 'justify-center px-0 mt-2' : 'px-4',
           isTransaksiRouteActive && 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 font-medium'
         ]"
@@ -60,7 +60,7 @@
 
       <NuxtLink to="/dashboard/jenis-kas"
         :class="[
-          'flex items-center py-3 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors',
+          'flex items-center py-3 text-gray-700 dark:text-white rounded-lg hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors',
           isCollapsed ? 'justify-center px-0 mt-2' : 'px-4',
           isJenisKasRouteActive && 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 font-medium'
         ]"
@@ -72,7 +72,7 @@
       
       <NuxtLink to="/dashboard/media-pembayaran"
         :class="[
-          'flex items-center py-3 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors',
+          'flex items-center py-3 text-gray-700 dark:text-white rounded-lg hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors',
           isCollapsed ? 'justify-center px-0' : 'px-4',
           isMediaPembayaranRouteActive && 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 font-medium'
         ]"
@@ -83,7 +83,7 @@
       
       <NuxtLink to="/dashboard/content"
         :class="[
-          'flex items-center py-3 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors',
+          'flex items-center py-3 text-gray-700 dark:text-white rounded-lg hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors',
           isCollapsed ? 'justify-center px-0 mt-2' : 'px-4',
           isContentRouteActive && 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 font-medium'
         ]"
@@ -95,7 +95,7 @@
 
       <NuxtLink to="/dashboard/favorite-transaksi"
         :class="[
-          'flex items-center py-3 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors',
+          'flex items-center py-3 text-gray-700 dark:text-white rounded-lg hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors',
           isCollapsed ? 'justify-center px-0 mt-2' : 'px-4',
           isFavTransaksiRouteActive && 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 font-medium'
         ]"
@@ -106,7 +106,7 @@
 
       <NuxtLink to="/dashboard/kelompok-kurban"
         :class="[
-          'flex items-center py-3 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors',
+          'flex items-center py-3 text-gray-700 dark:text-white rounded-lg hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors',
           isCollapsed ? 'justify-center px-0 mt-2' : 'px-4',
           isKelompokKurbanRouteActive && 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 font-medium'
         ]"
@@ -117,7 +117,7 @@
 
       <NuxtLink to="/dashboard/peserta-kurban"
         :class="[
-          'flex items-center py-3 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors',
+          'flex items-center py-3 text-gray-700 dark:text-white rounded-lg hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors',
           isCollapsed ? 'justify-center px-0 mt-2' : 'px-4',
           isPesertaKurbanRouteActive && 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 font-medium'
         ]"
@@ -129,7 +129,7 @@
       <NuxtLink to="/dashboard/users"
         v-if="authStore.user?.role === 'superadmin'"
         :class="[
-          'flex items-center py-3 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors',
+          'flex items-center py-3 text-gray-700 dark:text-white rounded-lg hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors',
           isCollapsed ? 'justify-center px-0 mt-2' : 'px-4',
           isUsersRouteActive && 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 font-medium'
         ]"
@@ -141,7 +141,7 @@
 
       <NuxtLink to="/dashboard/settings"
         :class="[
-          'flex items-center py-3 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors',
+          'flex items-center py-3 text-gray-700 dark:text-white rounded-lg hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors',
           isCollapsed ? 'justify-center px-0 mt-2' : 'px-4'
         ]"
         active-class="bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 font-medium"

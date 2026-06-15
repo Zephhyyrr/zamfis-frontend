@@ -9,7 +9,7 @@
     @confirm="handleConfirm"
     :isLoading="isLoading"
   >
-    <p class="text-sm text-gray-700">{{ modalBody }}</p>
+    <p class="text-sm text-gray-700 dark:text-white">{{ modalBody }}</p>
   </BaseModal>
 </template>
 
@@ -66,7 +66,13 @@ const handleConfirm = async () => {
       await deleteMediaPembayaran(props.item.id);
     }
     emit('update:modelValue', false);
-    emit('success', modalTitle.value, modalBody.value);
+    if (props.mode === 'permanent') {
+      emit('success', 'Berhasil Dihapus Permanen', 'Media pembayaran beserta datanya telah dihapus permanen.');
+    } else if (props.mode === 'restore') {
+      emit('success', 'Berhasil Dipulihkan', 'Media pembayaran telah dipulihkan dari draft.');
+    } else {
+      emit('success', 'Berhasil Diarsipkan', 'Media pembayaran dipindahkan ke draft.');
+    }
   } catch (e) {
     console.error(e);
   } finally {

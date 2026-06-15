@@ -29,19 +29,24 @@
         :class="activeTab === 'draft'
           ? 'bg-amber-500 text-white shadow-sm'
           : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'" @click="activeTab = 'draft'">
-        Konten Dihapus
+        Draft
         <span class="ml-2 rounded-full px-2 py-0.5 text-xs" :class="activeTab === 'draft' ? 'bg-white/20 text-white' : 'bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-400'">{{ draftMeta?.totalItems || 0 }}</span>
       </button>
     </div>
+    
     <div v-if="showUndoBanner"
-      class="mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3">
-      <p class="text-sm text-amber-800">Konten dipindahkan ke draft. Ingin memulihkan sekarang?</p>
-      <button type="button"
-        class="inline-flex items-center rounded-lg bg-amber-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-amber-700 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
-        :disabled="undoLoading" @click="undoDelete">
-        {{ undoLoading ? 'Memulihkan...' : 'Pulihkan Sekarang' }}
-      </button>
+      class="mb-4 bg-amber-50 dark:bg-amber-900/30 border border-amber-200 dark:border-amber-700/50 rounded-xl p-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-full flex items-center justify-center bg-amber-100 dark:bg-amber-800 text-amber-600 dark:text-amber-400">
+          <Icon icon="lucide:archive-restore" class="w-5 h-5" />
+        </div>
+        <div>
+          <h4 class="text-sm font-semibold text-amber-900 dark:text-amber-100">Data Diarsipkan</h4>
+          <p class="text-xs text-amber-700 dark:text-amber-300">Data telah dipindahkan ke draft. Anda dapat memulihkannya dari tab Draft.</p>
+        </div>
+      </div>
     </div>
+
     <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
       <div class="overflow-x-auto">
         <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
@@ -145,8 +150,8 @@
       @success="handleSuccess"
     />
 
-    <BaseModal v-model="showResultModal" :title="resultTitle" icon="lucide:badge-check" type="success" confirmText="Tutup">
-      <p class="text-sm text-gray-700">{{ resultMessage }}</p>
+    <BaseModal v-model="showResultModal" :title="resultTitle" icon="lucide:badge-check" type="success" confirmText="Tutup" :showCancel="false">
+      <p class="text-sm text-gray-700 dark:text-white">{{ resultMessage }}</p>
     </BaseModal>
 
   </div>

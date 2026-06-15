@@ -1,7 +1,7 @@
 <template>
     <BaseModal :modelValue="modelValue" @update:modelValue="$emit('update:modelValue', $event)" :title="modalTitle"
         icon="lucide:arrow-right-left" type="info" :confirmText="confirmText" @confirm="submitToggleStatus">
-        <p class="text-sm text-gray-700">
+        <p class="text-sm text-gray-700 dark:text-white">
             {{ modalMessage }}
         </p>
     </BaseModal>

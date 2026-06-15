@@ -2,7 +2,7 @@
   <div v-if="meta && meta.totalPages > 1" class="flex flex-col sm:flex-row items-center justify-between border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-3 sm:px-6 rounded-b-xl mt-4 shadow-sm border dark:border-gray-700">
     <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
       <div>
-        <p class="text-sm text-gray-700 dark:text-gray-300">
+        <p class="text-sm text-gray-700 dark:text-white">
           Menampilkan baris 
           <span class="font-medium">{{ startItem }}</span>
           sampai
@@ -50,17 +50,17 @@
       <button
         @click="prevPage"
         :disabled="currentPage === 1"
-        class="relative inline-flex items-center rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 transition-colors"
+        class="relative inline-flex items-center rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-4 py-2 text-sm font-medium text-gray-700 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 transition-colors"
       >
         Previous
       </button>
-      <div class="flex items-center text-sm text-gray-700 dark:text-gray-300">
+      <div class="flex items-center text-sm text-gray-700 dark:text-white">
           Hal. {{ currentPage }} / {{ meta.totalPages }}
       </div>
       <button
         @click="nextPage"
         :disabled="currentPage === meta.totalPages"
-        class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 transition-colors"
+        class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-4 py-2 text-sm font-medium text-gray-700 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 transition-colors"
       >
         Next
       </button>

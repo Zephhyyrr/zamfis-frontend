@@ -37,6 +37,20 @@
       </div>
     </div>
 
+    
+    <div v-if="showUndoBanner"
+      class="mb-4 bg-amber-50 dark:bg-amber-900/30 border border-amber-200 dark:border-amber-700/50 rounded-xl p-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-full flex items-center justify-center bg-amber-100 dark:bg-amber-800 text-amber-600 dark:text-amber-400">
+          <Icon icon="lucide:archive-restore" class="w-5 h-5" />
+        </div>
+        <div>
+          <h4 class="text-sm font-semibold text-amber-900 dark:text-amber-100">Data Diarsipkan</h4>
+          <p class="text-xs text-amber-700 dark:text-amber-300">Data telah dipindahkan ke draft. Anda dapat memulihkannya dari tab Draft.</p>
+        </div>
+      </div>
+    </div>
+
     <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden flex flex-col">
       <div class="overflow-x-auto flex-1">
         <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
@@ -126,8 +140,8 @@
     <KeuanganDeleteModal v-model="showDeleteModal" :item="editData" :mode="deleteMode" @success="handleSuccess" />
 
     <BaseModal v-model="showResultModal" :title="resultTitle" icon="lucide:badge-check" type="success"
-      confirmText="Tutup">
-      <p class="text-sm text-gray-700">{{ resultMessage }}</p>
+      confirmText="Tutup" :showCancel="false">
+      <p class="text-sm text-gray-700 dark:text-white">{{ resultMessage }}</p>
     </BaseModal>
 
   </div>

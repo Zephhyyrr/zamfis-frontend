@@ -5,7 +5,7 @@
         :type="modalType" 
         :confirmText="confirmText" 
         @confirm="submitDelete">
-        <p class="text-sm text-gray-700">
+        <p class="text-sm text-gray-700 dark:text-white">
             {{ modalDescription }}
             <strong>{{ item?.nama }}</strong>?
         </p>
