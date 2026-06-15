@@ -9,7 +9,7 @@
       <select 
         v-model="selectedDuration" 
         @change="emitUpdate"
-        class="bg-gray-50 dark:bg-gray-700/50 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5"
+        class="bg-gray-50 /50 border border-gray-300 dark:border-gray-600 dark: text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
       >
         <option disabled value="">Pilih Durasi</option>
         <optgroup label="Bulan">

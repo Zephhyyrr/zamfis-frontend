@@ -1,7 +1,7 @@
 <template>
   <div class="max-w-2xl mx-auto">
     <div class="mb-6 flex items-center gap-4">
-      <NuxtLink to="/dashboard/content" class="p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors">
+      <NuxtLink to="/dashboard/content" class="p-2 bg-gray-100 dark:bg-gray-800 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
         <Icon icon="lucide:arrow-left" class="w-5 h-5 text-gray-600 dark:text-gray-400" />
       </NuxtLink>
       <div>
@@ -16,16 +16,16 @@
       <form @submit.prevent="submitForm">
         <div class="space-y-6">
           <div>
-            <label class="block text-sm font-medium text-gray-700">Judul Konten</label>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Judul Konten</label>
             <input v-model="form.judul" type="text" required :disabled="isSubmitting"
-              class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
               placeholder="Masukkan judul..." />
           </div>
 
           <div>
-            <label class="block text-sm font-medium text-gray-700">Jenis Konten</label>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Jenis Konten</label>
             <select v-model="form.jenis" required :disabled="isSubmitting"
-              class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50">
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400">
               <option value="berita">Berita & Artikel</option>
               <option value="pengurus" :disabled="existingPengurus">
                 Profil Pengurus <span v-if="existingPengurus">(Hanya bisa 1)</span>
@@ -41,7 +41,7 @@
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">Gambar (Opsional)</label>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">Gambar (Opsional)</label>
 
               <div v-if="imagePreviews.length" class="mb-3 grid grid-cols-2 gap-3">
                 <div v-for="(preview, index) in imagePreviews" :key="preview.url"
@@ -72,7 +72,7 @@
             </div>
 
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">Video (Opsional)</label>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">Video (Opsional)</label>
 
               <div v-if="videoPreviews.length" class="mb-3 grid grid-cols-1 gap-3">
                 <div v-for="(preview, index) in videoPreviews" :key="preview.url"
@@ -104,15 +104,15 @@
           </div>
 
           <div>
-            <label class="block text-sm font-medium text-gray-700">Isi Konten / Artikel</label>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Isi Konten / Artikel</label>
             <textarea v-model="form.isi" required rows="6" :disabled="isSubmitting"
-              class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
               placeholder="Isi artikel/konten Anda di sini..."></textarea>
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700">Status Publikasi</label>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Status Publikasi</label>
             <select v-model="form.status" required :disabled="isSubmitting"
-              class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50">
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400">
               <option value="draft">Draft (Simpan sementara)</option>
               <option value="published">Published (Terbitkan)</option>
             </select>

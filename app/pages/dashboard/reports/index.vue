@@ -23,7 +23,7 @@
             v-model="searchQuery"
             type="text"
             placeholder="Cari uraian atau Jenis Kas..."
-            class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-800 dark:text-gray-100 outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+            class="w-full rounded-lg border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm dark: outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
           >
         </div>
 
@@ -31,9 +31,9 @@
           <label class="mb-1 block text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">Jenis Kas</label>
           <select
             v-model="activejenisKasId"
-            class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-800 dark:text-gray-100 outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+            class="w-full rounded-lg border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm dark: outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
           >
-            <option value="all">Semua Jenis Kas</option>
+            <option value="all">Semua Kas</option>
             <option v-for="tab in JenisKasTabs" :key="tab.id" :value="tab.id">{{ tab.nama }}</option>
           </select>
         </div>
@@ -42,7 +42,7 @@
           <label class="mb-1 block text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">Kategori</label>
           <select
             v-model="transactionType"
-            class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-800 dark:text-gray-100 outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+            class="w-full rounded-lg border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm dark: outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
           >
             <option value="all">Semua</option>
             <option value="income">Uang Masuk</option>
@@ -55,7 +55,7 @@
           <input
             v-model="startDate"
             type="date"
-            class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-800 dark:text-gray-100 outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+            class="w-full rounded-lg border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm dark: outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
           >
         </div>
 
@@ -64,7 +64,7 @@
           <input
             v-model="endDate"
             type="date"
-            class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-800 dark:text-gray-100 outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+            class="w-full rounded-lg border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm dark: outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
           >
         </div>
 
@@ -72,7 +72,7 @@
           <label class="mb-1 block text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">Bulan</label>
           <select
             v-model="selectedMonth"
-            class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-800 dark:text-gray-100 outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+            class="w-full rounded-lg border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm dark: outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
           >
             <option value="all">Semua Bulan</option>
             <option v-for="month in monthOptions" :key="month.value" :value="month.value">{{ month.label }}</option>
@@ -83,7 +83,7 @@
           <label class="mb-1 block text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">Tahun</label>
           <select
             v-model="selectedYear"
-            class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-800 dark:text-gray-100 outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+            class="w-full rounded-lg border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm dark: outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
           >
             <option value="all">Semua Tahun</option>
             <option v-for="year in availableYears" :key="year" :value="year">{{ year }}</option>
@@ -109,11 +109,11 @@
           @click="selectJenisKasTab('all')"
           :class="[
             'rounded-lg px-4 py-2 text-sm font-medium transition-colors',
-            activejenisKasId === 'all' ? 'bg-emerald-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+            activejenisKasId === 'all' ? 'bg-emerald-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
           ]"
         >
           Semua Jenis Kas
-          <span class="ml-2 rounded-full bg-black/10 px-2 py-0.5 text-xs">{{ meta?.totalItems || 0 }}</span>
+          <span class="ml-2 rounded-full px-2 py-0.5 text-xs" :class="activejenisKasId === 'all' ? 'bg-white/20' : 'bg-gray-200 dark:bg-gray-600'">{{ meta?.totalItems || 0 }}</span>
         </button>
 
         <button
@@ -123,7 +123,7 @@
           @click="selectJenisKasTab(tab.id)"
           :class="[
             'rounded-lg px-4 py-2 text-sm font-medium transition-colors',
-            activejenisKasId === tab.id ? 'bg-emerald-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+            activejenisKasId === tab.id ? 'bg-emerald-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
           ]"
         >
           {{ tab.nama }}
@@ -224,7 +224,7 @@
           <label class="mb-1 block text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">Mode Export</label>
           <select
             v-model="exportMode"
-            class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-800 dark:text-gray-100 outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+            class="w-full rounded-lg border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm dark: outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
           >
             <option value="monthly">Per Bulan (1 Sheet)</option>
             <option value="yearly">Per Tahun (12 Sheet)</option>
@@ -235,7 +235,7 @@
           <label class="mb-1 block text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">Tahun</label>
           <select
             v-model="exportYear"
-            class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-800 dark:text-gray-100 outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+            class="w-full rounded-lg border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm dark: outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
           >
             <option v-for="year in exportYears" :key="year" :value="year">{{ year }}</option>
           </select>
@@ -245,7 +245,7 @@
           <label class="mb-1 block text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">Bulan</label>
           <select
             v-model="exportMonth"
-            class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-800 dark:text-gray-100 outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+            class="w-full rounded-lg border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm dark: outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
           >
             <option v-for="month in monthOptions" :key="month.value" :value="month.value">{{ month.label }}</option>
           </select>

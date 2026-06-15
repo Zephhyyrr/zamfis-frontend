@@ -15,7 +15,7 @@
           <SearchIcon class="h-5 w-5 text-gray-400" />
         </div>
         <input v-model="searchQuery" type="text"
-          class="block w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg leading-5 bg-white dark:bg-gray-800 placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm"
+          class="block w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg leading-5 focus:outline-none focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
           placeholder="Cari kelompok kurban..." />
       </div>
     </div>
@@ -25,13 +25,13 @@
         class="inline-flex items-center rounded-lg px-4 py-2 text-sm font-medium transition-colors"
         :class="activeTab === 'active' ? 'bg-emerald-600 text-white shadow-sm' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'"
         @click="activeTab = 'active'">
-        Aktif <span class="ml-2 rounded-full bg-white dark:bg-gray-800/20 px-2 py-0.5 text-xs">{{ activeMeta?.totalItems || 0 }}</span>
+        Aktif <span class="ml-2 rounded-full px-2 py-0.5 text-xs" :class="activeTab === 'active' ? 'bg-white/20 text-white' : 'bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-400'">{{ activeMeta?.totalItems || 0 }}</span>
       </button>
       <button type="button"
         class="inline-flex items-center rounded-lg px-4 py-2 text-sm font-medium transition-colors"
         :class="activeTab === 'draft' ? 'bg-amber-500 text-white shadow-sm' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'"
         @click="activeTab = 'draft'">
-        Draft <span class="ml-2 rounded-full bg-white dark:bg-gray-800/20 px-2 py-0.5 text-xs">{{ draftMeta?.totalItems || 0 }}</span>
+        Draft <span class="ml-2 rounded-full px-2 py-0.5 text-xs" :class="activeTab === 'draft' ? 'bg-white/20 text-white' : 'bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-400'">{{ draftMeta?.totalItems || 0 }}</span>
       </button>
     </div>
 

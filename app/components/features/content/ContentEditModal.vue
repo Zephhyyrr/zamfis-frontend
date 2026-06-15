@@ -12,21 +12,21 @@
   >
     <div class="space-y-4">
       <div>
-        <label class="block text-sm font-medium text-gray-700">Judul Konten</label>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Judul Konten</label>
         <input v-model="form.judul" type="text" required
-          class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm" />
+          class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400" />
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-gray-700">Isi Konten / Artikel</label>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Isi Konten / Artikel</label>
         <textarea v-model="form.isi" required rows="5"
-          class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm" placeholder="Isi artikel/konten Anda di sini..."></textarea>
+          class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400" placeholder="Isi artikel/konten Anda di sini..."></textarea>
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-gray-700">Jenis Konten</label>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Jenis Konten</label>
         <select v-model="form.jenis"
-          class="mt-1 block w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm">
+          class="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400">
           <option value="berita">Berita</option>
           <option value="pengurus">Pengurus</option>
           <option value="imsakiyah">Imsakiyah</option>
@@ -36,7 +36,7 @@
 
       <!-- Gambar Upload -->
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-2">Gambar</label>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">Gambar</label>
         <div v-if="imagePreview" class="mb-3 relative group rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 shadow-sm">
           <img :src="imagePreview" alt="Preview Gambar" class="w-full h-48 object-cover" />
           <button @click.prevent="removeImage"
@@ -69,7 +69,7 @@
           <span class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white dark:bg-gray-800 shadow ring-0 transition duration-200 ease-in-out"
             :class="form.isTampil ? 'translate-x-5' : 'translate-x-0'" />
         </button>
-        <label class="text-sm text-gray-700 font-medium">
+        <label class="text-sm text-gray-700 dark:text-gray-200 font-medium">
           Tampilkan Imsakiyah <span class="text-gray-400 font-normal">({{ form.isTampil ? 'Aktif' : 'Tersembunyi' }})</span>
         </label>
       </div>

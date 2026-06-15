@@ -57,7 +57,7 @@
             <div class="flex items-center gap-2">
               <label class="text-xs text-gray-500 dark:text-gray-400 font-medium">Periode</label>
               <select v-model="selectedChartYear"
-                class="rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-700 bg-white px-3 py-1.5 text-xs text-gray-700 dark:text-gray-200 outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-colors">
+                class="rounded-md border border-gray-300 dark:border-gray-600 px-3 py-1.5 text-xs dark: outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-colors bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400">
                 <option value="all">Semua Tahun</option>
                 <option v-for="year in availableYears" :key="year" :value="year">{{ year }}</option>
               </select>
@@ -105,7 +105,7 @@
               <div class="flex items-center gap-2 mb-3">
                 <label class="text-xs text-gray-500 dark:text-gray-400 font-medium">Tahun:</label>
                 <select v-model="selectedYearYatim"
-                  class="rounded-md border border-purple-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-2 py-1 text-xs text-gray-700 dark:text-gray-200 outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-400 transition-colors">
+                  class="rounded-md border border-purple-300 dark:border-gray-600 px-2 py-1 text-xs dark: outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-400 transition-colors bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400">
                   <option value="all">Semua Tahun</option>
                   <option v-for="r in pieYatimData" :key="r.year" :value="r.year">{{ r.year }}</option>
                 </select>
@@ -144,7 +144,7 @@
               <div class="flex items-center gap-2 mb-3">
                 <label class="text-xs text-gray-500 dark:text-gray-400 font-medium">Tahun:</label>
                 <select v-model="selectedYearTpq"
-                  class="rounded-md border border-teal-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-2 py-1 text-xs text-gray-700 dark:text-gray-200 outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-400 transition-colors">
+                  class="rounded-md border border-teal-300 dark:border-gray-600 px-2 py-1 text-xs dark: outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-400 transition-colors bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400">
                   <option value="all">Semua Tahun</option>
                   <option v-for="r in pieTpqData" :key="r.year" :value="r.year">{{ r.year }}</option>
                 </select>

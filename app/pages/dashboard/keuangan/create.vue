@@ -1,7 +1,7 @@
 <template>
   <div class="max-w-2xl mx-auto">
     <div class="mb-6 flex items-center gap-4">
-      <NuxtLink to="/dashboard/keuangan" class="p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors">
+      <NuxtLink to="/dashboard/keuangan" class="p-2 bg-gray-100 dark:bg-gray-800 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
         <Icon icon="lucide:arrow-left" class="w-5 h-5 text-gray-600 dark:text-gray-400" />
       </NuxtLink>
       <div>
@@ -16,15 +16,15 @@
       <form @submit.prevent="submitForm">
         <div class="space-y-6">
           <div>
-            <label class="block text-sm font-medium text-gray-700">Tanggal</label>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Tanggal</label>
             <input v-model="form.tanggal" type="date" required :disabled="isSubmitting"
-              class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50" />
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark: rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400" />
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700">Uraian</label>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Uraian</label>
             <div class="mt-1 flex rounded-md shadow-sm">
               <input v-model="form.uraian" type="text" required :disabled="isSubmitting" list="favorite-uraian-list"
-                class="flex-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-none rounded-l-md focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50"
+                class="flex-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark: dark: rounded-none rounded-l-md focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
                 placeholder="Contoh: Pembelian alat tulis" autocomplete="off" />
               <button type="button" @click="saveAsFavorite" :disabled="!form.uraian || isSavingFavorite"
                 class="inline-flex items-center px-3 py-2 border border-l-0 border-gray-300 dark:border-gray-600 rounded-r-md bg-gray-50 dark:bg-gray-700/50 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-emerald-600 transition-colors disabled:opacity-50"
@@ -47,41 +47,41 @@
             </div>
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700">Jenis Kas</label>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Jenis Kas</label>
             <select v-model.number="form.jenisKasId" required :disabled="isSubmitting"
-              class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50">
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark: rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400">
               <option :value="0">-- Pilih Jenis Kas --</option>
               <option v-for="ket in jenisKasList" :key="ket.id" :value="ket.id">{{ ket.nama }}</option>
             </select>
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700">Media Pembayaran</label>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Media Pembayaran</label>
             <select v-model.number="form.mediaPembayaranId" required :disabled="isSubmitting"
-              class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50">
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark: rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400">
               <option :value="0">-- Pilih Media Pembayaran --</option>
               <option v-for="mp in mediaPembayaranList" :key="mp.id" :value="mp.id">{{ mp.nama }}</option>
             </select>
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700">Tipe Transaksi</label>
-            <select v-model="form.tipe"
-              class="mt-1 block w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Tipe Transaksi</label>
+            <select v-model="form.tipe" @change="handleTipeChange"
+              class="mt-1 block w-full border border-gray-300 dark:border-gray-600 dark: rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400">
               <option value="uang_masuk">Uang Masuk</option>
               <option value="uang_keluar">Uang Keluar</option>
             </select>
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700">Debet (Uang Masuk)</label>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Debet (Uang Masuk)</label>
             <input :value="form.debitText" @input="handleDebitInput" type="text" inputmode="numeric"
-              :disabled="isSubmitting"
-              class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50"
+              :disabled="isSubmitting || form.tipe === 'uang_keluar'"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark: dark: rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50 disabled:bg-gray-100 disabled:dark:bg-gray-800 disabled:cursor-not-allowed bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
               placeholder="Rp. 0" />
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700">Kredit (Uang Keluar)</label>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Kredit (Uang Keluar)</label>
             <input :value="form.kreditText" @input="handleKreditInput" type="text" inputmode="numeric"
-              :disabled="isSubmitting"
-              class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50"
+              :disabled="isSubmitting || form.tipe === 'uang_masuk'"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark: dark: rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50 disabled:bg-gray-100 disabled:dark:bg-gray-800 disabled:cursor-not-allowed bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
               placeholder="Rp. 0" />
           </div>
         </div>
@@ -181,6 +181,14 @@ const formatRupiah = (value: string) => {
 const parseRupiah = (value: string) => {
   const digits = value.replace(/\D/g, '');
   return digits ? Number(digits) : NaN;
+};
+
+const handleTipeChange = () => {
+  if (form.value.tipe === 'uang_masuk') {
+    form.value.kreditText = '';
+  } else if (form.value.tipe === 'uang_keluar') {
+    form.value.debitText = '';
+  }
 };
 
 const handleDebitInput = (event: Event) => {

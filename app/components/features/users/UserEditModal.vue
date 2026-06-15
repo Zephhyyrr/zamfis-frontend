@@ -3,27 +3,27 @@
         icon="lucide:user" type="info" confirmText="Simpan Perubahan" @confirm="submitEditUser" :isLoading="isLoading">
         <div v-if="editData" class="space-y-4 text-left mt-2">
             <div>
-                <label class="block mb-1 text-sm font-medium text-gray-700">Nama Lengkap</label>
+                <label class="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-200">Nama Lengkap</label>
                 <input v-model="editData.nama" type="text"
-                    class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm" />
+                    class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400" />
             </div>
             <div>
-                <label class="block mb-1 text-sm font-medium text-gray-700">Alamat Email</label>
+                <label class="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-200">Alamat Email</label>
                 <input v-model="editData.email" type="email" readonly
-                    class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm bg-gray-100" />
+                    class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm bg-gray-100 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400" />
             </div>
             <div>
-                <label class="block mb-1 text-sm font-medium text-gray-700">Role</label>
+                <label class="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-200">Role</label>
                 <select v-model="editData.role"
-                    class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm">
+                    class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400">
                     <option value="superadmin">Super Admin</option>
                     <option value="admin">Admin</option>
                 </select>
             </div>
             <div>
-                <label class="block mb-1 text-sm font-medium text-gray-700">Status</label>
+                <label class="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-200">Status</label>
                 <select v-model="editData.isActive"
-                    class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm">
+                    class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400">
                     <option :value="true">Active</option>
                     <option :value="false">Inactive</option>
                 </select>

@@ -13,13 +13,13 @@
           class="flex items-center gap-2 bg-white/60 dark:bg-gray-800/50 border border-emerald-100 dark:border-white/10 rounded-xl px-4 py-2.5 w-full sm:w-auto sm:min-w-[260px] backdrop-blur-md">
           <SearchIcon class="h-4 w-4 text-emerald-500 shrink-0" />
           <input type="text" v-model="searchQuery" placeholder="Cari uraian transaksi..."
-            class="bg-transparent border-none focus:outline-none focus:ring-0 text-sm text-gray-700 dark:text-gray-200 w-full placeholder-gray-400" />
+            class="bg-transparent border-none focus:outline-none focus:ring-0 text-sm dark: w-full bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400" />
         </div>
         <div
           class="flex items-center gap-2 bg-white/60 dark:bg-gray-800/50 border border-emerald-100 dark:border-white/10 rounded-xl px-4 py-2.5 w-full sm:w-auto backdrop-blur-md">
           <FilterIcon class="h-4 w-4 text-emerald-500 shrink-0" />
           <select v-model="filterJenisKasId"
-            class="bg-transparent border-none focus:outline-none text-sm font-semibold text-gray-700 dark:text-gray-200 w-full">
+            class="bg-transparent border-none focus:outline-none text-sm font-semibold dark: w-full bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400">
             <option value="Semua">Semua Kas</option>
             <option v-for="kas in kasSummaryList" :key="kas.jenisKasId || kas.nama" :value="kas.jenisKasId">
               {{ kas.nama }}

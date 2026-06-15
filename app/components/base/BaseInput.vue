@@ -12,7 +12,7 @@
             <input :id="id" :value="modelValue" @input="handleInput"
                 :type="inputType" :required="required" :autocomplete="autocomplete" :placeholder="placeholder"
                 :disabled="disabled"
-                class="auth-input w-full pl-10 pr-12 py-3 rounded-xl text-sm text-font-color dark:text-white placeholder-font-color/55 dark:placeholder-gray-500 transition-all duration-200 focus:outline-none" />
+                class="auth-input w-full pl-10 pr-12 py-3 rounded-xl text-sm text-font-color dark:text-white placeholder-font-color/55 dark: transition-all duration-200 focus:outline-none bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400" />
 
             <button v-if="isPasswordType" type="button" @click="togglePassword"
                 class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-font-color/60 dark:text-gray-400 hover:text-font-color dark:hover:text-white transition-colors duration-200"

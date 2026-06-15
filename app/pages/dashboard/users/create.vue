@@ -1,7 +1,7 @@
 <template>
   <div class="max-w-2xl mx-auto">
     <div class="mb-6 flex items-center gap-4">
-      <NuxtLink to="/dashboard/users" class="p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors">
+      <NuxtLink to="/dashboard/users" class="p-2 bg-gray-100 dark:bg-gray-800 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
         <Icon icon="lucide:arrow-left" class="w-5 h-5 text-gray-600 dark:text-gray-400" />
       </NuxtLink>
       <div>
@@ -16,33 +16,33 @@
       <form @submit.prevent="submitForm">
         <div class="space-y-6">
           <div>
-            <label for="nama" class="block text-sm font-medium text-gray-700">Nama Lengkap</label>
+            <label for="nama" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Nama Lengkap</label>
             <input 
               id="nama" 
               v-model="form.nama" 
               type="text" 
               required 
               :disabled="isSubmitting"
-              class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50 disabled:cursor-not-allowed bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
               placeholder="Contoh: Budi Santoso"
             >
           </div>
 
           <div>
-            <label for="email" class="block text-sm font-medium text-gray-700">Alamat Email</label>
+            <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Alamat Email</label>
             <input 
               id="email" 
               v-model="form.email" 
               type="email" 
               required 
               :disabled="isSubmitting"
-              class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50 disabled:cursor-not-allowed bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
               placeholder="nama@email.com"
             >
           </div>
 
           <div>
-            <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+            <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Password</label>
             <input
               id="password"
               v-model="form.password"
@@ -50,19 +50,19 @@
               required
               minlength="6"
               :disabled="isSubmitting"
-              class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50 disabled:cursor-not-allowed bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
               placeholder="Minimal 6 karakter"
             >
           </div>
 
           <div>
-            <label for="role" class="block text-sm font-medium text-gray-700">Peran (Role)</label>
+            <label for="role" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Peran (Role)</label>
             <select 
               id="role" 
               v-model="form.role" 
               required 
               :disabled="isSubmitting"
-              class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50 disabled:cursor-not-allowed bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
             >
               <option value="superadmin">Super Admin</option>
               <option value="admin">Admin</option>
@@ -70,13 +70,13 @@
           </div>
 
           <div>
-            <label for="isActive" class="block text-sm font-medium text-gray-700">Status</label>
+            <label for="isActive" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Status</label>
             <select 
               id="isActive" 
               v-model="form.isActive" 
               required 
               :disabled="isSubmitting"
-              class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50 disabled:cursor-not-allowed bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
             >
               <option :value="true">Active</option>
               <option :value="false">Inactive</option>

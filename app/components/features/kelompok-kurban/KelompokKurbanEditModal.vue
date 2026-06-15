@@ -11,21 +11,21 @@
   >
     <div class="space-y-4">
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1">Nama Kelompok</label>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">Nama Kelompok</label>
         <input
           v-model="form.nama"
           type="text"
           placeholder="Contoh: Kelompok 1, Kelompok Al-Ikhlas, ..."
-          class="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm"
+          class="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
         />
       </div>
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1">Tahun Kurban</label>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">Tahun Kurban</label>
         <input
           v-model="form.tahun"
           type="text"
           placeholder="Contoh: 2024, 1445 H, ..."
-          class="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm"
+          class="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
         />
       </div>
       <p v-if="errorMsg" class="text-sm text-red-600">{{ errorMsg }}</p>

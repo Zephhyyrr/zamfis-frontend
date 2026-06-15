@@ -1,7 +1,7 @@
 <template>
   <div class="max-w-2xl mx-auto">
     <div class="mb-6 flex items-center gap-4">
-      <NuxtLink to="/dashboard/peserta-kurban" class="p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors">
+      <NuxtLink to="/dashboard/peserta-kurban" class="p-2 bg-gray-100 dark:bg-gray-800 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
         <Icon icon="lucide:arrow-left" class="w-5 h-5 text-gray-600 dark:text-gray-400" />
       </NuxtLink>
       <div>
@@ -16,45 +16,45 @@
       <form @submit.prevent="submitForm">
         <div class="space-y-6">
           <div>
-            <label class="block text-sm font-medium text-gray-700">Nama Peserta</label>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Nama Peserta</label>
             <input v-model="form.nama" type="text" required :disabled="isSubmitting"
-              class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
               placeholder="Nama lengkap peserta kurban" />
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700">Tahun Kurban</label>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Tahun Kurban</label>
             <input v-model="form.tahun" type="text" required :disabled="isSubmitting"
-              class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
               placeholder="Contoh: 2024, 1445 H, ..." />
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700">Tipe Kurban</label>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Tipe Kurban</label>
             <select v-model="form.tipe" :disabled="isSubmitting"
-              class="mt-1 block w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50">
+              class="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400">
               <option value="individu_sapi">Individu - Sapi</option>
               <option value="individu_kambing">Individu - Kambing</option>
               <option value="kelompok">Kelompok (Sapi Bersama)</option>
             </select>
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700">Nominal</label>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Nominal</label>
             <input :value="form.nominalText" @input="handleCurrencyInput" type="text" inputmode="numeric"
               :disabled="isSubmitting"
-              class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
               placeholder="Rp. 0" />
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700">Media Pembayaran</label>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Media Pembayaran</label>
             <select v-model.number="form.mediaPembayaranId" required :disabled="isSubmitting"
-              class="mt-1 block w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50">
+              class="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400">
               <option :value="0">-- Pilih Media Pembayaran --</option>
               <option v-for="mp in mediaPembayaranList" :key="mp.id" :value="mp.id">{{ mp.nama }}</option>
             </select>
           </div>
           <div v-if="form.tipe === 'kelompok'">
-            <label class="block text-sm font-medium text-gray-700">Kelompok Kurban</label>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Kelompok Kurban</label>
             <select v-model.number="form.kelompokKurbanId" :disabled="isSubmitting || !form.tahun"
-              class="mt-1 block w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50">
+              class="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400">
               <option :value="null">-- Pilih Kelompok Kurban --</option>
               <option v-for="kel in filteredKelompokList" :key="kel.id" :value="kel.id" :disabled="(kel.peserta?.length || 0) >= 7">
                 {{ kel.nama }} ({{ kel.peserta?.length || 0 }}/7) {{ (kel.peserta?.length || 0) >= 7 ? ' - Penuh' : '' }}

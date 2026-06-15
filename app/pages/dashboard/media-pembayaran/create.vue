@@ -1,7 +1,7 @@
 <template>
   <div class="max-w-xl mx-auto">
     <div class="mb-6 flex items-center gap-4">
-      <NuxtLink to="/dashboard/media-pembayaran" class="p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors">
+      <NuxtLink to="/dashboard/media-pembayaran" class="p-2 bg-gray-100 dark:bg-gray-800 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
         <Icon icon="lucide:arrow-left" class="w-5 h-5 text-gray-600 dark:text-gray-400" />
       </NuxtLink>
       <div>
@@ -16,9 +16,9 @@
       <form @submit.prevent="submitForm">
         <div class="space-y-6">
           <div>
-            <label class="block text-sm font-medium text-gray-700">Nama Media Pembayaran</label>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Nama Media Pembayaran</label>
             <input v-model="form.nama" type="text" required :disabled="isSubmitting"
-              class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
               placeholder="Contoh: Cash, Transfer BRI, OVO, ..." />
           </div>
         </div>

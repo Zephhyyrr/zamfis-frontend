@@ -11,12 +11,12 @@
   >
     <div class="space-y-4">
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1">Uraian Favorit</label>
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">Uraian Favorit</label>
         <input
           v-model="form.uraian"
           type="text"
           placeholder="Contoh: Sedekah Jumat, Infak Harian, ..."
-          class="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm"
+          class="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
         />
       </div>
       <p v-if="errorMsg" class="text-sm text-red-600">{{ errorMsg }}</p>

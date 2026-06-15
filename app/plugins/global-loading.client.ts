@@ -5,6 +5,7 @@ import loadingAnimation from '~/assets/animation/loading.json'
 
 export default defineNuxtPlugin((nuxtApp) => {
   const isLoading = ref(false)
+  let activeRequests = 0
 
   const loadingContainer = document.createElement('div')
   loadingContainer.id = 'global-loading-container'
@@ -34,24 +35,39 @@ export default defineNuxtPlugin((nuxtApp) => {
   app.mount(loadingContainer)
 
   nuxtApp.hook('page:start', () => {
+    activeRequests++
     isLoading.value = true
   })
 
   nuxtApp.hook('page:finish', () => {
-    setTimeout(() => {
-      isLoading.value = false
-    }, 300)
+    activeRequests = Math.max(0, activeRequests - 1)
+    if (activeRequests === 0) {
+      setTimeout(() => {
+        if (activeRequests === 0) isLoading.value = false
+      }, 300)
+    }
   })
 
   nuxtApp.hook('app:error', () => {
+    activeRequests = 0
     isLoading.value = false
   })
 
   return {
     provide: {
       globalLoading: {
-        show: () => { isLoading.value = true },
-        hide: () => { isLoading.value = false }
+        show: () => {
+          activeRequests++
+          isLoading.value = true
+        },
+        hide: () => {
+          activeRequests = Math.max(0, activeRequests - 1)
+          if (activeRequests === 0) {
+            setTimeout(() => {
+              if (activeRequests === 0) isLoading.value = false
+            }, 300)
+          }
+        }
       }
     }
   }

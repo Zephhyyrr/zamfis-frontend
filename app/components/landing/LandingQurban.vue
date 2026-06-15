@@ -16,7 +16,7 @@
           class="flex items-center gap-3 bg-white/80 dark:bg-gray-800/50 border border-emerald-200 dark:border-white/10 rounded-xl px-5 py-3 w-full sm:w-auto min-w-[200px] backdrop-blur-md shadow-sm transition-all hover:border-emerald-300">
           <Icon icon="lucide:calendar" class="h-5 w-5 text-emerald-600 shrink-0" />
           <select v-model="tahunFilter" @change="fetchData"
-            class="bg-transparent border-none focus:outline-none focus:ring-0 text-base font-bold text-gray-800 dark:text-gray-200 w-full cursor-pointer pr-4">
+            class="bg-transparent border-none focus:outline-none focus:ring-0 text-base font-bold dark: w-full cursor-pointer pr-4 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400">
             <option v-for="year in availableYears" :key="year" :value="year">{{ year }}</option>
           </select>
         </div>
