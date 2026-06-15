@@ -28,7 +28,7 @@
               </a>
             </li>
             <li>
-              <NuxtLink to="/login" class="flex items-center gap-2 text-white hover:text-emerald-300 transition-colors duration-200 group">
+              <NuxtLink to="/auth/login" class="flex items-center gap-2 text-white hover:text-emerald-300 transition-colors duration-200 group">
                 <ChevronRightIcon class="h-4 w-4 text-white/50 group-hover:text-emerald-300 transition-colors shrink-0" />
                 Login Admin
               </NuxtLink>

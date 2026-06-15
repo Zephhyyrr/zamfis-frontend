@@ -32,7 +32,7 @@
           <MoonIcon v-if="!isDark" class="w-5 h-5" />
           <SunIcon v-else class="w-5 h-5" />
         </button>
-        <NuxtLink to="/login"
+        <NuxtLink to="/auth/login"
           class="ml-3 rounded-xl text-sm font-semibold text-white transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-primary/50 hover:-translate-y-[1px] active:translate-y-0 py-2 px-5 bg-gradient-to-br from-primary to-secondary shadow-[0_4px_15px_-3px_rgba(16,185,129,0.4),0_0_0_1px_rgba(16,185,129,0.2)] hover:to-[#0b5f47] hover:shadow-[0_8px_25px_-5px_rgba(16,185,129,0.45),0_0_0_1px_rgba(16,185,129,0.3)]">
           Login
         </NuxtLink>
@@ -61,7 +61,7 @@
               <span class="pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white dark:bg-gray-800 shadow ring-0 transition duration-200 ease-in-out" :class="isDark ? 'translate-x-4' : 'translate-x-0'" />
             </div>
           </button>
-          <NuxtLink to="/login" @click="mobileOpen = false"
+          <NuxtLink to="/auth/login" @click="mobileOpen = false"
             class="mt-1 rounded-xl text-sm font-semibold text-white py-2.5 px-4 text-center bg-gradient-to-br from-primary to-secondary shadow-[0_4px_15px_-3px_rgba(16,185,129,0.4)] hover:-translate-y-[1px] transition-all duration-300">
             Login Admin
           </NuxtLink>
