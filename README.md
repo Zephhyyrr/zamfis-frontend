@@ -1,4 +1,4 @@
-# Tugas Akhir Sistem Informasi Surau Zam-Zam (Frontend)
+# Tugas Akhir Sistem Informasi Surau Zam-Zam (Zam - Zam Financial Intellgince System)
 
 Repositori ini berisi source code Frontend untuk **Sistem Informasi Surau Zam-Zam**, yang dibangun sebagai bagian dari Tugas Akhir. Sistem ini dirancang menggunakan arsitektur **Domain-Driven Design (DDD)** untuk memastikan struktur kode yang terukur, mudah dikelola, dan modular.
 
