@@ -16,6 +16,14 @@
         </NuxtLink>
       </div>
       <article v-else class="max-w-4xl mx-auto py-4">
+        <!-- Back Button -->
+        <NuxtLink to="/#berita" class="inline-flex items-center gap-2 text-primary dark:text-emerald-400 font-semibold hover:text-emerald-600 dark:hover:text-emerald-300 transition mb-6">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+          </svg>
+          Kembali
+        </NuxtLink>
+
         <div
           class="w-full aspect-video rounded-2xl overflow-hidden mb-8 shadow-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
           <img
