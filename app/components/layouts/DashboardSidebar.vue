@@ -7,11 +7,11 @@
     ]"
   >
     <div class="p-6 flex items-center" :class="isCollapsed ? 'justify-center px-4' : 'justify-between'">
-      <div v-show="!isCollapsed" class="whitespace-nowrap overflow-hidden transition-opacity duration-300 flex items-center gap-3">
-        <img src="/zamfis_logo.png" alt="Logo" class="w-8 h-8 object-contain" />
+      <div v-show="!isCollapsed" class="overflow-hidden transition-opacity duration-300 flex items-center gap-3">
+        <img src="/zamfis_logo.png" alt="Logo" class="w-8 h-8 object-contain flex-shrink-0" />
         <div>
-          <h1 class="text-xl font-bold text-emerald-600 dark:text-emerald-400">Surau Zam-Zam</h1>
-          <p class="text-[10px] text-gray-500 dark:text-gray-400 mt-0.5">Zam - Zam Financial Intelligence System</p>
+          <h1 class="text-lg font-bold text-emerald-600 dark:text-emerald-400 leading-tight">Surau Zam-Zam</h1>
+          <p class="text-[10px] text-gray-500 dark:text-gray-400 mt-1 whitespace-normal leading-tight">Zam - Zam Financial Intelligence System</p>
         </div>
       </div>
       <div v-show="isCollapsed" class="whitespace-nowrap overflow-hidden transition-opacity duration-300">

@@ -55,7 +55,7 @@ definePageMeta({
 });
 
 useHead({
-  title: 'Reset Password — Surau Zam-Zam',
+  title: 'Zam - Zam Financial Intelligence System',
   meta: [
     { name: 'description', content: 'Halaman atur ulang password Zam - Zam Financial Intelligence System Surau Zam-Zam' },
   ],

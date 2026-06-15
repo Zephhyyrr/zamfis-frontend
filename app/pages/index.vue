@@ -75,7 +75,7 @@ import { definePageMeta, useHead } from '#imports'
 definePageMeta({ layout: false })
 
 useHead({
-  title: 'Beranda - Surau Zam Zam',
+  title: 'Zam - Zam Financial Intelligence System',
   link: [
   ],
   meta: [

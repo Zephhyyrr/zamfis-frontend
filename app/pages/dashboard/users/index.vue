@@ -63,7 +63,10 @@
             <tr v-else v-for="user in filteredUsers" :key="user.id" class="hover:bg-gray-50 dark:bg-gray-700/50 dark:hover:bg-gray-700/50">
               <td class="px-6 py-4 whitespace-nowrap">
                 <div class="flex items-center">
-                  <div
+                  <div v-if="user.fotoProfile && user.fotoProfile !== 'null'" class="flex-shrink-0 h-10 w-10 rounded-full overflow-hidden border border-emerald-200 dark:border-emerald-800">
+                    <img :src="resolveAssetUrl(user.fotoProfile)" :alt="user.nama" class="h-full w-full object-cover" />
+                  </div>
+                  <div v-else
                     class="flex-shrink-0 h-10 w-10 bg-emerald-100 dark:bg-emerald-900/40 rounded-full flex items-center justify-center text-emerald-600 dark:text-emerald-400 font-bold">
                     {{ (user.nama || 'U').charAt(0) }}
                   </div>
@@ -131,6 +134,7 @@ import { definePageMeta, useRouter } from '#imports';
 import { SearchIcon, PencilIcon, TrashIcon } from 'lucide-vue-next';
 import { Icon } from '@iconify/vue';
 import { useUser } from '~/composables/useUsers';
+import { resolveAssetUrl } from '~/infrastructure/adapters/assets';
 import type { IUser } from '~/domain/models/IUser';
 import type { IApiResponse } from '~/domain/types/IApiResponse';
 

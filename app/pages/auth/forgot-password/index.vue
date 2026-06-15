@@ -121,7 +121,7 @@ definePageMeta({
 });
 
 useHead({
-  title: 'Lupa Password — Surau Zam-Zam',
+  title: 'Zam - Zam Financial Intelligence System',
   meta: [
     { name: 'description', content: 'Reset password akun Zam - Zam Financial Intelligence System Surau Zam-Zam' },
   ],

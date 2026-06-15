@@ -9,14 +9,20 @@
         @click="router.push('/dashboard/peserta-kurban/create')" />
     </div>
 
-    <div class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 mb-6 flex items-center">
-      <div class="relative w-full max-w-md">
+    <div class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 mb-6 flex flex-col sm:flex-row gap-4 items-center">
+      <div class="relative w-full sm:w-1/2 md:max-w-md">
         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
           <SearchIcon class="h-5 w-5 text-gray-400" />
         </div>
         <input v-model="searchQuery" type="text"
           class="block w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg leading-5 focus:outline-none focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
           placeholder="Cari nama peserta kurban..." />
+      </div>
+      <div class="w-full sm:w-1/2 md:max-w-xs">
+        <select v-model="selectedKelompok" class="block w-full py-2 px-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 rounded-lg shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm text-gray-700 dark:text-gray-300">
+          <option value="">Semua Kelompok</option>
+          <option v-for="k in kelompokList" :key="k.id" :value="k.id">{{ k.nama }}</option>
+        </select>
       </div>
     </div>
 
@@ -115,6 +121,7 @@ import { definePageMeta, useRouter } from '#imports';
 import { SearchIcon, PencilIcon } from 'lucide-vue-next';
 import { Icon } from '@iconify/vue';
 import { usePesertaKurban } from '~/composables/usePesertaKurban';
+import { useKelompokKurban } from '~/composables/useKelompokKurban';
 
 definePageMeta({ layout: 'dashboard' as any });
 
@@ -149,11 +156,27 @@ const draftMeta = computed(() => getMeta(draftApiResponse));
 
 const activeTab = ref<'active' | 'draft'>('active');
 const searchQuery = ref('');
+const selectedKelompok = ref<number | ''>('');
 const visibleItems = computed(() => activeTab.value === 'active' ? activeItems.value : draftItems.value);
+
+const { fetchKelompokKurbanList } = useKelompokKurban();
+const kelompokParams = ref({ page: 1, limit: 100 });
+const { data: kelompokRes } = fetchKelompokKurbanList(kelompokParams);
+const kelompokList = computed(() => extractItems(kelompokRes));
+
 const filteredList = computed(() => {
-  if (!searchQuery.value) return visibleItems.value;
-  const q = searchQuery.value.toLowerCase();
-  return visibleItems.value.filter((item: any) => item.nama?.toLowerCase().includes(q));
+  let result = visibleItems.value;
+  
+  if (selectedKelompok.value !== '') {
+    result = result.filter((item: any) => item.kelompokKurbanId === selectedKelompok.value);
+  }
+  
+  if (searchQuery.value) {
+    const q = searchQuery.value.toLowerCase();
+    result = result.filter((item: any) => item.nama?.toLowerCase().includes(q));
+  }
+  
+  return result;
 });
 
 const showEditModal = ref(false);

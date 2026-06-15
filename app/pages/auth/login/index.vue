@@ -82,7 +82,7 @@ definePageMeta({
 });
 
 useHead({
-  title: 'Masuk — Surau Zam-Zam',
+  title: 'Zam - Zam Financial Intelligence System',
   meta: [
     { name: 'description', content: 'Halaman masuk Zam - Zam Financial Intelligence System Surau Zam-Zam' },
   ],
