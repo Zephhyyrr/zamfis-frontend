@@ -23,7 +23,7 @@ const { isDark, toggleTheme } = useTheme();
 
     <div class="w-full shrink-0 pb-6 pt-4 relative z-10">
       <p class="text-center text-xs text-secondary dark:text-white/70">
-        &copy; {{ new Date().getFullYear() }} Surau Zam-Zam &mdash; Sistem Peramalan Donasi
+        &copy; {{ new Date().getFullYear() }} Surau Zam-Zam &mdash; Zam -   Zam Financial Intelligence System
       </p>
     </div>
   </div>

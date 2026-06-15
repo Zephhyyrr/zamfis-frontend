@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <aside
     :class="[
       'fixed inset-y-0 left-0 z-40 flex flex-col bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 transition-all duration-300 ease-in-out md:relative md:translate-x-0',
@@ -7,12 +7,15 @@
     ]"
   >
     <div class="p-6 flex items-center" :class="isCollapsed ? 'justify-center px-4' : 'justify-between'">
-      <div v-show="!isCollapsed" class="whitespace-nowrap overflow-hidden transition-opacity duration-300">
-        <h1 class="text-xl font-bold text-emerald-600 dark:text-emerald-400">Surau Zam-Zam</h1>
-        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Sistem Peramalan Donasi</p>
+      <div v-show="!isCollapsed" class="whitespace-nowrap overflow-hidden transition-opacity duration-300 flex items-center gap-3">
+        <img src="/zamfis_logo.png" alt="Logo" class="w-8 h-8 object-contain" />
+        <div>
+          <h1 class="text-xl font-bold text-emerald-600 dark:text-emerald-400">Surau Zam-Zam</h1>
+          <p class="text-[10px] text-gray-500 dark:text-gray-400 mt-0.5">Zam - Zam Financial Intelligence System</p>
+        </div>
       </div>
       <div v-show="isCollapsed" class="whitespace-nowrap overflow-hidden transition-opacity duration-300">
-        <h1 class="text-xl font-bold text-emerald-600 dark:text-emerald-400">SZ</h1>
+        <img src="/zamfis_logo.png" alt="Logo" class="w-8 h-8 object-contain mx-auto" />
       </div>
       <button @click="$emit('close')" class="md:hidden p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
         <XIcon class="w-5 h-5" />
@@ -124,6 +127,7 @@
       </NuxtLink>
 
       <NuxtLink to="/dashboard/users"
+        v-if="authStore.user?.role === 'superadmin'"
         :class="[
           'flex items-center py-3 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors',
           isCollapsed ? 'justify-center px-0 mt-2' : 'px-4',
@@ -152,6 +156,7 @@
 <script setup>
 import { computed } from 'vue';
 import { useRoute } from '#imports';
+import { useAuthStore } from '~/application/stores/useAuthStore';
 import { 
   LayoutDashboardIcon, 
   FileTextIcon, 
@@ -168,6 +173,7 @@ import {
 } from 'lucide-vue-next';
 
 const route = useRoute();
+const authStore = useAuthStore();
 const isUsersRouteActive = computed(() => route.path === '/dashboard/users' || route.path.startsWith('/dashboard/users/'));
 const isTransaksiRouteActive = computed(() => route.path === '/dashboard/keuangan' || route.path.startsWith('/dashboard/keuangan/'));
 const isJenisKasRouteActive = computed(() => route.path === '/dashboard/jenis-kas/' || route.path.startsWith('/dashboard/jenis-kas/'));

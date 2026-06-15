@@ -3,12 +3,7 @@
     <div class="container mx-auto px-4 md:px-12 py-3.5 flex justify-between items-center">
 
       <a href="/" class="flex items-center gap-3 group">
-        <div class="relative w-11 h-11">
-          <div class="absolute inset-0 bg-gradient-to-br from-primary to-secondary rounded-xl shadow-lg shadow-primary/30 group-hover:shadow-primary/50 transition-shadow duration-300"></div>
-          <div class="absolute inset-0 flex items-center justify-center">
-            <BookOpenIcon class="h-5 w-5 text-white" />
-          </div>
-        </div>
+        <img src="/zamfis_logo.png" alt="Logo" class="w-11 h-11 object-contain" />
         <div class="flex flex-col">
           <h1 class="text-lg font-bold text-secondary dark:text-white tracking-tight leading-tight">Surau Zam Zam</h1>
           <span class="text-[11px] text-primary font-semibold tracking-wide">{{ masehiDate }} / {{ hijriDate }}</span>

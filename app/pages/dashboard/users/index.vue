@@ -45,6 +45,7 @@
               <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Email</th>
               <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Role</th>
               <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Status</th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Verifikasi</th>
               <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Aksi</th>
             </tr>
           </thead>
@@ -78,6 +79,12 @@
                   @click="openActionModal('status', user)">
                   {{ user.isActive ? 'Aktif' : 'Tidak Aktif' }}
                 </button>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full"
+                  :class="user.isVerified ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300' : 'bg-amber-100 dark:bg-amber-900/30 text-amber-800 dark:text-amber-300'">
+                  {{ user.isVerified ? 'Terverifikasi' : 'Belum' }}
+                </span>
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                 <button v-if="activeTab === 'active'" @click="openActionModal('edit', user)"

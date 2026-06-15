@@ -1,11 +1,11 @@
 <template>
   <div>
     <div class="text-center mb-8">
-      <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-emerald-500/20 border border-emerald-500/30 mb-4 backdrop-blur-sm logo-glow">
-        <Icon icon="lucide:building-2" class="w-8 h-8 text-primary" />
+      <div class="flex items-center justify-center mb-4">
+        <img src="/zamfis_logo.png" alt="Logo" class="h-20 w-auto object-contain" />
       </div>
       <h1 class="text-2xl font-bold text-secondary dark:text-white mb-1">Surau Zam-Zam</h1>
-      <p class="text-font-color dark:text-gray-300 text-sm">Sistem Peramalan Donasi Masjid</p>
+      <p class="text-font-color dark:text-gray-300 text-sm">Zam - Zam Financial Intelligence System</p>
     </div>
     <div class="auth-card rounded-2xl p-8">
       <template v-if="!isSubmitted">
@@ -123,7 +123,7 @@ definePageMeta({
 useHead({
   title: 'Lupa Password — Surau Zam-Zam',
   meta: [
-    { name: 'description', content: 'Reset password akun Sistem Peramalan Donasi Masjid Surau Zam-Zam' },
+    { name: 'description', content: 'Reset password akun Zam - Zam Financial Intelligence System Surau Zam-Zam' },
   ],
 });
 
