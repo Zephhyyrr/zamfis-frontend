@@ -1,6 +1,6 @@
-# Tugas Akhir Sistem Informasi Surau Zam-Zam (Zam - Zam Financial Intellgince System)
+# Tugas Akhir Sistem Informasi Surau Zam-Zam (Zam - Zam Financial Intelligence System) - Frontend
 
-Repositori ini berisi source code Frontend untuk **Sistem Informasi Surau Zam-Zam**, yang dibangun sebagai bagian dari Tugas Akhir. Sistem ini dirancang menggunakan arsitektur **Domain-Driven Design (DDD)** untuk memastikan struktur kode yang terukur, mudah dikelola, dan modular.
+Repositori ini berisi source code Frontend untuk **Sistem Informasi Surau Zam-Zam (Zam Zam Financial Intelligence System)**, yang dibangun sebagai bagian dari Tugas Akhir. Sistem ini dirancang menggunakan arsitektur **Domain-Driven Design (DDD)** untuk memastikan struktur kode yang terukur, mudah dikelola, dan modular.
 
 ## 🚀 Teknologi yang Digunakan
 
@@ -66,7 +66,7 @@ Pastikan Anda sudah menginstal:
 
 ### 2. Clone Repositori
 ```bash
-git clone https://github.com/Zephhyyrr/tugas-akhir-frontend
+git clone https://github.com/Zephhyyrr/zamfis-frontend
 cd Frontend
 ```
 
