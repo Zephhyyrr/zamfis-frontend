@@ -6,7 +6,6 @@ import loadingAnimation from '~/assets/animation/loading.json'
 export default defineNuxtPlugin((nuxtApp) => {
   const isLoading = ref(false)
 
-  // Buat wadah untuk loading screen di body
   const loadingContainer = document.createElement('div')
   loadingContainer.id = 'global-loading-container'
   document.body.appendChild(loadingContainer)
@@ -34,7 +33,6 @@ export default defineNuxtPlugin((nuxtApp) => {
   const app = createApp(LoadingComponent)
   app.mount(loadingContainer)
 
-  // Hook ke navigasi router Nuxt
   nuxtApp.hook('page:start', () => {
     isLoading.value = true
   })
@@ -42,14 +40,13 @@ export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.hook('page:finish', () => {
     setTimeout(() => {
       isLoading.value = false
-    }, 300) // Sedikit delay agar transisi halus
+    }, 300)
   })
 
   nuxtApp.hook('app:error', () => {
     isLoading.value = false
   })
 
-  // Provide fungsi manual jika dibutuhkan oleh komponen
   return {
     provide: {
       globalLoading: {
