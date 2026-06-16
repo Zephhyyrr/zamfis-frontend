@@ -133,7 +133,7 @@ import { $fetch } from 'ofetch'
 const currentDate = new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
 
 const config = useRuntimeConfig()
-const { data: dataJadwal, pending: pendingJadwal, error: errorJadwal } = useAsyncData('jadwal-shalat', () => {
+const { data: dataJadwal, pending: pendingJadwal, error: errorJadwal, refresh: refreshJadwal } = useAsyncData('jadwal-shalat', () => {
   const d = new Date()
   const yyyy = d.getFullYear()
   const mm = String(d.getMonth() + 1).padStart(2, '0')
@@ -153,32 +153,53 @@ let timer: ReturnType<typeof setInterval> | null = null
 const showAdzanPopup = ref(false)
 const currentAdzanName = ref('')
 let lastCheckedMinute = -1
+const currentDay = ref(new Date().getDate())
 
-onMounted(() => {
-  timer = setInterval(() => {
-    currentTime.value = new Date()
+const updateTime = () => {
+  const now = new Date()
+  currentTime.value = now
 
-    // Cek apakah waktu saat ini sama dengan waktu jadwal shalat
-    const nowHour = currentTime.value.getHours()
-    const nowMinute = currentTime.value.getMinutes()
+  // Refresh jadwal shalat jika berganti hari
+  if (now.getDate() !== currentDay.value) {
+    currentDay.value = now.getDate()
+    refreshJadwal()
+  }
 
-    if (lastCheckedMinute !== nowMinute) {
-      lastCheckedMinute = nowMinute
+  // Cek apakah waktu saat ini sama dengan waktu jadwal shalat
+  const nowHour = now.getHours()
+  const nowMinute = now.getMinutes()
 
-      if (allPrayerTimes.value && Object.keys(allPrayerTimes.value).length > 0) {
-        const nowTimeStr = `${nowHour.toString().padStart(2, '0')}:${nowMinute.toString().padStart(2, '0')}`
-        for (const [name, timeStr] of Object.entries(allPrayerTimes.value)) {
-          if (timeStr === nowTimeStr) {
-            currentAdzanName.value = name
-            showAdzanPopup.value = true
-          }
+  if (lastCheckedMinute !== nowMinute) {
+    lastCheckedMinute = nowMinute
+
+    if (allPrayerTimes.value && Object.keys(allPrayerTimes.value).length > 0) {
+      const nowTimeStr = `${nowHour.toString().padStart(2, '0')}:${nowMinute.toString().padStart(2, '0')}`
+      for (const [name, timeStr] of Object.entries(allPrayerTimes.value)) {
+        if (timeStr === nowTimeStr) {
+          currentAdzanName.value = name
+          showAdzanPopup.value = true
         }
       }
     }
-  }, 1000)
+  }
+}
+
+const handleVisibilityChange = () => {
+  if (document.visibilityState === 'visible') {
+    updateTime()
+  }
+}
+
+onMounted(() => {
+  updateTime()
+  timer = setInterval(updateTime, 1000)
+  document.addEventListener('visibilitychange', handleVisibilityChange)
 })
 
-onUnmounted(() => { if (timer) clearInterval(timer) })
+onUnmounted(() => { 
+  if (timer) clearInterval(timer) 
+  document.removeEventListener('visibilitychange', handleVisibilityChange)
+})
 
 const nextPrayerObj = computed(() => {
   const times = allPrayerTimes.value
