@@ -86,8 +86,8 @@
                 </span>
               </td>
               <td class="px-6 py-4">
-                  <div v-if="item.gambarUrl" class="w-12 h-12 flex-shrink-0 relative">
-                    <img :src="resolveAssetUrl(item.gambarUrl)" alt="Media" class="w-full h-full rounded object-cover border border-gray-200 dark:border-gray-700" />
+                  <div v-if="item.gambarUrl && item.gambarUrl.length > 0" class="w-12 h-12 flex-shrink-0 relative">
+                    <img :src="resolveAssetUrl(item.gambarUrl[0])" alt="Media" class="w-full h-full rounded object-cover border border-gray-200 dark:border-gray-700" />
                     <!-- Video icon badge if both exist -->
                     <div v-if="item.videoUrl" class="absolute -bottom-1 -right-1 bg-emerald-500 rounded-full p-0.5 border border-white">
                       <Icon icon="lucide:film" class="w-3 h-3 text-white" />

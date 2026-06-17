@@ -38,7 +38,7 @@
                 <p class="mt-1.5 text-lg font-bold text-red-600 dark:text-red-400 leading-tight">{{ formatCurrency(kas.expense) }}</p>
               </div>
               <div class="bg-white dark:bg-gray-700 rounded-xl p-4 border border-blue-100 dark:border-gray-600 shadow-xs hover:shadow-md transition-shadow">
-                <p class="text-xs font-semibold uppercase tracking-wide text-blue-500 dark:text-blue-400">Saldo</p>
+                <p class="text-xs font-semibold uppercase tracking-wide text-blue-500 dark:text-blue-400">Saldo Saat Ini</p>
                 <p class="mt-1.5 text-lg font-bold leading-tight" :class="kas.balance >= 0 ? 'text-blue-700 dark:text-blue-400' : 'text-orange-600 dark:text-orange-400'">
                   {{ formatCurrency(kas.balance) }}
                 </p>
@@ -88,6 +88,16 @@
               </div>
             </div>
           </div>
+          <div v-if="selectedChartYear !== 'all'" class="mt-4 grid grid-cols-2 gap-4">
+            <div class="text-center bg-white dark:bg-gray-700 rounded-lg p-3 border border-emerald-100 dark:border-gray-600">
+              <p class="text-xs text-emerald-600 dark:text-emerald-400 font-semibold">Total Uang Masuk ({{ selectedChartYear }})</p>
+              <p class="text-base font-bold text-emerald-700 dark:text-emerald-300">{{ formatCurrency(surauTotalIncome) }}</p>
+            </div>
+            <div class="text-center bg-white dark:bg-gray-700 rounded-lg p-3 border border-red-100 dark:border-gray-600">
+              <p class="text-xs text-red-500 dark:text-red-400 font-semibold">Total Uang Keluar ({{ selectedChartYear }})</p>
+              <p class="text-base font-bold text-red-600 dark:text-red-400">{{ formatCurrency(surauTotalExpense) }}</p>
+            </div>
+          </div>
         </div>
         <div class="mb-8 bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
           <div class="mb-5">
@@ -123,7 +133,7 @@
                 Belum ada data Kas Anak Yatim.
               </div>
 
-              <div v-if="selectedYatimRow" class="mt-3 grid grid-cols-2 gap-2">
+              <div v-if="selectedYatimRow && selectedYearYatim !== 'all'" class="mt-3 grid grid-cols-2 gap-2">
                 <div class="text-center bg-white dark:bg-gray-700 rounded-lg p-2 border border-purple-100 dark:border-gray-600">
                   <p class="text-xs text-emerald-600 dark:text-emerald-400 font-semibold">Masuk</p>
                   <p class="text-sm font-bold text-emerald-700 dark:text-emerald-300">{{ formatCurrency(selectedYatimRow.income) }}</p>
@@ -162,7 +172,7 @@
                 Belum ada data Kas TPQ.
               </div>
 
-              <div v-if="selectedTpqRow" class="mt-3 grid grid-cols-2 gap-2">
+              <div v-if="selectedTpqRow && selectedYearTpq !== 'all'" class="mt-3 grid grid-cols-2 gap-2">
                 <div class="text-center bg-white dark:bg-gray-700 rounded-lg p-2 border border-teal-100 dark:border-gray-600">
                   <p class="text-xs text-emerald-600 dark:text-emerald-400 font-semibold">Masuk</p>
                   <p class="text-sm font-bold text-emerald-700 dark:text-emerald-300">{{ formatCurrency(selectedTpqRow.income) }}</p>
@@ -342,6 +352,9 @@ const expenseChartData = computed(() => ({
   labels: activeLabels.value,
   datasets: [{ label: 'Uang Keluar', data: activeExpense.value, backgroundColor: '#ef4444', borderRadius: 4 }]
 }));
+
+const surauTotalIncome = computed(() => activeIncome.value.reduce((a, b) => a + b, 0));
+const surauTotalExpense = computed(() => activeExpense.value.reduce((a, b) => a + b, 0));
 
 
 const buildChartOptions = (datasetLabel, textColor, gridColor) => ({

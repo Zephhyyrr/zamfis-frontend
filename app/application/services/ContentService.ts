@@ -27,8 +27,13 @@ export class ContentService extends BaseService {
         if (payload.isTampil !== undefined) {
             formData.append('isTampil', String(payload.isTampil));
         }
-        if (payload.gambarUrl instanceof File) {
-            formData.append('gambarUrl', payload.gambarUrl);
+        if (payload.gambarUrl && payload.gambarUrl.length > 0) {
+            payload.gambarUrl.forEach(file => {
+                formData.append('gambarUrl', file);
+            });
+        }
+        if (payload.videoUrl instanceof File) {
+            formData.append('videoUrl', payload.videoUrl);
         }
         return await this.api<IApiResponse<IContent>>(endpoints.CONTENT.CREATE, {
             method: 'POST',
@@ -44,8 +49,13 @@ export class ContentService extends BaseService {
         if (payload.isTampil !== undefined) {
             formData.append('isTampil', String(payload.isTampil));
         }
-        if (payload.gambarUrl instanceof File) {
-            formData.append('gambarUrl', payload.gambarUrl);
+        if (payload.gambarUrl && payload.gambarUrl.length > 0) {
+            payload.gambarUrl.forEach(file => {
+                formData.append('gambarUrl', file);
+            });
+        }
+        if (payload.videoUrl instanceof File) {
+            formData.append('videoUrl', payload.videoUrl);
         }
         return await this.api<IApiResponse<IContent>>(endpoints.CONTENT.UPDATE(id), {
             method: 'PUT',

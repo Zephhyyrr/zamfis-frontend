@@ -2,8 +2,9 @@ export interface IContent {
     id: number;
     judul: string;
     isi: string;
-    gambarUrl: string;
-    jenis: 'berita' | 'pengurus' | 'imsakiyah';
+    gambarUrl: string[];
+    videoUrl?: string;
+    jenis: 'berita' | 'pengurus' | 'imsakiyah' | 'sejarah';
     isTampil: boolean;
     isDeleted: boolean;
     createdAt: string;
@@ -14,15 +15,17 @@ export interface IContent {
 export interface ICreateContentPayload {
     judul: string;
     isi: string;
-    jenis: 'berita' | 'pengurus' | 'imsakiyah';
-    gambarUrl?: File | null;
+    jenis: 'berita' | 'pengurus' | 'imsakiyah' | 'sejarah';
+    gambarUrl?: File[];
+    videoUrl?: File;
     isTampil?: boolean;
 }
 
 export interface IUpdateContentPayload {
     judul?: string;
     isi?: string;
-    jenis?: 'berita' | 'pengurus' | 'imsakiyah';
-    gambarUrl?: File | null;
+    jenis?: 'berita' | 'pengurus' | 'imsakiyah' | 'sejarah';
+    gambarUrl?: File[];
+    videoUrl?: File;
     isTampil?: boolean;
 }

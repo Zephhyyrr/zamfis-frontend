@@ -280,7 +280,8 @@ const submitForm = async () => {
       isi: form.value.isi,
       jenis: form.value.jenis as any,
       isTampil: form.value.status === 'published',
-      gambarUrl: form.value.gambarUrl.length ? form.value.gambarUrl[0] : null,
+      gambarUrl: form.value.gambarUrl.length > 0 ? form.value.gambarUrl : undefined,
+      videoUrl: form.value.videoUrl.length > 0 ? form.value.videoUrl[0] : undefined,
     } as any);
     showSuccessModal.value = true;
   } catch (error: any) {

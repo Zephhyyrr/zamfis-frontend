@@ -17,7 +17,7 @@
         class="glass-card rounded-2xl overflow-hidden group hover:shadow-2xl hover:shadow-emerald-900/15 transition-all duration-400 hover:-translate-y-2 flex flex-col">
         <div class="h-52 overflow-hidden relative shrink-0">
           <img
-            :src="item.gambarUrl ? resolveAssetUrl(item.gambarUrl) : 'https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'"
+            :src="item.gambarUrl && item.gambarUrl.length > 0 ? resolveAssetUrl(item.gambarUrl[0]) : 'https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'"
             :alt="item.judul"
             class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700 ease-in-out">
           <div
