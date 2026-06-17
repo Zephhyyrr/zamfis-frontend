@@ -24,35 +24,34 @@
           Kembali
         </NuxtLink>
 
-        <div v-if="item.videoUrl" class="w-full aspect-video rounded-2xl overflow-hidden mb-8 shadow-lg bg-black">
-          <video controls class="w-full h-full">
-            <source :src="resolveAssetUrl(item.videoUrl)" type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-        </div>
-
-        <div v-if="item.gambarUrl && item.gambarUrl.length > 0" class="w-full aspect-video rounded-2xl overflow-hidden mb-8 shadow-lg bg-gray-100 dark:bg-gray-800 relative group">
-          <div class="flex transition-transform duration-500 h-full" :style="{ transform: `translateX(-${currentImageIndex * 100}%)` }">
-            <img v-for="(img, idx) in item.gambarUrl" :key="idx" :src="resolveAssetUrl(img)" :alt="item.judul" class="w-full h-full object-cover shrink-0">
+        <div v-if="mediaItems.length > 0" class="w-full aspect-video rounded-2xl overflow-hidden mb-8 shadow-lg bg-gray-100 dark:bg-gray-800 relative group">
+          <div class="flex transition-transform duration-500 h-full" :style="{ transform: `translateX(-${currentMediaIndex * 100}%)` }">
+            <div v-for="(media, idx) in mediaItems" :key="idx" class="w-full h-full shrink-0 flex items-center justify-center bg-gray-100 dark:bg-gray-800 relative">
+              <video v-if="media.type === 'video'" controls class="w-full h-full bg-black">
+                <source :src="resolveAssetUrl(media.url)" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+              <img v-else :src="resolveAssetUrl(media.url)" :alt="item.judul" class="w-full h-full object-cover">
+            </div>
           </div>
-          <div v-if="item.gambarUrl.length > 1" class="absolute inset-0 flex items-center justify-between p-4 opacity-0 group-hover:opacity-100 transition-opacity">
-            <button @click="prevImage" class="bg-black/50 text-white rounded-full p-2 hover:bg-black/70 transition">
+          <div v-if="mediaItems.length > 1" class="absolute inset-0 flex items-center justify-between p-4 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+            <button @click="prevMedia" class="pointer-events-auto bg-black/50 text-white rounded-full p-2 hover:bg-black/70 transition">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
               </svg>
             </button>
-            <button @click="nextImage" class="bg-black/50 text-white rounded-full p-2 hover:bg-black/70 transition">
+            <button @click="nextMedia" class="pointer-events-auto bg-black/50 text-white rounded-full p-2 hover:bg-black/70 transition">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
               </svg>
             </button>
           </div>
-          <div v-if="item.gambarUrl.length > 1" class="absolute bottom-4 left-0 right-0 flex justify-center gap-2">
-            <span v-for="(img, idx) in item.gambarUrl" :key="'dot-'+idx" class="w-2.5 h-2.5 rounded-full transition-colors cursor-pointer" :class="idx === currentImageIndex ? 'bg-white' : 'bg-white/50'" @click="currentImageIndex = idx"></span>
+          <div v-if="mediaItems.length > 1" class="absolute bottom-4 left-0 right-0 flex justify-center gap-2 z-10">
+            <span v-for="(media, idx) in mediaItems" :key="'dot-'+idx" class="w-2.5 h-2.5 rounded-full transition-colors cursor-pointer" :class="idx === currentMediaIndex ? 'bg-white' : 'bg-white/50'" @click="currentMediaIndex = idx"></span>
           </div>
         </div>
         
-        <div v-else-if="!item.videoUrl && (!item.gambarUrl || item.gambarUrl.length === 0)" class="w-full aspect-video rounded-2xl overflow-hidden mb-8 shadow-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
+        <div v-else class="w-full aspect-video rounded-2xl overflow-hidden mb-8 shadow-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
           <img src="https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" :alt="item.judul" class="w-full h-full object-cover">
         </div>
 
@@ -113,15 +112,28 @@ const data = computed(() => {
 
 const item = computed(() => data.value || {});
 
-const currentImageIndex = ref(0);
-const nextImage = () => {
+const mediaItems = computed(() => {
+  const items = [];
   if (item.value.gambarUrl && item.value.gambarUrl.length > 0) {
-    currentImageIndex.value = (currentImageIndex.value + 1) % item.value.gambarUrl.length;
+    item.value.gambarUrl.forEach((url: string) => {
+      items.push({ type: 'image', url });
+    });
+  }
+  if (item.value.videoUrl) {
+    items.push({ type: 'video', url: item.value.videoUrl });
+  }
+  return items;
+});
+
+const currentMediaIndex = ref(0);
+const nextMedia = () => {
+  if (mediaItems.value.length > 0) {
+    currentMediaIndex.value = (currentMediaIndex.value + 1) % mediaItems.value.length;
   }
 };
-const prevImage = () => {
-  if (item.value.gambarUrl && item.value.gambarUrl.length > 0) {
-    currentImageIndex.value = (currentImageIndex.value - 1 + item.value.gambarUrl.length) % item.value.gambarUrl.length;
+const prevMedia = () => {
+  if (mediaItems.value.length > 0) {
+    currentMediaIndex.value = (currentMediaIndex.value - 1 + mediaItems.value.length) % mediaItems.value.length;
   }
 };
 

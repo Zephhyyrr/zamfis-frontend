@@ -88,13 +88,13 @@
               </div>
             </div>
           </div>
-          <div v-if="selectedChartYear !== 'all'" class="mt-4 grid grid-cols-2 gap-4">
+          <div class="mt-4 grid grid-cols-2 gap-4">
             <div class="text-center bg-white dark:bg-gray-700 rounded-lg p-3 border border-emerald-100 dark:border-gray-600">
-              <p class="text-xs text-emerald-600 dark:text-emerald-400 font-semibold">Total Uang Masuk ({{ selectedChartYear }})</p>
+              <p class="text-xs text-emerald-600 dark:text-emerald-400 font-semibold">Total Uang Masuk ({{ selectedChartYear === 'all' ? 'Semua Tahun' : selectedChartYear }})</p>
               <p class="text-base font-bold text-emerald-700 dark:text-emerald-300">{{ formatCurrency(surauTotalIncome) }}</p>
             </div>
             <div class="text-center bg-white dark:bg-gray-700 rounded-lg p-3 border border-red-100 dark:border-gray-600">
-              <p class="text-xs text-red-500 dark:text-red-400 font-semibold">Total Uang Keluar ({{ selectedChartYear }})</p>
+              <p class="text-xs text-red-500 dark:text-red-400 font-semibold">Total Uang Keluar ({{ selectedChartYear === 'all' ? 'Semua Tahun' : selectedChartYear }})</p>
               <p class="text-base font-bold text-red-600 dark:text-red-400">{{ formatCurrency(surauTotalExpense) }}</p>
             </div>
           </div>
@@ -133,7 +133,7 @@
                 Belum ada data Kas Anak Yatim.
               </div>
 
-              <div v-if="selectedYatimRow && selectedYearYatim !== 'all'" class="mt-3 grid grid-cols-2 gap-2">
+              <div v-if="selectedYatimRow" class="mt-3 grid grid-cols-2 gap-2">
                 <div class="text-center bg-white dark:bg-gray-700 rounded-lg p-2 border border-purple-100 dark:border-gray-600">
                   <p class="text-xs text-emerald-600 dark:text-emerald-400 font-semibold">Masuk</p>
                   <p class="text-sm font-bold text-emerald-700 dark:text-emerald-300">{{ formatCurrency(selectedYatimRow.income) }}</p>
@@ -172,7 +172,7 @@
                 Belum ada data Kas TPQ.
               </div>
 
-              <div v-if="selectedTpqRow && selectedYearTpq !== 'all'" class="mt-3 grid grid-cols-2 gap-2">
+              <div v-if="selectedTpqRow" class="mt-3 grid grid-cols-2 gap-2">
                 <div class="text-center bg-white dark:bg-gray-700 rounded-lg p-2 border border-teal-100 dark:border-gray-600">
                   <p class="text-xs text-emerald-600 dark:text-emerald-400 font-semibold">Masuk</p>
                   <p class="text-sm font-bold text-emerald-700 dark:text-emerald-300">{{ formatCurrency(selectedTpqRow.income) }}</p>
