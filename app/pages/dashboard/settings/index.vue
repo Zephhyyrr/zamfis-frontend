@@ -78,6 +78,8 @@
             </div>
         </div>
     </div>
+    
+    <ProfileCropperModal v-model="showCropper" :imageUrl="tempImageUrl" @cropped="onCropped" />
 </template>
 
 <script setup lang="ts">
@@ -87,6 +89,7 @@ import { definePageMeta, useRuntimeConfig } from '#imports';
 import { useAuth } from '~/composables/useAuth';
 import { UserService } from '~/application/services/UserServices';
 import { resolveAssetUrl } from '~/infrastructure/adapters/assets';
+import ProfileCropperModal from '~/components/features/settings/ProfileCropperModal.vue';
 
 definePageMeta({
     layout: 'dashboard'
@@ -121,6 +124,9 @@ const previewFoto = ref<string | null>(null);
 const isUploading = ref(false);
 const fotoMessage = ref('');
 const isFotoError = ref(false);
+
+const showCropper = ref(false);
+const tempImageUrl = ref('');
 
 // Initialize Data
 const initData = () => {
@@ -164,10 +170,17 @@ const handleFileChange = (event: Event) => {
             return;
         }
 
-        selectedFile.value = file;
-        previewFoto.value = URL.createObjectURL(file);
-        fotoMessage.value = '';
+        tempImageUrl.value = URL.createObjectURL(file);
+        showCropper.value = true;
+        target.value = '';
     }
+};
+
+const onCropped = (blob: Blob) => {
+    const file = new File([blob], 'profile.jpg', { type: 'image/jpeg' });
+    selectedFile.value = file;
+    previewFoto.value = URL.createObjectURL(blob);
+    fotoMessage.value = '';
 };
 
 const uploadFoto = async () => {
