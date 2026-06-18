@@ -28,4 +28,6 @@ export interface IUpdateContentPayload {
     gambarUrl?: File[];
     videoUrl?: File;
     isTampil?: boolean;
+    existingGambar?: string[];
+    deleteVideo?: boolean;
 }

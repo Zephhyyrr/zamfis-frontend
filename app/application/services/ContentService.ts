@@ -57,6 +57,12 @@ export class ContentService extends BaseService {
         if (payload.videoUrl instanceof File) {
             formData.append('videoUrl', payload.videoUrl);
         }
+        if (payload.existingGambar !== undefined) {
+            formData.append('existingGambar', JSON.stringify(payload.existingGambar));
+        }
+        if (payload.deleteVideo) {
+            formData.append('deleteVideo', 'true');
+        }
         return await this.api<IApiResponse<IContent>>(endpoints.CONTENT.UPDATE(id), {
             method: 'PUT',
             body: formData,
