@@ -176,11 +176,14 @@ const handleFileChange = (event: Event) => {
     }
 };
 
-const onCropped = (blob: Blob) => {
+const onCropped = async (blob: Blob) => {
     const file = new File([blob], 'profile.jpg', { type: 'image/jpeg' });
     selectedFile.value = file;
     previewFoto.value = URL.createObjectURL(blob);
     fotoMessage.value = '';
+    
+    // Langsung otomatis unggah (simpan)
+    await uploadFoto();
 };
 
 const uploadFoto = async () => {

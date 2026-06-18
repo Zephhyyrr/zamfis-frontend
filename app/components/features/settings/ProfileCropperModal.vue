@@ -11,11 +11,11 @@
         </button>
       </div>
       
-      <div class="flex-1 relative bg-gray-100 dark:bg-gray-900 flex justify-center items-center min-h-[350px]">
+      <div class="relative w-full h-[400px] bg-black">
         <div v-if="!imageLoaded" class="absolute inset-0 flex items-center justify-center z-0">
           <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-500"></div>
         </div>
-        <img ref="imageRef" :src="imageUrl" class="max-w-full max-h-full block opacity-0 transition-opacity duration-300" @load="initCropper" alt="Crop preview" />
+        <img ref="imageRef" :src="imageUrl" style="display: block; max-width: 100%;" class="opacity-0 transition-opacity duration-300" @load="initCropper" alt="Crop preview" />
       </div>
       
       <div class="p-5 border-t border-gray-100 dark:border-gray-700 flex justify-end gap-3 bg-white dark:bg-gray-800 z-10">
@@ -45,36 +45,38 @@ const emit = defineEmits<{
 const imageRef = ref<HTMLImageElement | null>(null);
 const imageLoaded = ref(false);
 let cropper: Cropper | null = null;
+let initTimeout: any = null;
 
 const close = () => {
   emit('update:modelValue', false);
 };
 
 const initCropper = () => {
-  if (imageRef.value) {
-    imageRef.value.classList.remove('opacity-0');
-    imageLoaded.value = true;
-    
-    if (cropper) {
-      cropper.destroy();
+  clearTimeout(initTimeout);
+  initTimeout = setTimeout(() => {
+    if (imageRef.value) {
+      imageRef.value.classList.remove('opacity-0');
+      imageLoaded.value = true;
+      
+      if (cropper) {
+        cropper.destroy();
+      }
+      
+      cropper = new Cropper(imageRef.value, {
+        aspectRatio: 1,
+        viewMode: 1,
+        dragMode: 'move',
+        autoCropArea: 0.9,
+        restore: false,
+        guides: true,
+        center: true,
+        highlight: false,
+        cropBoxMovable: true,
+        cropBoxResizable: true,
+        toggleDragModeOnDblclick: false,
+      });
     }
-    
-    cropper = new Cropper(imageRef.value, {
-      aspectRatio: 1,
-      viewMode: 1,
-      dragMode: 'move',
-      autoCropArea: 0.9,
-      restore: false,
-      guides: true,
-      center: true,
-      highlight: false,
-      cropBoxMovable: true,
-      cropBoxResizable: true,
-      toggleDragModeOnDblclick: false,
-      minCropBoxWidth: 100,
-      minCropBoxHeight: 100,
-    });
-  }
+  }, 150);
 };
 
 const crop = () => {
