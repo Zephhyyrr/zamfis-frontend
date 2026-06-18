@@ -23,14 +23,13 @@
     </div>
 
     <nav class="mt-4 flex-1 overflow-y-auto space-y-1 pb-6" :class="isCollapsed ? 'px-2' : 'px-4'">
-      <NuxtLink to="/dashboard/"
+      <NuxtLink to="/dashboard"
         :class="[
           'flex items-center py-3 text-gray-700 dark:text-white rounded-lg hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors',
-          isCollapsed ? 'justify-center px-0' : 'px-4'
+          isCollapsed ? 'justify-center px-0' : 'px-4',
+          isDashboardRouteActive && 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 font-medium'
         ]"
-        active-class="bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 font-medium"
-        @click="$emit('close')"
-        exact>
+        @click="$emit('close')">
         <LayoutDashboardIcon class="w-5 h-5 flex-shrink-0" :class="!isCollapsed && 'mr-3'" />
         <span v-show="!isCollapsed" class="whitespace-nowrap transition-opacity duration-300">Dashboard</span>
       </NuxtLink>
@@ -182,6 +181,7 @@ const isMediaPembayaranRouteActive = computed(() => route.path.startsWith('/dash
 const isFavTransaksiRouteActive = computed(() => route.path.startsWith('/dashboard/favorite-transaksi'));
 const isKelompokKurbanRouteActive = computed(() => route.path.startsWith('/dashboard/kelompok-kurban'));
 const isPesertaKurbanRouteActive = computed(() => route.path.startsWith('/dashboard/peserta-kurban'));
+const isDashboardRouteActive = computed(() => route.path === '/dashboard' || route.path.startsWith('/dashboard/prediksi'));
 
 defineProps({
   isOpen: {

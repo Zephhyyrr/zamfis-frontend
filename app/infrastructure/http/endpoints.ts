@@ -93,5 +93,16 @@ export const endpoints = {
         GET_DASHBOARD: 'transaksi/dashboard',
         GET_PUBLIC_DASHBOARD: 'transaksi/public/dashboard',
         GET_PUBLIC_LIST: 'transaksi/public/list',
+    },
+
+    PREDICT: {
+        INCOME: 'predict/income',
+        EXPENSE: 'predict/expense',
+        SAVE: 'predict/save',
+        ALLOCATE: 'predict/allocate',
+        SAVE_ALLOCATIONS: 'predict/save-allocations',
+        HISTORY: 'predict/history',
+        GET_BY_ID: (id: number) => `predict/${id}`,
+        DELETE: (id: number) => `predict/${id}`
     }
 } as const;
