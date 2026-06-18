@@ -70,13 +70,15 @@
                 Debet (Masuk)</th>
               <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                 Kredit (Keluar)</th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                Dibuat Oleh</th>
               <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                 Aksi</th>
             </tr>
           </thead>
           <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
             <tr v-if="filteredList.length === 0">
-              <td colspan="8" class="px-6 py-8 text-center text-gray-500 dark:text-gray-400 text-sm">
+              <td colspan="9" class="px-6 py-8 text-center text-gray-500 dark:text-gray-400 text-sm">
                   <div class="flex flex-col items-center justify-center text-center text-gray-500 dark:text-gray-400 text-sm">
                   <Icon icon="lucide:file-question" class="w-12 h-12 text-gray-300 dark:text-gray-600 dark:text-gray-400 mb-2" />
                   {{ activeTab === 'active' ? 'Belum ada data keuangan aktif.' : 'Tidak ada data keuangan draft.' }}
@@ -106,6 +108,17 @@
                 formatCurrency(getDebit(item)) }}</td>
               <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-red-600 dark:text-red-400 text-right" :class="getKredit(item) <= 0 && 'text-gray-400 dark:text-gray-600 dark:text-gray-400'">{{
                 formatCurrency(getKredit(item)) }}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                <div class="flex items-center gap-2">
+                  <div class="w-6 h-6 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 flex items-center justify-center text-xs font-bold shrink-0 overflow-hidden">
+                    <img v-if="item.user?.fotoProfile" :src="resolveAssetUrl(item.user.fotoProfile)" alt="Profile" class="w-full h-full object-cover">
+                    <span v-else>{{ item.user?.nama ? item.user.nama.charAt(0).toUpperCase() : 'S' }}</span>
+                  </div>
+                  <span class="max-w-[100px] truncate" :title="item.user?.nama || 'Sistem'">
+                    {{ item.user?.nama ? item.user.nama.split(' ')[0] : 'Sistem' }}
+                  </span>
+                </div>
+              </td>
               <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                 <button v-if="activeTab === 'active'" @click="openEditModal(item)"
                   class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 p-1.5 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-lg mr-2 transition-colors outline-none focus:ring-2 focus:ring-blue-500/50"
@@ -158,6 +171,7 @@ import BasePagination from '~/components/base/BasePagination.vue';
 import KeuanganEditModal from '~/components/features/keuangan/KeuanganEditModal.vue';
 import KeuanganDeleteModal from '~/components/features/keuangan/KeuanganDeleteModal.vue';
 import { useTransaksi } from '~/composables/useTransaksi';
+import { resolveAssetUrl } from '~/infrastructure/adapters/assets';
 
 const router = useRouter();
 const { fetchTransactions, fetchDraftTransactions, deleteTransaction } = useTransaksi();

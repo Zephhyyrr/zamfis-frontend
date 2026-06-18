@@ -26,6 +26,27 @@
             </option>
           </select>
         </div>
+        <div
+          class="flex items-center gap-2 bg-white/60 dark:bg-gray-800/50 border border-emerald-100 dark:border-white/10 rounded-xl px-4 py-2.5 w-full sm:w-auto backdrop-blur-md">
+          <CalendarIcon class="h-4 w-4 text-emerald-500 shrink-0" />
+          <select v-model="filterTahun"
+            class="bg-transparent border-none focus:outline-none text-sm font-semibold dark: w-full bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400">
+            <option value="Semua">Semua Tahun</option>
+            <option v-for="year in availableYears" :key="year" :value="year">
+              {{ year }}
+            </option>
+          </select>
+        </div>
+        <div
+          class="flex items-center gap-2 bg-white/60 dark:bg-gray-800/50 border border-emerald-100 dark:border-white/10 rounded-xl px-4 py-2.5 w-full sm:w-auto backdrop-blur-md">
+          <TagIcon class="h-4 w-4 text-emerald-500 shrink-0" />
+          <select v-model="filterTipe"
+            class="bg-transparent border-none focus:outline-none text-sm font-semibold dark: w-full bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400">
+            <option value="Semua">Semua Tipe</option>
+            <option value="uang_masuk">Uang Masuk</option>
+            <option value="uang_keluar">Uang Keluar</option>
+          </select>
+        </div>
       </div>
       <div v-if="pendingTransaksi" class="flex justify-center my-16">
         <div class="animate-spin rounded-full h-12 w-12 border-b-4 border-primary"></div>
@@ -116,7 +137,7 @@
 import { computed, ref, watch } from 'vue'
 import { useAsyncData } from '#imports'
 import { TransaksiService } from '~/application/services/TransaksiService'
-import { SearchIcon, FilterIcon } from 'lucide-vue-next'
+import { SearchIcon, FilterIcon, CalendarIcon, TagIcon } from 'lucide-vue-next'
 
 const formatRupiah = (angka: number) =>
   new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka)
@@ -140,12 +161,25 @@ const transaksiList = computed(() => {
 })
 
 const filterJenisKasId = ref<string | number>('Semua')
+const filterTahun = ref<string | number>('Semua')
+const filterTipe = ref('Semua')
 const searchQuery = ref('')
+
+const availableYears = computed(() => {
+  const years = new Set(transaksiList.value.map((trx: any) => new Date(trx.tanggal).getFullYear()))
+  return Array.from(years).sort((a: any, b: any) => b - a)
+})
 
 const filteredTransaksiList = computed(() => {
   let list = transaksiList.value
   if (filterJenisKasId.value !== 'Semua') {
     list = list.filter((trx: any) => trx.jenisKas?.id === Number(filterJenisKasId.value))
+  }
+  if (filterTahun.value !== 'Semua') {
+    list = list.filter((trx: any) => new Date(trx.tanggal).getFullYear() === Number(filterTahun.value))
+  }
+  if (filterTipe.value !== 'Semua') {
+    list = list.filter((trx: any) => trx.tipe === filterTipe.value)
   }
   if (searchQuery.value.trim()) {
     const q = searchQuery.value.toLowerCase().trim()
@@ -162,5 +196,5 @@ const paginatedTransaksiList = computed(() => {
   return filteredTransaksiList.value.slice(start, start + itemsPerPage)
 })
 
-watch([filterJenisKasId, searchQuery], () => { currentPage.value = 1 })
+watch([filterJenisKasId, filterTahun, filterTipe, searchQuery], () => { currentPage.value = 1 })
 </script>

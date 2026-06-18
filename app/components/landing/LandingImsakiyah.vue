@@ -12,22 +12,31 @@
     <div v-if="pendingImsakiyah" class="flex justify-center my-10">
       <div class="animate-spin rounded-full h-12 w-12 border-b-4 border-primary"></div>
     </div>
-    <div v-else-if="imsakiyahList.length === 0" class="text-center text-gray-500 dark:text-gray-400 glass-card p-10 rounded-2xl">
+    <div v-else-if="imsakiyahList.length === 0"
+      class="text-center text-gray-500 dark:text-gray-400 glass-card p-10 rounded-2xl">
       Belum ada data imsakiyah saat ini.
     </div>
     <div v-else class="flex justify-center">
       <div class="relative max-w-4xl w-full group">
-        <div class="absolute -inset-1 bg-gradient-to-r from-primary/30 via-emerald-400/20 to-primary/30 rounded-3xl blur-xl opacity-60 group-hover:opacity-80 transition-opacity duration-500"></div>
-        <div class="relative glass-card rounded-3xl overflow-hidden hover:-translate-y-1 transition-transform duration-300">
+        <div
+          class="absolute -inset-1 bg-gradient-to-r from-primary/30 via-emerald-400/20 to-primary/30 rounded-3xl blur-xl opacity-60 group-hover:opacity-80 transition-opacity duration-500">
+        </div>
+        <div
+          class="relative glass-card rounded-3xl overflow-hidden hover:-translate-y-1 transition-transform duration-300">
           <div class="relative overflow-hidden">
-            <img v-if="imsakiyahList[0].gambarUrl"
-              :src="resolveAssetUrl(imsakiyahList[0].gambarUrl)"
-              :alt="imsakiyahList[0].judul"
+            <img v-if="imsakiyahList[0].gambarUrl && imsakiyahList[0].gambarUrl.length > 0"
+              :src="resolveAssetUrl(imsakiyahList[0].gambarUrl[0])" :alt="imsakiyahList[0].judul"
               class="w-full h-auto object-contain group-hover:scale-[1.02] transition-transform duration-700">
             <div v-else class="p-16 text-center text-gray-400">Gambar tidak tersedia</div>
           </div>
-          <div class="p-5 text-center border-t border-emerald-100/50 dark:border-white/5">
+          <div class="p-5 flex flex-col items-center gap-4 border-t border-emerald-100/50 dark:border-white/5">
             <h4 class="text-lg font-bold text-secondary dark:text-gray-100">{{ imsakiyahList[0].judul }}</h4>
+            <button v-if="imsakiyahList[0].gambarUrl && imsakiyahList[0].gambarUrl.length > 0"
+              @click="handleDownload(resolveAssetUrl(imsakiyahList[0].gambarUrl[0]), 'Jadwal_Imsakiyah.png')"
+              class="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white text-sm font-bold rounded-xl transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
+              <DownloadIcon class="w-4 h-4" />
+              Download Imsakiyah
+            </button>
           </div>
         </div>
       </div>
@@ -40,6 +49,7 @@ import { ContentService } from '~/application/services/ContentService'
 import { resolveAssetUrl } from '~/infrastructure/adapters/assets'
 import { computed } from 'vue'
 import { useAsyncData } from '#imports'
+import { DownloadIcon } from 'lucide-vue-next'
 
 const hijriYear = new Intl.DateTimeFormat('id-ID-u-ca-islamic', { year: 'numeric' }).format(new Date())
 const gregorianYear = new Date().getFullYear()
@@ -54,13 +64,42 @@ const imsakiyahList = computed(() => {
   if (raw?.data && Array.isArray(raw.data)) return raw.data
   return []
 })
+
+const handleDownload = async (url: string, filename: string) => {
+  try {
+    const response = await fetch(url);
+    const blob = await response.blob();
+    const blobUrl = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = blobUrl;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    window.URL.revokeObjectURL(blobUrl);
+  } catch (error) {
+    console.error('Download failed:', error);
+    window.open(url, '_blank');
+  }
+}
 </script>
 
 <style scoped>
 @keyframes gradient-x {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
 }
-.animate-gradient-x { animation: gradient-x 4s ease infinite; }
+
+.animate-gradient-x {
+  animation: gradient-x 4s ease infinite;
+}
 </style>
