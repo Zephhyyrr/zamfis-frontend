@@ -24,30 +24,30 @@
           <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-5">
             <div v-for="(time, name) in allPrayerTimes" :key="name" :class="[
               'rounded-2xl p-6 md:p-8 flex flex-col items-center justify-center text-center transform transition-all duration-300 cursor-default relative overflow-hidden',
-              name === nextPrayer
+              (isClient && name === nextPrayer)
                 ? 'bg-gradient-to-b from-amber-400 to-orange-500 scale-[1.08] z-20 shadow-[0_0_30px_rgba(245,158,11,0.6)] border border-white/30'
                 : 'bg-emerald-700 border border-emerald-600/50 hover:bg-emerald-600 hover:-translate-y-1 hover:shadow-xl hover:shadow-emerald-900/50'
             ]">
-              <div v-if="name === nextPrayer"
+              <div v-if="isClient && name === nextPrayer"
                 class="absolute inset-0 -skew-x-12 bg-gradient-to-r from-transparent via-white/40 to-transparent w-[150%] animate-sweep pointer-events-none">
               </div>
-              <span v-if="name === nextPrayer"
+              <span v-if="isClient && name === nextPrayer"
                 class="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-white dark:bg-gray-800 shadow-[0_0_8px_rgba(255,255,255,0.9)]">
                 <span class="absolute inset-0 rounded-full bg-white dark:bg-gray-800 animate-ping"></span>
               </span>
 
               <h4
-                :class="['font-bold mb-2 uppercase tracking-widest text-xs', name === nextPrayer ? 'text-orange-50' : 'text-emerald-100']">
+                :class="['font-bold mb-2 uppercase tracking-widest text-xs', (isClient && name === nextPrayer) ? 'text-orange-50' : 'text-emerald-100']">
                 {{ name }}</h4>
               <p
-                :class="['text-3xl md:text-4xl font-extrabold tabular-nums relative z-10', name === nextPrayer ? 'text-white drop-shadow-md' : 'text-white']">
+                :class="['text-3xl md:text-4xl font-extrabold tabular-nums relative z-10', (isClient && name === nextPrayer) ? 'text-white drop-shadow-md' : 'text-white']">
                 {{ time }}</p>
             </div>
           </div>
         </div>
       </div>
 
-      <div v-if="nextPrayer" class="flex justify-center -mt-6 relative z-0">
+      <div v-if="isClient && nextPrayer" class="flex justify-center -mt-6 relative z-0">
         <div
           class="bg-gradient-to-br from-secondary via-emerald-800 to-secondary rounded-b-3xl pt-10 pb-6 md:pb-8 px-6 md:px-8 text-center shadow-xl shadow-emerald-900/20 max-w-[320px] md:max-w-sm w-full relative overflow-hidden group hover:shadow-2xl hover:shadow-emerald-900/30 transition-all duration-300">
           <div
@@ -127,11 +127,25 @@ import { useRuntimeConfig, useAsyncData } from '#imports'
 import { $fetch } from 'ofetch'
 import { BellIcon } from 'lucide-vue-next'
 
-const currentDate = new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
+const getWibDate = () => {
+  const d = new Date()
+  const utc = d.getTime() + (d.getTimezoneOffset() * 60000)
+  const wib = new Date(utc + (3600000 * 7)) // UTC+7 (WIB)
+  return new Date(
+    wib.getUTCFullYear(),
+    wib.getUTCMonth(),
+    wib.getUTCDate(),
+    wib.getUTCHours(),
+    wib.getUTCMinutes(),
+    wib.getUTCSeconds()
+  )
+}
+
+const currentDate = new Date().toLocaleDateString('id-ID', { timeZone: 'Asia/Jakarta', weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
 
 const config = useRuntimeConfig()
 const { data: dataJadwal, pending: pendingJadwal, error: errorJadwal, refresh: refreshJadwal } = useAsyncData('jadwal-shalat', () => {
-  const d = new Date()
+  const d = getWibDate()
   const yyyy = d.getFullYear()
   const mm = String(d.getMonth() + 1).padStart(2, '0')
   const dd = String(d.getDate()).padStart(2, '0')
@@ -144,16 +158,17 @@ const allPrayerTimes = computed(() => {
   return { Imsak: t.imsak, Subuh: t.subuh, Dzuhur: t.dzuhur, Ashar: t.ashar, Maghrib: t.maghrib, Isya: t.isya }
 })
 
-const currentTime = ref(new Date())
+const currentTime = ref(getWibDate())
 let timer: ReturnType<typeof setInterval> | null = null
+const isClient = ref(false)
 
 const showAdzanPopup = ref(false)
 const currentAdzanName = ref('')
 let lastCheckedMinute = -1
-const currentDay = ref(new Date().getDate())
+const currentDay = ref(getWibDate().getDate())
 
 const updateTime = () => {
-  const now = new Date()
+  const now = getWibDate()
   currentTime.value = now
 
   // Refresh jadwal shalat jika berganti hari
@@ -188,6 +203,7 @@ const handleVisibilityChange = () => {
 }
 
 onMounted(() => {
+  isClient.value = true
   updateTime()
   timer = setInterval(updateTime, 1000)
   document.addEventListener('visibilitychange', handleVisibilityChange)
