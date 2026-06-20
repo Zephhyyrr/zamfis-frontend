@@ -9,7 +9,8 @@
             </div>
             <div class="w-full md:w-auto flex justify-start">
                 <NuxtLink to="/dashboard/prediksi/riwayat" class="block md:inline-block w-full md:w-auto">
-                    <BaseButton text="Kembali ke Riwayat" variant="secondary" icon="lucide:arrow-left" :fullWidth="false" class="w-full md:w-auto mt-0" />
+                    <BaseButton text="Kembali ke Riwayat" variant="secondary" icon="lucide:arrow-left"
+                        :fullWidth="false" class="w-full md:w-auto mt-0" />
                 </NuxtLink>
             </div>
         </div>
@@ -18,7 +19,8 @@
             <BaseLottiePlayer :animationData="loadingAnimation" :size="150" />
         </div>
 
-        <div v-else-if="error" class="mb-8 p-4 bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-400 border border-red-200 dark:border-red-800/50 rounded-lg">
+        <div v-else-if="error"
+            class="mb-8 p-4 bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-400 border border-red-200 dark:border-red-800/50 rounded-lg">
             {{ error }}
         </div>
 
@@ -28,7 +30,8 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div class="p-4 bg-gray-50 dark:bg-gray-900 rounded-lg border border-gray-100 dark:border-gray-700">
                         <span class="block text-xs text-gray-500 mb-1">Bulan Target</span>
-                        <span class="font-bold text-gray-900 dark:text-gray-100">{{ formatDateOnly(prediction.tanggalTarget) }}</span>
+                        <span class="font-bold text-gray-900 dark:text-gray-100">{{
+                            formatDateOnly(prediction.tanggalTarget) }}</span>
                     </div>
                     <div class="p-4 bg-gray-50 dark:bg-gray-900 rounded-lg border border-gray-100 dark:border-gray-700">
                         <span class="block text-xs text-gray-500 mb-1">Tipe</span>
@@ -41,74 +44,82 @@
                 </div>
             </div>
 
-            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+            <div
+                class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
                 <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-800/50">
                     <h3 class="text-base font-semibold text-gray-800 dark:text-gray-100">Pos Anggaran</h3>
-                    <p class="text-xs text-gray-500 mt-1">Buat daftar alokasi anggaran dan persentase pembagiannya. Total harus 100%.</p>
+                    <p class="text-xs text-gray-500 mt-1">Buat daftar alokasi anggaran dan persentase pembagiannya.
+                        Total harus 100%.</p>
                 </div>
-                
+
                 <div class="p-6">
-                    <div v-for="(alloc, idx) in allocations" :key="idx" class="flex flex-col md:flex-row gap-4 mb-4 items-end">
+                    <div v-for="(alloc, idx) in allocations" :key="idx"
+                        class="flex flex-col md:flex-row gap-4 mb-4 items-end">
                         <div class="w-full md:w-1/2">
-                            <label class="block text-sm font-medium text-gray-700 dark:text-white mb-2">Nama Anggaran</label>
-                            <input type="text" v-model="alloc.nama" placeholder="Contoh: Operasional" class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:border-gray-600 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-white mb-2">Nama
+                                Anggaran</label>
+                            <input type="text" v-model="alloc.nama" placeholder="Contoh: Operasional"
+                                class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:border-gray-600 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
                         </div>
                         <div class="w-full md:w-1/4">
-                            <label class="block text-sm font-medium text-gray-700 dark:text-white mb-2">Nominal (Rp)</label>
-                            <input type="number" v-model="alloc.nominal" min="0" placeholder="0" class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:border-gray-600 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-white mb-2">Nominal
+                                (Rp)</label>
+                            <div class="relative">
+                                <span
+                                    class="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-gray-500 font-medium pointer-events-none">Rp</span>
+                                <input type="text" :value="formatNominalDisplay(alloc.nominal)"
+                                    @input="onNominalInput($event, alloc)" placeholder="0" inputmode="numeric"
+                                    class="w-full rounded-md border border-gray-300 pl-9 pr-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:border-gray-600 dark:bg-gray-900 text-gray-900 dark:text-gray-100" />
+                            </div>
                         </div>
                         <div class="w-full md:w-1/4 flex items-center">
-                            <BaseButton text="Hapus" variant="danger" icon="lucide:trash-2" @click="removeAllocation(idx)" :fullWidth="false" class="w-full md:w-auto" />
+                            <BaseButton text="Hapus" variant="danger" icon="lucide:trash-2"
+                                @click="removeAllocation(idx)" :fullWidth="false" class="w-full md:w-auto" />
                         </div>
                     </div>
-                    
+
                     <div class="mt-4">
-                        <BaseButton 
-                            text="Tambah Anggaran" 
-                            variant="secondary" 
-                            icon="lucide:plus"
-                            @click="addAllocation" 
-                            :fullWidth="false"
-                            class="w-full md:w-auto"
-                        />
+                        <BaseButton text="Tambah Anggaran" variant="secondary" icon="lucide:plus" @click="addAllocation"
+                            :fullWidth="false" class="w-full md:w-auto" />
                     </div>
 
                     <!-- Ringkasan Alokasi Otomatis -->
                     <div class="mt-8 border-t border-gray-200 dark:border-gray-700 pt-6">
                         <h4 class="font-semibold text-gray-800 dark:text-gray-100 mb-4">Ringkasan Pembagian:</h4>
-                        <div class="flex flex-col gap-2 mb-6 p-4 bg-gray-50 dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700">
+                        <div
+                            class="flex flex-col gap-2 mb-6 p-4 bg-gray-50 dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700">
                             <div class="flex justify-between text-sm">
                                 <span class="text-gray-600 dark:text-gray-400">Total Prediksi Tersedia:</span>
-                                <span class="font-bold text-gray-800 dark:text-gray-200">{{ formatCurrency(prediction.nominal) }}</span>
+                                <span class="font-bold text-gray-800 dark:text-gray-200">{{
+                                    formatCurrency(prediction.nominal) }}</span>
                             </div>
                             <div class="flex justify-between text-sm">
                                 <span class="text-gray-600 dark:text-gray-400">Total Dialokasikan:</span>
-                                <span class="font-bold" :class="totalAllocated > prediction.nominal ? 'text-red-600' : 'text-blue-600'">{{ formatCurrency(totalAllocated) }}</span>
+                                <span class="font-bold"
+                                    :class="totalAllocated > prediction.nominal ? 'text-red-600' : 'text-blue-600'">{{
+                                        formatCurrency(totalAllocated) }}</span>
                             </div>
                             <div class="border-t border-gray-200 dark:border-gray-600 my-1"></div>
                             <div class="flex justify-between text-sm">
                                 <span class="text-gray-600 dark:text-gray-400">Sisa Anggaran:</span>
-                                <span class="font-bold" :class="remainingBudget < 0 ? 'text-red-600' : 'text-emerald-600'">{{ formatCurrency(remainingBudget) }}</span>
+                                <span class="font-bold"
+                                    :class="remainingBudget < 0 ? 'text-red-600' : 'text-emerald-600'">{{
+                                        formatCurrency(remainingBudget) }}</span>
                             </div>
                         </div>
 
                         <div class="flex justify-end">
-                            <BaseButton 
-                                text="Simpan Rencana Anggaran" 
-                                variant="success" 
-                                icon="lucide:save"
-                                @click="saveAllocationsToDb" 
-                                :isLoading="savingAllocations" 
+                            <BaseButton text="Simpan Rencana Anggaran" variant="success" icon="lucide:save"
+                                @click="saveAllocationsToDb" :isLoading="savingAllocations"
                                 :disabled="totalAllocated > prediction.nominal || totalAllocated === 0"
-                                :fullWidth="false"
-                                class="w-full md:w-auto"
-                            />
+                                :fullWidth="false" class="w-full md:w-auto" />
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <BaseModal v-model="showSuccessModal" title="Berhasil" icon="lucide:check-circle" confirmText="OK" @confirm="onSuccessConfirm">
+        <BaseModal v-model="showSuccessModal" title="Berhasil" icon="lucide:check-circle" confirmText="OK"
+            @confirm="onSuccessConfirm">
             <p class="text-sm text-gray-600 dark:text-gray-400">Rencana anggaran berhasil disimpan!</p>
         </BaseModal>
     </div>
@@ -148,6 +159,18 @@ const formatCurrency = (value) => {
     }).format(value);
 };
 
+const formatNominalDisplay = (value) => {
+    const num = Number(value);
+    if (!value || isNaN(num) || num === 0) return '';
+    return new Intl.NumberFormat('id-ID').format(num);
+};
+
+const onNominalInput = (event, alloc) => {
+    const raw = event.target.value.replace(/\D/g, '');
+    alloc.nominal = raw ? Number(raw) : null;
+    event.target.value = raw ? new Intl.NumberFormat('id-ID').format(Number(raw)) : '';
+};
+
 const formatDateOnly = (dateString) => {
     if (!dateString) return '';
     return new Date(dateString).toLocaleDateString('id-ID', {
@@ -165,7 +188,7 @@ const fetchPrediction = async () => {
 
     try {
         const result = await predictService.getPredictionById(Number(predictionId));
-        
+
         if (result.success) {
             prediction.value = result.data;
             if (prediction.value.allocations && prediction.value.allocations.length > 0) {
@@ -174,7 +197,7 @@ const fetchPrediction = async () => {
                     nominal: a.nominal
                 }));
             } else if (allocations.value.length === 0) {
-                 allocations.value = [{ nama: '', nominal: null }];
+                allocations.value = [{ nama: '', nominal: null }];
             }
         } else {
             error.value = result.message || "Gagal memuat data prediksi.";
@@ -205,11 +228,10 @@ const remainingBudget = computed(() => {
 
 const saveAllocationsToDb = async () => {
     if (allocations.value.length === 0 || totalAllocated.value > prediction.value.nominal) return;
-    
+
     savingAllocations.value = true;
     error.value = null;
-    
-    // Siapkan data dengan menghitung persentase otomatis
+
     const finalAllocations = allocations.value.map(a => {
         const nominal = Number(a.nominal) || 0;
         const persentase = prediction.value.nominal > 0 ? (nominal / prediction.value.nominal) * 100 : 0;
@@ -219,13 +241,13 @@ const saveAllocationsToDb = async () => {
             persentase: parseFloat(persentase.toFixed(2))
         };
     });
-    
+
     try {
         const result = await predictService.saveAllocations({
             predictionId: prediction.value.id,
             allocations: finalAllocations
         });
-        
+
         if (result.success) {
             showSuccessModal.value = true;
             await fetchPrediction();
