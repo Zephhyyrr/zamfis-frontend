@@ -21,68 +21,82 @@
       <div
         class="bg-gradient-to-br from-secondary via-emerald-800 to-secondary rounded-3xl overflow-hidden relative shadow-2xl shadow-emerald-900/20 z-10">
         <div class="p-8 md:p-12 relative z-10">
-          <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-5">
-            <div v-for="(time, name) in allPrayerTimes" :key="name" :class="[
-              'rounded-2xl p-6 md:p-8 flex flex-col items-center justify-center text-center transform transition-all duration-300 cursor-default relative overflow-hidden',
-              (isClient && name === nextPrayer)
-                ? 'bg-gradient-to-b from-amber-400 to-orange-500 scale-[1.08] z-20 shadow-[0_0_30px_rgba(245,158,11,0.6)] border border-white/30'
-                : 'bg-emerald-700 border border-emerald-600/50 hover:bg-emerald-600 hover:-translate-y-1 hover:shadow-xl hover:shadow-emerald-900/50'
-            ]">
-              <div v-if="isClient && name === nextPrayer"
-                class="absolute inset-0 -skew-x-12 bg-gradient-to-r from-transparent via-white/40 to-transparent w-[150%] animate-sweep pointer-events-none">
+          <ClientOnly>
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-5">
+              <div v-for="(time, name) in allPrayerTimes" :key="name" :class="[
+                'rounded-2xl p-6 md:p-8 flex flex-col items-center justify-center text-center transform transition-all duration-300 cursor-default relative overflow-hidden',
+                name === nextPrayer
+                  ? 'bg-gradient-to-b from-amber-400 to-orange-500 scale-[1.08] z-20 shadow-[0_0_30px_rgba(245,158,11,0.6)] border border-white/30'
+                  : 'bg-emerald-700 border border-emerald-600/50 hover:bg-emerald-600 hover:-translate-y-1 hover:shadow-xl hover:shadow-emerald-900/50'
+              ]">
+                <div v-if="name === nextPrayer"
+                  class="absolute inset-0 -skew-x-12 bg-gradient-to-r from-transparent via-white/40 to-transparent w-[150%] animate-sweep pointer-events-none">
+                </div>
+                <span v-if="name === nextPrayer"
+                  class="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-white dark:bg-gray-800 shadow-[0_0_8px_rgba(255,255,255,0.9)]">
+                  <span class="absolute inset-0 rounded-full bg-white dark:bg-gray-800 animate-ping"></span>
+                </span>
+
+                <h4
+                  :class="['font-bold mb-2 uppercase tracking-widest text-xs', name === nextPrayer ? 'text-orange-50' : 'text-emerald-100']">
+                  {{ name }}</h4>
+                <p
+                  :class="['text-3xl md:text-4xl font-extrabold tabular-nums relative z-10', name === nextPrayer ? 'text-white drop-shadow-md' : 'text-white']">
+                  {{ time }}</p>
               </div>
-              <span v-if="isClient && name === nextPrayer"
-                class="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-white dark:bg-gray-800 shadow-[0_0_8px_rgba(255,255,255,0.9)]">
-                <span class="absolute inset-0 rounded-full bg-white dark:bg-gray-800 animate-ping"></span>
-              </span>
-
-              <h4
-                :class="['font-bold mb-2 uppercase tracking-widest text-xs', (isClient && name === nextPrayer) ? 'text-orange-50' : 'text-emerald-100']">
-                {{ name }}</h4>
-              <p
-                :class="['text-3xl md:text-4xl font-extrabold tabular-nums relative z-10', (isClient && name === nextPrayer) ? 'text-white drop-shadow-md' : 'text-white']">
-                {{ time }}</p>
             </div>
-          </div>
+            
+            <template #fallback>
+              <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-5">
+                <div v-for="(time, name) in allPrayerTimes" :key="name + '-fallback'" 
+                  class="rounded-2xl p-6 md:p-8 flex flex-col items-center justify-center text-center bg-emerald-700 border border-emerald-600/50">
+                  <h4 class="font-bold mb-2 uppercase tracking-widest text-xs text-emerald-100">{{ name }}</h4>
+                  <p class="text-3xl md:text-4xl font-extrabold tabular-nums relative z-10 text-white">{{ time }}</p>
+                </div>
+              </div>
+            </template>
+          </ClientOnly>
         </div>
       </div>
 
-      <div v-if="isClient && nextPrayer" class="flex justify-center -mt-6 relative z-0">
-        <div
-          class="bg-gradient-to-br from-secondary via-emerald-800 to-secondary rounded-b-3xl pt-10 pb-6 md:pb-8 px-6 md:px-8 text-center shadow-xl shadow-emerald-900/20 max-w-[320px] md:max-w-sm w-full relative overflow-hidden group hover:shadow-2xl hover:shadow-emerald-900/30 transition-all duration-300">
+      <ClientOnly>
+        <div v-if="nextPrayer" class="flex justify-center -mt-6 relative z-0">
           <div
-            class="absolute inset-0 bg-gradient-to-r from-emerald-400/0 via-amber-400/10 to-emerald-400/0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out">
-          </div>
-          <div
-            class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-900/50 border border-emerald-500/30 shadow-inner text-emerald-100 font-semibold mb-6 text-sm">
-            <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping absolute"></span>
-            <span class="w-2 h-2 rounded-full bg-amber-400 relative"></span>
-            Menuju Waktu {{ nextPrayer }}
-          </div>
+            class="bg-gradient-to-br from-secondary via-emerald-800 to-secondary rounded-b-3xl pt-10 pb-6 md:pb-8 px-6 md:px-8 text-center shadow-xl shadow-emerald-900/20 max-w-[320px] md:max-w-sm w-full relative overflow-hidden group hover:shadow-2xl hover:shadow-emerald-900/30 transition-all duration-300">
+            <div
+              class="absolute inset-0 bg-gradient-to-r from-emerald-400/0 via-amber-400/10 to-emerald-400/0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out">
+            </div>
+            <div
+              class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-900/50 border border-emerald-500/30 shadow-inner text-emerald-100 font-semibold mb-6 text-sm">
+              <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping absolute"></span>
+              <span class="w-2 h-2 rounded-full bg-amber-400 relative"></span>
+              Menuju Waktu {{ nextPrayer }}
+            </div>
 
-          <div class="flex justify-center items-center gap-3 md:gap-4 text-white">
-            <div class="flex flex-col items-center">
-              <span class="text-4xl md:text-5xl font-extrabold tabular-nums tracking-tight drop-shadow-md">{{
-                countdownParts.hours }}</span>
-              <span class="text-[10px] md:text-xs uppercase tracking-wider text-emerald-200 mt-2 font-medium">Jam</span>
-            </div>
-            <span class="text-3xl md:text-4xl text-emerald-400/80 mb-6 animate-pulse">:</span>
-            <div class="flex flex-col items-center">
-              <span class="text-4xl md:text-5xl font-extrabold tabular-nums tracking-tight drop-shadow-md">{{
-                countdownParts.minutes }}</span>
-              <span
-                class="text-[10px] md:text-xs uppercase tracking-wider text-emerald-200 mt-2 font-medium">Menit</span>
-            </div>
-            <span class="text-3xl md:text-4xl text-emerald-400/80 mb-6 animate-pulse">:</span>
-            <div class="flex flex-col items-center">
-              <span class="text-4xl md:text-5xl font-extrabold tabular-nums tracking-tight drop-shadow-md">{{
-                countdownParts.seconds }}</span>
-              <span
-                class="text-[10px] md:text-xs uppercase tracking-wider text-emerald-200 mt-2 font-medium">Detik</span>
+            <div class="flex justify-center items-center gap-3 md:gap-4 text-white">
+              <div class="flex flex-col items-center">
+                <span class="text-4xl md:text-5xl font-extrabold tabular-nums tracking-tight drop-shadow-md">{{
+                  countdownParts.hours }}</span>
+                <span class="text-[10px] md:text-xs uppercase tracking-wider text-emerald-200 mt-2 font-medium">Jam</span>
+              </div>
+              <span class="text-3xl md:text-4xl text-emerald-400/80 mb-6 animate-pulse">:</span>
+              <div class="flex flex-col items-center">
+                <span class="text-4xl md:text-5xl font-extrabold tabular-nums tracking-tight drop-shadow-md">{{
+                  countdownParts.minutes }}</span>
+                <span
+                  class="text-[10px] md:text-xs uppercase tracking-wider text-emerald-200 mt-2 font-medium">Menit</span>
+              </div>
+              <span class="text-3xl md:text-4xl text-emerald-400/80 mb-6 animate-pulse">:</span>
+              <div class="flex flex-col items-center">
+                <span class="text-4xl md:text-5xl font-extrabold tabular-nums tracking-tight drop-shadow-md">{{
+                  countdownParts.seconds }}</span>
+                <span
+                  class="text-[10px] md:text-xs uppercase tracking-wider text-emerald-200 mt-2 font-medium">Detik</span>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </ClientOnly>
     </div>
 
     <Teleport to="body">
