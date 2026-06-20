@@ -5,7 +5,7 @@
         Jadwal Waktu Shalat
       </h3>
       <p class="text-emerald-700/70 dark:text-gray-400 font-medium">Wilayah Padang dan Sekitarnya &bull; {{ currentDate
-        }}</p>
+      }}</p>
     </div>
     <div v-if="pendingJadwal" class="flex justify-center my-10">
       <div class="flex flex-col items-center gap-3">
@@ -58,29 +58,31 @@
             <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping absolute"></span>
             <span class="w-2 h-2 rounded-full bg-amber-400 relative"></span>
             Menuju Waktu {{ nextPrayer }}
-        </div>
+          </div>
 
-        <div class="flex justify-center items-center gap-3 md:gap-4 text-white">
-          <div class="flex flex-col items-center">
-            <span class="text-4xl md:text-5xl font-extrabold tabular-nums tracking-tight drop-shadow-md">{{
-              countdownParts.hours }}</span>
-            <span class="text-[10px] md:text-xs uppercase tracking-wider text-emerald-200 mt-2 font-medium">Jam</span>
-          </div>
-          <span class="text-3xl md:text-4xl text-emerald-400/80 mb-6 animate-pulse">:</span>
-          <div class="flex flex-col items-center">
-            <span class="text-4xl md:text-5xl font-extrabold tabular-nums tracking-tight drop-shadow-md">{{
-              countdownParts.minutes }}</span>
-            <span class="text-[10px] md:text-xs uppercase tracking-wider text-emerald-200 mt-2 font-medium">Menit</span>
-          </div>
-          <span class="text-3xl md:text-4xl text-emerald-400/80 mb-6 animate-pulse">:</span>
-          <div class="flex flex-col items-center">
-            <span class="text-4xl md:text-5xl font-extrabold tabular-nums tracking-tight drop-shadow-md">{{
-              countdownParts.seconds }}</span>
-            <span class="text-[10px] md:text-xs uppercase tracking-wider text-emerald-200 mt-2 font-medium">Detik</span>
+          <div class="flex justify-center items-center gap-3 md:gap-4 text-white">
+            <div class="flex flex-col items-center">
+              <span class="text-4xl md:text-5xl font-extrabold tabular-nums tracking-tight drop-shadow-md">{{
+                countdownParts.hours }}</span>
+              <span class="text-[10px] md:text-xs uppercase tracking-wider text-emerald-200 mt-2 font-medium">Jam</span>
+            </div>
+            <span class="text-3xl md:text-4xl text-emerald-400/80 mb-6 animate-pulse">:</span>
+            <div class="flex flex-col items-center">
+              <span class="text-4xl md:text-5xl font-extrabold tabular-nums tracking-tight drop-shadow-md">{{
+                countdownParts.minutes }}</span>
+              <span
+                class="text-[10px] md:text-xs uppercase tracking-wider text-emerald-200 mt-2 font-medium">Menit</span>
+            </div>
+            <span class="text-3xl md:text-4xl text-emerald-400/80 mb-6 animate-pulse">:</span>
+            <div class="flex flex-col items-center">
+              <span class="text-4xl md:text-5xl font-extrabold tabular-nums tracking-tight drop-shadow-md">{{
+                countdownParts.seconds }}</span>
+              <span
+                class="text-[10px] md:text-xs uppercase tracking-wider text-emerald-200 mt-2 font-medium">Detik</span>
+            </div>
           </div>
         </div>
       </div>
-    </div>
     </div>
 
     <Teleport to="body">
@@ -128,16 +130,16 @@ import { $fetch } from 'ofetch'
 import { BellIcon } from 'lucide-vue-next'
 
 const getWibDate = () => {
-  const d = new Date()
-  const utc = d.getTime() + (d.getTimezoneOffset() * 60000)
-  const wib = new Date(utc + (3600000 * 7)) // UTC+7 (WIB)
+  const utcNow = new Date().getTime()
+  const wibTime = new Date(utcNow + (7 * 60 * 60 * 1000))
+
   return new Date(
-    wib.getUTCFullYear(),
-    wib.getUTCMonth(),
-    wib.getUTCDate(),
-    wib.getUTCHours(),
-    wib.getUTCMinutes(),
-    wib.getUTCSeconds()
+    wibTime.getUTCFullYear(),
+    wibTime.getUTCMonth(),
+    wibTime.getUTCDate(),
+    wibTime.getUTCHours(),
+    wibTime.getUTCMinutes(),
+    wibTime.getUTCSeconds()
   )
 }
 
@@ -209,8 +211,8 @@ onMounted(() => {
   document.addEventListener('visibilitychange', handleVisibilityChange)
 })
 
-onUnmounted(() => { 
-  if (timer) clearInterval(timer) 
+onUnmounted(() => {
+  if (timer) clearInterval(timer)
   document.removeEventListener('visibilitychange', handleVisibilityChange)
 })
 
