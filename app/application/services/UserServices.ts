@@ -39,12 +39,6 @@ export class UserService extends BaseService {
         });
     }
 
-    static async deletePermanentUser(id: number): Promise<IApiResponse<null>> {
-        return await this.api<IApiResponse<null>>(endpoints.USER.DELETE_PERMANENT(id), {
-            method: 'DELETE',
-        });
-    }
-
     static async updateFotoProfil(id: number, payload: IUpdateUserFotoPayload): Promise<IApiResponse<IUser>> {
         const formData = new FormData();
         formData.append('fotoProfile', payload.fotoProfile);
@@ -60,10 +54,5 @@ export class UserService extends BaseService {
         });
     }
 
-    static async getDraftUsers(params?: IPaginationQuery): Promise<IApiResponse<IUser[]>> {
-        return await this.api<IApiResponse<IUser[]>>(endpoints.USER.GET_DRAFT, {
-            method: 'GET',
-            query: params,
-        });
-    }
+
 }

@@ -30,10 +30,6 @@ export const useUser = () => {
         return await UserService.deleteUser(id);
     };
 
-    const deletePermanentUser = async (id: number) => {
-        return await UserService.deletePermanentUser(id);
-    };
-
     const updateFotoProfil = async (id: number, payload: IUpdateUserFotoPayload) => {
         return await UserService.updateFotoProfil(id, payload);
     };
@@ -42,23 +38,13 @@ export const useUser = () => {
         return await UserService.isActivateUser(id);
     };
 
-    const fetchDraftUsers = (params: Ref<IPaginationQuery>) => {
-        return useAsyncData(
-            'users-draft-list',
-            () => UserService.getDraftUsers(params.value),
-            { watch: [params] }
-        );
-    };
-
     return {
         fetchUsers,
         fetchUserById,
         createUser,
         updateUser,
         deleteUser,
-        deletePermanentUser,
         updateFotoProfil,
         toggleActivateUser,
-        fetchDraftUsers,
     };
 };

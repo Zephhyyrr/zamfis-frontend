@@ -27,13 +27,6 @@
         Aktif
         <span class="ml-2 rounded-full px-2 py-0.5 text-xs" :class="activeTab === 'active' ? 'bg-white/20 text-white' : 'bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-400'">{{ activeMeta?.totalItems || 0 }}</span>
       </button>
-      <button type="button" class="inline-flex items-center rounded-lg px-4 py-2 text-sm font-medium transition-colors"
-        :class="activeTab === 'draft'
-          ? 'bg-amber-500 text-white shadow-sm'
-          : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'" @click="activeTab = 'draft'">
-        Draft
-        <span class="ml-2 rounded-full px-2 py-0.5 text-xs" :class="activeTab === 'draft' ? 'bg-white/20 text-white' : 'bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-400'">{{ draftMeta?.totalItems || 0 }}</span>
-      </button>
     </div>
 
     <div v-if="showUndoBanner"
@@ -70,10 +63,16 @@
             </tr>
             <tr v-else-if="filteredUsers.length === 0">
               <td colspan="6" class="px-6 py-8 text-center text-gray-500 dark:text-gray-400 text-sm">
-                {{ activeTab === 'active' ? 'Tidak ada data pengguna aktif ditemukan.' : 'Tidak ada data draft ditemukan.' }}
+                Tidak ada data pengguna aktif ditemukan.
               </td>
             </tr>
-            <tr v-else v-for="user in filteredUsers" :key="user.id" class="hover:bg-gray-50 dark:bg-gray-700/50 dark:hover:bg-gray-700/50">
+            <tr v-else v-for="user in filteredUsers" :key="user.id" 
+              :class="[
+                Number(user.id) === Number(authStore.user?.id)
+                  ? 'bg-emerald-50 dark:bg-emerald-900/30 hover:bg-emerald-100 dark:hover:bg-emerald-900/50 border-l-4 border-emerald-500'
+                  : 'hover:bg-gray-50 dark:bg-gray-700/50 dark:hover:bg-gray-700/50'
+              ]"
+            >
               <td class="px-6 py-4 whitespace-nowrap">
                 <div class="flex items-center">
                   <div v-if="user.fotoProfile && user.fotoProfile !== 'null'" class="flex-shrink-0 h-10 w-10 rounded-full overflow-hidden border border-emerald-200 dark:border-emerald-800">
@@ -83,7 +82,12 @@
                     class="flex-shrink-0 h-10 w-10 bg-emerald-100 dark:bg-emerald-900/40 rounded-full flex items-center justify-center text-emerald-600 dark:text-emerald-400 font-bold">
                     {{ (user.nama || 'U').charAt(0) }}
                   </div>
-                  <div class="ml-4 text-sm font-medium text-gray-900 dark:text-gray-100">{{ user.nama }}</div>
+                  <div class="ml-4 text-sm font-medium text-gray-900 dark:text-gray-100">
+                    {{ user.nama }}
+                    <span v-if="Number(user.id) === Number(authStore.user?.id)" class="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-emerald-100 text-emerald-800 dark:bg-emerald-800/30 dark:text-emerald-400">
+                      Anda
+                    </span>
+                  </div>
                 </div>
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{{ user.email }}</td>
@@ -110,13 +114,7 @@
                 </button>
                 <button @click="openActionModal('delete', user)"
                   class="text-amber-700 dark:text-amber-500 hover:text-amber-800 dark:hover:text-amber-400 p-1.5 hover:bg-amber-50 dark:hover:bg-amber-900/30 rounded-lg transition-colors outline-none focus:ring-2 focus:ring-amber-500/50"
-                  :class="{'mr-2': activeTab === 'draft'}"
-                  :title="activeTab === 'active' ? 'Hapus' : 'Pulihkan'">
-                  <Icon :icon="activeTab === 'active' ? 'lucide:trash-2' : 'lucide:rotate-ccw'" class="w-4 h-4" />
-                </button>
-                <button v-if="activeTab === 'draft'" @click="openActionModal('delete-permanent', user)"
-                  class="text-red-700 dark:text-red-500 hover:text-red-800 dark:hover:text-red-400 p-1.5 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg transition-colors outline-none focus:ring-2 focus:ring-red-500/50"
-                  title="Hapus Permanen">
+                  title="Hapus">
                   <Icon icon="lucide:trash-2" class="w-4 h-4" />
                 </button>
               </td>
@@ -125,9 +123,7 @@
         </table>
       </div>
       
-      <!-- General Pagination Component -->
-      <BasePagination v-if="activeTab === 'active'" v-model="activeParams.page" @update:modelValue="refresh" :meta="activeMeta" class="rounded-none border-t border-gray-100 dark:border-gray-700" />
-      <BasePagination v-if="activeTab === 'draft'" v-model="draftParams.page" @update:modelValue="refreshDraft" :meta="draftMeta" class="rounded-none border-t border-gray-100 dark:border-gray-700" />
+      <BasePagination v-model="activeParams.page" @update:modelValue="refresh" :meta="activeMeta" class="rounded-none border-t border-gray-100 dark:border-gray-700" />
     </div>
 
     <FeaturesUsersUserStatusModal v-model="showStatusModal" :user="selectedUser" @success="handleSuccess" />
@@ -139,11 +135,7 @@
       @success="handleSuccess"
     />
 
-    <FeaturesUsersUserDeletePermanentModal
-      v-model="showDeletePermanentModal"
-      :user="selectedUser"
-      @success="handleSuccess"
-    />
+
 
     <BaseModal v-model="showResultModal" :title="resultTitle" :icon="resultIcon" :type="resultType"
       confirmText="Tutup" :showCancel="false">
@@ -159,6 +151,7 @@ import { definePageMeta, useRouter } from '#imports';
 import { SearchIcon, PencilIcon, TrashIcon } from 'lucide-vue-next';
 import { Icon } from '@iconify/vue';
 import { useUser } from '~/composables/useUsers';
+import { useAuthStore } from '~/application/stores/useAuthStore';
 import { resolveAssetUrl } from '~/infrastructure/adapters/assets';
 import type { IUser } from '~/domain/models/IUser';
 import type { IApiResponse } from '~/domain/types/IApiResponse';
@@ -166,16 +159,13 @@ import type { IApiResponse } from '~/domain/types/IApiResponse';
 definePageMeta({ layout: 'dashboard' as any });
 
 const router = useRouter();
-const { fetchUsers, fetchDraftUsers, deleteUser } = useUser();
+const authStore = useAuthStore();
+const { fetchUsers, deleteUser } = useUser();
 
 const activeParams = ref({ page: 1, limit: 10 });
 const { data: apiResponse, pending, refresh } = fetchUsers(activeParams);
 
-const draftParams = ref({ page: 1, limit: 10 });
-const { data: draftApiResponse, pending: draftPending, refresh: refreshDraft } = fetchDraftUsers(draftParams);
-
 const users = computed<IUser[]>(() => (apiResponse.value as IApiResponse<IUser[]>)?.data ?? []);
-const draftUsers = computed<IUser[]>(() => (draftApiResponse.value as IApiResponse<IUser[]>)?.data ?? []);
 
 const getMeta = (resData: any) => {
   const res = resData?.value;
@@ -186,13 +176,12 @@ const getMeta = (resData: any) => {
 };
 
 const activeMeta = computed(() => getMeta(apiResponse));
-const draftMeta = computed(() => getMeta(draftApiResponse));
 
-const activeTab = ref<'active' | 'draft'>('active');
+const activeTab = ref<'active'>('active');
 
 const activeUsers = computed(() => users.value.filter(user => !user.isDeleted));
-const visibleUsers = computed(() => activeTab.value === 'active' ? activeUsers.value : draftUsers.value);
-const isTabPending = computed(() => activeTab.value === 'active' ? pending.value : draftPending.value);
+const visibleUsers = computed(() => activeUsers.value);
+const isTabPending = computed(() => pending.value);
 const searchQuery = ref('');
 const filteredUsers = computed(() => {
   if (!searchQuery.value) return visibleUsers.value;
@@ -208,20 +197,29 @@ const goToCreate = () => router.push('/dashboard/users/create');
 const showEditModal = ref(false);
 const showDeleteModal = ref(false);
 const showStatusModal = ref(false);
-const showDeletePermanentModal = ref(false);
 const selectedUser = ref<IUser | null>(null);
-const currentAction = ref<'edit' | 'delete' | 'status' | 'delete-permanent' | null>(null);
-const deleteMode = ref<'archive' | 'restore'>('archive');
+const currentAction = ref<'edit' | 'delete' | 'status' | null>(null);
+const deleteMode = ref<'archive'>('archive');
 
-const openActionModal = (action: 'edit' | 'delete' | 'status' | 'delete-permanent', user: IUser) => {
+const openActionModal = (action: 'edit' | 'delete' | 'status', user: IUser) => {
+  if ((action === 'status' || action === 'delete') && Number(user.id) === Number(authStore.user?.id)) {
+    resultTitle.value = 'Tidak Diizinkan';
+    resultMessage.value = action === 'status' 
+      ? 'Anda tidak bisa menonaktifkan atau mengaktifkan akun Anda sendiri.' 
+      : 'Anda tidak bisa menghapus akun Anda sendiri.';
+    resultType.value = 'danger';
+    resultIcon.value = 'lucide:alert-circle';
+    showResultModal.value = true;
+    return;
+  }
+
   currentAction.value = action;
   selectedUser.value = user;
   if (action === 'edit') showEditModal.value = true;
   if (action === 'delete') {
-    deleteMode.value = activeTab.value === 'draft' ? 'restore' : 'archive';
+    deleteMode.value = 'archive';
     showDeleteModal.value = true;
   }
-  if (action === 'delete-permanent') showDeletePermanentModal.value = true;
   if (action === 'status') showStatusModal.value = true;
 };
 
@@ -258,7 +256,6 @@ const handleSuccess = async (title: string, message: string) => {
   resultType.value = 'success';
   resultIcon.value = 'lucide:badge-check';
   await refresh();
-  await refreshDraft();
 
   if (currentAction.value === 'delete' && deleteMode.value === 'archive' && selectedUser.value) {
     showDeleteUndo(selectedUser.value.id);
