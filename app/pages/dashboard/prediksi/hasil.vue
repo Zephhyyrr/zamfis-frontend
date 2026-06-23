@@ -45,7 +45,7 @@
                         <thead
                             class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-900/50 dark:text-gray-300">
                             <tr>
-                                <th scope="col" class="px-6 py-4">Bulan / Tanggal Target</th>
+                                <th scope="col" class="px-6 py-4">Bulan Target</th>
                                 <th scope="col" class="px-6 py-4">Status Kalender Hijriah</th>
                                 <th scope="col" class="px-6 py-4 text-right text-emerald-600 dark:text-emerald-400">
                                     Hasil Prediksi</th>
@@ -54,7 +54,7 @@
                         <tbody>
                             <tr
                                 class="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
-                                <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ tanggal }}</td>
+                                <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">{{ formatMonthYear(tanggal) }}</td>
                                 <td class="px-6 py-4">
                                     <span v-if="hijri && hijri !== '-'"
                                         class="px-2.5 py-1 bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300 text-xs font-semibold rounded-full border border-amber-200 dark:border-amber-800">{{
@@ -107,6 +107,16 @@ const formatCurrency = (value) => {
         currency: 'IDR',
         maximumFractionDigits: 0
     }).format(value);
+};
+
+const formatMonthYear = (dateStr) => {
+    if (!dateStr) return '-';
+    try {
+        const date = new Date(dateStr);
+        return new Intl.DateTimeFormat('id-ID', { month: 'long', year: 'numeric' }).format(date);
+    } catch (e) {
+        return dateStr;
+    }
 };
 
 const savePrediction = async () => {
