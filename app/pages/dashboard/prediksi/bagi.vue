@@ -127,7 +127,7 @@
 
 <script setup>
 import { ref, onMounted, computed } from 'vue';
-import { definePageMeta, useCookie, useRoute } from '#imports';
+import { definePageMeta, useCookie, useRoute, useRouter } from '#imports';
 import loadingAnimation from '~/assets/animation/loading.json';
 import BaseLottiePlayer from '~/components/base/LottiePlayer.vue';
 import BaseModal from '~/components/base/BaseModal.vue';
@@ -140,6 +140,7 @@ definePageMeta({
 });
 
 const route = useRoute();
+const router = useRouter();
 const predictionId = route.query.id;
 
 const loading = ref(true);
@@ -193,6 +194,7 @@ const fetchPrediction = async () => {
             prediction.value = result.data;
             if (prediction.value.allocations && prediction.value.allocations.length > 0) {
                 allocations.value = prediction.value.allocations.map(a => ({
+                    id: a.id,
                     nama: a.nama,
                     nominal: a.nominal
                 }));
@@ -236,6 +238,7 @@ const saveAllocationsToDb = async () => {
         const nominal = Number(a.nominal) || 0;
         const persentase = prediction.value.nominal > 0 ? (nominal / prediction.value.nominal) * 100 : 0;
         return {
+            id: a.id,
             nama: a.nama,
             nominal: nominal,
             persentase: parseFloat(persentase.toFixed(2))
@@ -267,5 +270,6 @@ onMounted(() => {
 
 const onSuccessConfirm = () => {
     showSuccessModal.value = false;
+    router.push('/dashboard/prediksi/riwayat');
 };
 </script>
