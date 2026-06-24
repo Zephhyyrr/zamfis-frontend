@@ -33,7 +33,7 @@
     </div>
 
     <div v-else-if="!hasData" class="text-center py-12 bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-emerald-100 dark:border-gray-700">
-      <Icon icon="lucide:beef" class="w-16 h-16 text-emerald-200 dark:text-emerald-800 mx-auto mb-4" />
+      <Icon icon="lucide:file-question" class="w-16 h-16 text-emerald-200 dark:text-emerald-800 mx-auto mb-4" />
       <h3 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-2">Belum Ada Data</h3>
       <p class="text-gray-500 dark:text-gray-400">Belum ada peserta kurban untuk tahun {{ tahunFilter }}.</p>
     </div>
@@ -50,7 +50,8 @@
             <div class="flex justify-between items-start mb-6 border-b border-gray-100 dark:border-gray-700 pb-4">
               <div>
                 <h4 class="text-xl font-bold text-gray-900 dark:text-white">{{ kelompok.nama }}</h4>
-                <p class="text-sm text-emerald-600 dark:text-emerald-400 font-medium">{{ kelompok.peserta?.length || 0 }} Peserta</p>
+                <p class="text-sm text-emerald-600 dark:text-emerald-400 font-medium">{{ kelompok.peserta?.length || 0
+                }} Peserta</p>
               </div>
             </div>
 
@@ -64,7 +65,8 @@
                   </div>
                   <span class="font-medium text-gray-800 dark:text-gray-200">{{ peserta.nama }}</span>
                 </div>
-                <span class="text-sm font-semibold text-gray-600 dark:text-white">{{ formatCurrency(peserta.nominal) }}</span>
+                <span class="text-sm font-semibold text-gray-600 dark:text-white">{{ formatCurrency(peserta.nominal)
+                }}</span>
               </li>
               <li v-for="n in Math.max(0, 7 - (kelompok.peserta?.length || 0))" :key="'empty-' + n"
                 class="flex items-center gap-3 opacity-50">
@@ -82,7 +84,8 @@
             class="p-2 rounded-full border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:bg-emerald-50 dark:hover:bg-gray-800 hover:text-emerald-600 dark:hover:text-emerald-400 hover:border-emerald-200 dark:hover:border-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
             <Icon icon="lucide:chevron-left" class="w-6 h-6" />
           </button>
-          <span class="text-gray-600 dark:text-gray-300 font-medium">Halaman {{ currentPage }} dari {{ totalPages }}</span>
+          <span class="text-gray-600 dark:text-gray-300 font-medium">Halaman {{ currentPage }} dari {{ totalPages
+          }}</span>
           <button @click="nextPage" :disabled="currentPage === totalPages"
             class="p-2 rounded-full border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:bg-emerald-50 dark:hover:bg-gray-800 hover:text-emerald-600 dark:hover:text-emerald-400 hover:border-emerald-200 dark:hover:border-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
             <Icon icon="lucide:chevron-right" class="w-6 h-6" />
@@ -94,16 +97,13 @@
           <Icon icon="lucide:user" class="text-emerald-600 dark:text-emerald-400" />
           Kurban Individu
         </h3>
-        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-emerald-100 dark:border-gray-700 overflow-hidden">
+        <div
+          class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-emerald-100 dark:border-gray-700 overflow-hidden">
           <div
             class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-gray-100 dark:divide-gray-700">
-            <div v-for="(peserta) in individuList" :key="peserta.id" class="p-6 hover:bg-gray-50 dark:bg-gray-700/50 dark:hover:bg-gray-700/50 transition-colors">
+            <div v-for="(peserta) in individuList" :key="peserta.id"
+              class="p-6 hover:bg-gray-50 dark:bg-gray-700/50 dark:hover:bg-gray-700/50 transition-colors">
               <div class="flex items-center gap-4 mb-3">
-                <div class="p-3 rounded-full"
-                  :class="peserta.tipe === 'individu_sapi' ? 'bg-amber-100 dark:bg-amber-900/40' : 'bg-emerald-100 dark:bg-emerald-900/40'">
-                  <Icon :icon="peserta.tipe === 'individu_sapi' ? 'lucide:beef' : 'lucide:rat'" class="w-6 h-6"
-                    :class="peserta.tipe === 'individu_sapi' ? 'text-amber-600 dark:text-amber-400' : 'text-emerald-600 dark:text-emerald-400'" />
-                </div>
                 <div>
                   <h4 class="font-bold text-gray-900 dark:text-white text-lg">{{ peserta.nama }}</h4>
                   <span class="text-sm font-medium px-2 py-1 rounded-full"
