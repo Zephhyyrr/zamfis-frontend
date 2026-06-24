@@ -17,16 +17,16 @@
       Belum ada data imsakiyah saat ini.
     </div>
     <div v-else class="flex justify-center">
-      <div class="relative max-w-4xl w-full group">
+      <div class="relative max-w-sm w-full group mx-auto">
         <div
           class="absolute -inset-1 bg-gradient-to-r from-primary/30 via-emerald-400/20 to-primary/30 rounded-3xl blur-xl opacity-60 group-hover:opacity-80 transition-opacity duration-500">
         </div>
         <div
           class="relative glass-card rounded-3xl overflow-hidden hover:-translate-y-1 transition-transform duration-300">
-          <div class="relative overflow-hidden">
+          <div class="relative overflow-hidden aspect-[9/16] bg-white dark:bg-gray-800 flex items-center justify-center">
             <img v-if="imsakiyahList[0].gambarUrl && imsakiyahList[0].gambarUrl.length > 0"
               :src="resolveAssetUrl(imsakiyahList[0].gambarUrl[0])" :alt="imsakiyahList[0].judul"
-              class="w-full h-auto object-contain group-hover:scale-[1.02] transition-transform duration-700">
+              class="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-700">
             <div v-else class="p-16 text-center text-gray-400">Gambar tidak tersedia</div>
           </div>
           <div class="p-5 flex flex-col items-center gap-4 border-t border-emerald-100/50 dark:border-white/5">
