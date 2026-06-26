@@ -137,12 +137,7 @@
                   title="Pulihkan">
                   <Icon icon="lucide:rotate-ccw" class="w-4 h-4" />
                 </button>
-                <button
-                  @click="activeTab === 'draft' ? openActionModal('delete', item, 'permanent') : openActionModal('delete', item, 'archive')"
-                  class="text-amber-700 hover:text-amber-800 p-1.5 hover:bg-amber-50 rounded-lg transition-colors"
-                  :title="activeTab === 'active' ? 'Arsipkan' : 'Hapus Permanen'">
-                  <Icon icon="lucide:trash-2" class="w-4 h-4" />
-                </button>
+                <button v-if="activeTab === 'active'" @click="openActionModal('delete', item, 'archive')" class="text-amber-700 hover:text-amber-800 p-1.5 hover:bg-amber-50 rounded-lg transition-colors" title="Arsipkan"><Icon icon="lucide:trash-2" class="w-4 h-4" /></button>
               </td>
             </tr>
           </tbody>
@@ -233,9 +228,9 @@ const showEditModal = ref(false);
 const showDeleteModal = ref(false);
 const selectedItem = ref<any>(null);
 const currentAction = ref<'edit' | 'delete' | null>(null);
-const deleteMode = ref<'archive' | 'restore' | 'permanent'>('archive');
+const deleteMode = ref<'archive' | 'restore'>('archive');
 
-const openActionModal = (action: 'edit' | 'delete', item: any, mode?: 'archive' | 'restore' | 'permanent') => {
+const openActionModal = (action: 'edit' | 'delete', item: any, mode?: 'archive' | 'restore') => {
   currentAction.value = action;
   selectedItem.value = { ...item };
   if (action === 'edit') showEditModal.value = true;

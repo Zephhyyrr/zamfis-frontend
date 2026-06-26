@@ -45,12 +45,7 @@ export class PesertaKurbanService extends BaseService {
         });
     }
 
-    static async deletePermanent(id: number): Promise<IApiResponse<null>> {
-        return await this.api<IApiResponse<null>>(endpoints.PESERTA_KURBAN.DELETE_PERMANENT(id), {
-            method: 'DELETE',
-        });
-    }
-
+    
     static async getPublicYears(): Promise<IApiResponse<string[]>> {
         return await this.api<IApiResponse<string[]>>(endpoints.PESERTA_KURBAN.GET_PUBLIC_YEARS, {
             method: 'GET',

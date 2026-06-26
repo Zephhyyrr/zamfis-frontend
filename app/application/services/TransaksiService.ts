@@ -45,12 +45,7 @@ export class TransaksiService extends BaseService {
         });
     }
 
-    static async deletePermanent(id: number): Promise<IApiResponse<null>> {
-        return await this.api<IApiResponse<null>>(endpoints.TRANSAKSI.DELETE_PERMANENT(id), {
-            method: 'DELETE',
-        });
-    }
-
+    
     static async getDashboard(year: number | 'all'): Promise<IApiResponse<any>> {
         return await this.api<IApiResponse<any>>(endpoints.TRANSAKSI.GET_DASHBOARD, {
             method: 'GET',

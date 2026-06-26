@@ -20,12 +20,12 @@ import { useKelompokKurban } from '~/composables/useKelompokKurban';
 const props = defineProps({
   modelValue: { type: Boolean, default: false },
   item: { type: Object, default: () => ({}) },
-  mode: { type: String as () => 'archive' | 'restore' | 'permanent', default: 'archive' }
+  mode: { type: String as () => 'archive' | 'restore', default: 'archive' }
 });
 
 const emit = defineEmits(['update:modelValue', 'success']);
 const isLoading = ref(false);
-const { deleteKelompokKurban, deletePermanentKelompokKurban } = useKelompokKurban();
+const { deleteKelompokKurban } = useKelompokKurban();
 
 const modalTitle = computed(() => {
   if (props.mode === 'archive') return 'Arsipkan Kelompok Kurban';
@@ -37,7 +37,6 @@ const modalIcon = computed(() => props.mode === 'restore' ? 'lucide:rotate-ccw' 
 
 const modalType = computed(() => {
   if (props.mode === 'restore') return 'success';
-  if (props.mode === 'permanent') return 'danger';
   return 'warning';
 });
 
@@ -57,15 +56,9 @@ const modalBody = computed(() => {
 const handleConfirm = async () => {
   isLoading.value = true;
   try {
-    if (props.mode === 'permanent') {
-      await deletePermanentKelompokKurban(props.item.id);
-    } else {
-      await deleteKelompokKurban(props.item.id);
-    }
+    await deleteKelompokKurban(props.item.id);
     emit('update:modelValue', false);
-    if (props.mode === 'permanent') {
-      emit('success', 'Berhasil Dihapus Permanen', 'Kelompok kurban beserta datanya telah dihapus permanen.');
-    } else if (props.mode === 'restore') {
+    if (props.mode === 'restore') {
       emit('success', 'Berhasil Dipulihkan', 'Kelompok kurban telah dipulihkan dari draft.');
     } else {
       emit('success', 'Berhasil Diarsipkan', 'Kelompok kurban dipindahkan ke draft.');

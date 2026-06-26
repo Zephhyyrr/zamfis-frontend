@@ -20,12 +20,12 @@ import { useMediaPembayaran } from '~/composables/useMediaPembayaran';
 const props = defineProps({
   modelValue: { type: Boolean, default: false },
   item: { type: Object, default: () => ({}) },
-  mode: { type: String as () => 'archive' | 'restore' | 'permanent', default: 'archive' }
+  mode: { type: String as () => 'archive' | 'restore', default: 'archive' }
 });
 
 const emit = defineEmits(['update:modelValue', 'success']);
 const isLoading = ref(false);
-const { deleteMediaPembayaran, deletePermanentMediaPembayaran } = useMediaPembayaran();
+const { deleteMediaPembayaran } = useMediaPembayaran();
 
 const modalTitle = computed(() => {
   if (props.mode === 'archive') return 'Arsipkan Media Pembayaran';
@@ -40,7 +40,6 @@ const modalIcon = computed(() => {
 
 const modalType = computed(() => {
   if (props.mode === 'restore') return 'success';
-  if (props.mode === 'permanent') return 'danger';
   return 'warning';
 });
 
@@ -60,15 +59,9 @@ const modalBody = computed(() => {
 const handleConfirm = async () => {
   isLoading.value = true;
   try {
-    if (props.mode === 'permanent') {
-      await deletePermanentMediaPembayaran(props.item.id);
-    } else {
-      await deleteMediaPembayaran(props.item.id);
-    }
+    await deleteMediaPembayaran(props.item.id);
     emit('update:modelValue', false);
-    if (props.mode === 'permanent') {
-      emit('success', 'Berhasil Dihapus Permanen', 'Media pembayaran beserta datanya telah dihapus permanen.');
-    } else if (props.mode === 'restore') {
+    if (props.mode === 'restore') {
       emit('success', 'Berhasil Dipulihkan', 'Media pembayaran telah dipulihkan dari draft.');
     } else {
       emit('success', 'Berhasil Diarsipkan', 'Media pembayaran dipindahkan ke draft.');

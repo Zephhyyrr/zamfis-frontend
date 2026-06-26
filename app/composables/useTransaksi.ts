@@ -47,11 +47,7 @@ export const useTransaksi = () => {
         );
     }
 
-    const deletePermanentTransaction = async (id: number) => {
-        return await TransaksiService.deletePermanent(id);
-    }
-
-    const fetchDashboardSummary = (year: Ref<number | 'all'>, customKey?: string) => {
+        const fetchDashboardSummary = (year: Ref<number | 'all'>, customKey?: string) => {
         const key = customKey || 'dashboard-summary';
         return useAsyncData(
             key,
@@ -68,7 +64,6 @@ export const useTransaksi = () => {
         updateTransaction,
         deleteTransaction,
         fetchDraftTransactions,
-        deletePermanentTransaction,
         fetchDashboardSummary
     };
 };

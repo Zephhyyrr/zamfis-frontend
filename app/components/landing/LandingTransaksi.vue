@@ -167,7 +167,7 @@ const searchQuery = ref('')
 
 const availableYears = computed(() => {
   const years = new Set(transaksiList.value.map((trx: any) => new Date(trx.tanggal).getFullYear()))
-  return Array.from(years).sort((a: any, b: any) => b - a)
+  return Array.from(years).sort((a: any, b: any) => b - a) as number[]
 })
 
 const filteredTransaksiList = computed(() => {

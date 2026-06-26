@@ -130,10 +130,10 @@
                   title="Pulihkan">
                   <Icon icon="lucide:rotate-ccw" class="w-4 h-4" />
                 </button>
-                <button
-                  @click="activeTab === 'draft' ? openDeleteModal(item, 'permanent') : openDeleteModal(item, 'archive')"
+                <button v-if="activeTab === 'active'"
+                  @click="openDeleteModal(item, 'archive')"
                   class="text-amber-700 dark:text-amber-500 hover:text-amber-800 dark:hover:text-amber-400 p-1.5 hover:bg-amber-50 dark:hover:bg-amber-900/30 rounded-lg transition-colors outline-none focus:ring-2 focus:ring-amber-500/50"
-                  :title="activeTab === 'active' ? 'Arsipkan' : 'Hapus Permanen'">
+                  title="Arsipkan">
                   <Icon icon="lucide:trash-2" class="w-4 h-4" />
                 </button>
               </td>

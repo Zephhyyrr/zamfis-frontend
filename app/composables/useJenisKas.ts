@@ -41,18 +41,14 @@ export const useJenisKas = () => {
         return await JenisKasService.delete(id);
     };
 
-    const deletePermanentKas = async (id: number) => {
-        return await JenisKasService.deletePermanent(id);
-    };
-
+    
     return {
         fetchJenisKasList,
         fetchJenisKasDetail,
         fetchDraftKas,
         createKas,
         updateKas,
-        deleteKas,
-        deletePermanentKas
+        deleteKas
     };
 };
 

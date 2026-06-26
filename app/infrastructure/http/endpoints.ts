@@ -35,8 +35,7 @@ export const endpoints = {
         UPDATE: (id: number) => `jenis-kas/${id}`,
         DELETE: (id: number) => `jenis-kas/${id}`,
         GET_DRAFT: 'jenis-kas/draft',
-        DELETE_PERMANENT: (id: number) => `jenis-kas/${id}/delete-permanent`,
-    },
+            },
 
     MEDIA_PEMBAYARAN: {
         GET_ALL: 'media-pembayaran/',
@@ -45,8 +44,7 @@ export const endpoints = {
         UPDATE: (id: number) => `media-pembayaran/${id}`,
         DELETE: (id: number) => `media-pembayaran/${id}`,
         GET_DRAFT: 'media-pembayaran/draft',
-        DELETE_PERMANENT: (id: number) => `media-pembayaran/${id}/delete-permanent`,
-    },
+            },
 
     FAVORITE_TRANSAKSI: {
         GET_ALL: 'favorite-transaksi/',
@@ -55,8 +53,7 @@ export const endpoints = {
         UPDATE: (id: number) => `favorite-transaksi/${id}`,
         DELETE: (id: number) => `favorite-transaksi/${id}`,
         GET_DRAFT: 'favorite-transaksi/draft',
-        DELETE_PERMANENT: (id: number) => `favorite-transaksi/${id}/delete-permanent`,
-    },
+            },
 
     KELOMPOK_KURBAN: {
         GET_ALL: 'kelompok-kurban/',
@@ -65,8 +62,7 @@ export const endpoints = {
         UPDATE: (id: number) => `kelompok-kurban/${id}`,
         DELETE: (id: number) => `kelompok-kurban/${id}`,
         GET_DRAFT: 'kelompok-kurban/draft',
-        DELETE_PERMANENT: (id: number) => `kelompok-kurban/${id}/delete-permanent`,
-    },
+            },
 
     PESERTA_KURBAN: {
         GET_ALL: 'peserta-kurban/',
@@ -75,8 +71,7 @@ export const endpoints = {
         UPDATE: (id: number) => `peserta-kurban/${id}`,
         DELETE: (id: number) => `peserta-kurban/${id}`,
         GET_DRAFT: 'peserta-kurban/draft',
-        DELETE_PERMANENT: (id: number) => `peserta-kurban/${id}/delete-permanent`,
-        GET_PUBLIC_YEARS: 'peserta-kurban/public/years',
+                GET_PUBLIC_YEARS: 'peserta-kurban/public/years',
         GET_PUBLIC_KURBAN: 'peserta-kurban/public/kurban',
     },
 
@@ -87,8 +82,7 @@ export const endpoints = {
         UPDATE: (id: number) => `transaksi/${id}`,
         DELETE: (id: number) => `transaksi/${id}`,
         GET_DRAFT: 'transaksi/draft',
-        DELETE_PERMANENT: (id: number) => `transaksi/${id}/delete-permanent`,
-        GET_DASHBOARD: 'transaksi/dashboard',
+                GET_DASHBOARD: 'transaksi/dashboard',
         GET_PUBLIC_DASHBOARD: 'transaksi/public/dashboard',
         GET_PUBLIC_LIST: 'transaksi/public/list',
     },

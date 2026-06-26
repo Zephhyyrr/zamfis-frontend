@@ -45,9 +45,4 @@ export class MediaPembayaranService extends BaseService {
         });
     }
 
-    static async deletePermanent(id: number): Promise<IApiResponse<null>> {
-        return await this.api<IApiResponse<null>>(endpoints.MEDIA_PEMBAYARAN.DELETE_PERMANENT(id), {
-            method: 'DELETE',
-        });
     }
-}

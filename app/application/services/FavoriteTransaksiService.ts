@@ -45,9 +45,4 @@ export class FavoriteTransaksiService extends BaseService {
         });
     }
 
-    static async deletePermanent(id: number): Promise<IApiResponse<null>> {
-        return await this.api<IApiResponse<null>>(endpoints.FAVORITE_TRANSAKSI.DELETE_PERMANENT(id), {
-            method: 'DELETE',
-        });
     }
-}

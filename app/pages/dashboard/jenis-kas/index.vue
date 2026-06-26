@@ -100,12 +100,7 @@
                   title="Arsipkan">
                   <Icon icon="lucide:trash-2" class="w-4 h-4" />
                 </button>
-                <button v-if="activeTab === 'draft'" @click="openActionModal('delete-permanent', item)"
-                  class="text-red-700 dark:text-red-500 hover:text-red-800 dark:hover:text-red-400 p-1.5 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg transition-colors outline-none focus:ring-2 focus:ring-red-500/50"
-                  title="Hapus Permanen">
-                  <Icon icon="lucide:trash-2" class="w-4 h-4" />
-                </button>
-              </td>
+                              </td>
             </tr>
           </tbody>
         </table>
@@ -123,12 +118,7 @@
       @success="handleSuccess" />
 
     
-    <FeaturesJenisKasDeletePermanentModal
-      v-model="showDeletePermanentModal"
-      :item="selectedItem"
-      @success="handleSuccess"
-    />
-
+    
     <BaseModal v-model="showResultModal" :title="resultTitle" icon="lucide:badge-check" type="success"
       confirmText="Tutup" :showCancel="false">
       <p class="text-sm text-gray-700 dark:text-white">{{ resultMessage }}</p>
@@ -197,16 +187,15 @@ const filteredList = computed(() => {
 // Modal Operations
 const showEditModal = ref(false);
 const showDeleteModal = ref(false);
-const showDeletePermanentModal = ref(false);
 const selectedItem = ref<any>(null);
 const currentAction = ref<'edit' | 'delete' | 'delete-permanent' | null>(null);
-const deleteMode = ref<'archive' | 'restore' | 'permanent'>('archive');
+const deleteMode = ref<'archive' | 'restore'>('archive');
 
 const openCreateModal = () => {
   router.push('/dashboard/jenis-kas/create');
 };
 
-const openActionModal = (action: 'edit' | 'delete' | 'delete-permanent', item: any, mode?: 'archive' | 'restore' | 'permanent') => {
+const openActionModal = (action: 'edit' | 'delete' | 'delete-permanent', item: any, mode?: 'archive' | 'restore') => {
   currentAction.value = action;
   selectedItem.value = { ...item };
   if (action === 'edit') showEditModal.value = true;
@@ -214,8 +203,7 @@ const openActionModal = (action: 'edit' | 'delete' | 'delete-permanent', item: a
     deleteMode.value = mode || (activeTab.value === 'draft' ? 'restore' : 'archive');
     showDeleteModal.value = true;
   }
-  if (action === 'delete-permanent') showDeletePermanentModal.value = true;
-};
+  };
 
 // Undo feature properties
 const showUndoBanner = ref(false);

@@ -38,10 +38,7 @@ export const usePesertaKurban = () => {
         return await PesertaKurbanService.delete(id);
     };
 
-    const deletePermanentPesertaKurban = async (id: number) => {
-        return await PesertaKurbanService.deletePermanent(id);
-    };
-
+    
     return {
         fetchPesertaKurbanList,
         fetchPesertaKurbanDetail,
@@ -49,6 +46,5 @@ export const usePesertaKurban = () => {
         createPesertaKurban,
         updatePesertaKurban,
         deletePesertaKurban,
-        deletePermanentPesertaKurban,
     };
 };

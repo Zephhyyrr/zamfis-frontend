@@ -38,10 +38,7 @@ export const useKelompokKurban = () => {
         return await KelompokKurbanService.delete(id);
     };
 
-    const deletePermanentKelompokKurban = async (id: number) => {
-        return await KelompokKurbanService.deletePermanent(id);
-    };
-
+    
     return {
         fetchKelompokKurbanList,
         fetchKelompokKurbanDetail,
@@ -49,6 +46,5 @@ export const useKelompokKurban = () => {
         createKelompokKurban,
         updateKelompokKurban,
         deleteKelompokKurban,
-        deletePermanentKelompokKurban,
     };
 };

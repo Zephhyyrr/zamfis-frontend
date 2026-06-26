@@ -38,10 +38,7 @@ export const useFavoriteTransaksi = () => {
         return await FavoriteTransaksiService.delete(id);
     };
 
-    const deletePermanentFavoriteTransaksi = async (id: number) => {
-        return await FavoriteTransaksiService.deletePermanent(id);
-    };
-
+    
     return {
         fetchFavoriteTransaksiList,
         fetchFavoriteTransaksiDetail,
@@ -49,6 +46,5 @@ export const useFavoriteTransaksi = () => {
         createFavoriteTransaksi,
         updateFavoriteTransaksi,
         deleteFavoriteTransaksi,
-        deletePermanentFavoriteTransaksi,
     };
 };

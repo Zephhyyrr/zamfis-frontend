@@ -49,9 +49,4 @@ export class JenisKasService extends BaseService {
         });
     }
 
-    static async deletePermanent(id: number): Promise<IApiResponse<null>> {
-        return await this.api<IApiResponse<null>>(endpoints.JENIS_KAS.DELETE_PERMANENT(id), {
-            method: 'DELETE',
-        });
     }
-}

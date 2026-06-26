@@ -20,12 +20,12 @@ import { useFavoriteTransaksi } from '~/composables/useFavoriteTransaksi';
 const props = defineProps({
   modelValue: { type: Boolean, default: false },
   item: { type: Object, default: () => ({}) },
-  mode: { type: String as () => 'archive' | 'restore' | 'permanent', default: 'archive' }
+  mode: { type: String as () => 'archive' | 'restore', default: 'archive' }
 });
 
 const emit = defineEmits(['update:modelValue', 'success']);
 const isLoading = ref(false);
-const { deleteFavoriteTransaksi, deletePermanentFavoriteTransaksi } = useFavoriteTransaksi();
+const { deleteFavoriteTransaksi } = useFavoriteTransaksi();
 
 const modalTitle = computed(() => {
   if (props.mode === 'archive') return 'Arsipkan Favorit Transaksi';
@@ -37,7 +37,6 @@ const modalIcon = computed(() => props.mode === 'restore' ? 'lucide:rotate-ccw' 
 
 const modalType = computed(() => {
   if (props.mode === 'restore') return 'success';
-  if (props.mode === 'permanent') return 'danger';
   return 'warning';
 });
 
@@ -57,15 +56,9 @@ const modalBody = computed(() => {
 const handleConfirm = async () => {
   isLoading.value = true;
   try {
-    if (props.mode === 'permanent') {
-      await deletePermanentFavoriteTransaksi(props.item.id);
-    } else {
-      await deleteFavoriteTransaksi(props.item.id);
-    }
+    await deleteFavoriteTransaksi(props.item.id);
     emit('update:modelValue', false);
-    if (props.mode === 'permanent') {
-      emit('success', 'Berhasil Dihapus Permanen', 'Favorit transaksi beserta datanya telah dihapus permanen.');
-    } else if (props.mode === 'restore') {
+    if (props.mode === 'restore') {
       emit('success', 'Berhasil Dipulihkan', 'Favorit transaksi telah dipulihkan dari draft.');
     } else {
       emit('success', 'Berhasil Diarsipkan', 'Favorit transaksi dipindahkan ke draft.');

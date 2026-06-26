@@ -9,14 +9,21 @@
         @click="router.push('/dashboard/kelompok-kurban/create')" />
     </div>
 
-    <div class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 mb-6 flex items-center">
-      <div class="relative w-full max-w-md">
+    <div class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 mb-6 flex flex-col sm:flex-row gap-4 items-center">
+      <div class="relative w-full sm:w-1/2 md:max-w-md">
         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
           <SearchIcon class="h-5 w-5 text-gray-400" />
         </div>
         <input v-model="searchQuery" type="text"
           class="block w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg leading-5 focus:outline-none focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
           placeholder="Cari kelompok kurban..." />
+      </div>
+      <div class="w-full sm:w-1/2 md:max-w-xs">
+        <select v-model="filterTahun"
+          class="block w-full py-2 px-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 rounded-lg shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm text-gray-700 dark:text-gray-300">
+          <option value="Semua">Semua Tahun</option>
+          <option v-for="year in availableYears" :key="year" :value="year">{{ year }}</option>
+        </select>
       </div>
     </div>
 
@@ -37,7 +44,6 @@
       </button>
     </div>
 
-    
     <div v-if="showUndoBanner"
       class="mb-4 bg-amber-50 dark:bg-amber-900/30 border border-amber-200 dark:border-amber-700/50 rounded-xl p-4 flex items-center justify-between">
       <div class="flex items-center gap-3">
@@ -96,11 +102,6 @@
                   title="Arsipkan">
                   <Icon icon="lucide:trash-2" class="w-4 h-4" />
                 </button>
-                <button v-if="activeTab === 'draft'" @click="openActionModal('delete-permanent', item)"
-                  class="text-red-700 dark:text-red-500 hover:text-red-800 dark:hover:text-red-400 p-1.5 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg transition-colors outline-none focus:ring-2 focus:ring-red-500/50"
-                  title="Hapus Permanen">
-                  <Icon icon="lucide:trash-2" class="w-4 h-4" />
-                </button>
               </td>
             </tr>
           </tbody>
@@ -112,13 +113,6 @@
 
     <FeaturesKelompokKurbanEditModal v-model="showEditModal" :editData="selectedItem" @saved="handleSuccess" />
     <FeaturesKelompokKurbanDeleteModal v-model="showDeleteModal" :item="selectedItem" :mode="deleteMode" @success="handleSuccess" />
-
-    
-    <FeaturesKelompokKurbanDeletePermanentModal
-      v-model="showDeletePermanentModal"
-      :item="selectedItem"
-      @success="handleSuccess"
-    />
 
     <BaseModal v-model="showResultModal" :title="resultTitle" icon="lucide:badge-check" type="success" confirmText="Tutup" :showCancel="false">
       <p class="text-sm text-gray-700 dark:text-white">{{ resultMessage }}</p>
@@ -166,21 +160,36 @@ const draftMeta = computed(() => getMeta(draftApiResponse));
 
 const activeTab = ref<'active' | 'draft'>('active');
 const searchQuery = ref('');
+const filterTahun = ref<string | number>('Semua');
 const visibleItems = computed(() => activeTab.value === 'active' ? activeItems.value : draftItems.value);
+
+const availableYears = computed(() => {
+  const years = new Set(visibleItems.value.map((item: any) => String(item.tahun || new Date(item.createdAt).getFullYear())));
+  return Array.from(years).sort((a: any, b: any) => Number(b) - Number(a));
+});
+
 const filteredList = computed(() => {
-  if (!searchQuery.value) return visibleItems.value;
-  const q = searchQuery.value.toLowerCase();
-  return visibleItems.value.filter((item: any) => item.nama?.toLowerCase().includes(q));
+  let result = visibleItems.value;
+  
+  if (filterTahun.value !== 'Semua') {
+    result = result.filter((item: any) => String(item.tahun || new Date(item.createdAt).getFullYear()) === String(filterTahun.value));
+  }
+
+  if (searchQuery.value) {
+    const q = searchQuery.value.toLowerCase();
+    result = result.filter((item: any) => item.nama?.toLowerCase().includes(q));
+  }
+  
+  return result;
 });
 
 const showEditModal = ref(false);
 const showDeleteModal = ref(false);
-const showDeletePermanentModal = ref(false);
 const selectedItem = ref<any>(null);
-const currentAction = ref<'edit' | 'delete' | 'delete-permanent' | null>(null);
-const deleteMode = ref<'archive' | 'restore' | 'permanent'>('archive');
+const currentAction = ref<'edit' | 'delete' | null>(null);
+const deleteMode = ref<'archive' | 'restore'>('archive');
 
-const openActionModal = (action: 'edit' | 'delete' | 'delete-permanent', item: any, mode?: 'archive' | 'restore' | 'permanent') => {
+const openActionModal = (action: 'edit' | 'delete', item: any, mode?: 'archive' | 'restore') => {
   currentAction.value = action;
   selectedItem.value = { ...item };
   if (action === 'edit') showEditModal.value = true;
@@ -188,7 +197,6 @@ const openActionModal = (action: 'edit' | 'delete' | 'delete-permanent', item: a
     deleteMode.value = mode || (activeTab.value === 'draft' ? 'restore' : 'archive');
     showDeleteModal.value = true;
   }
-  if (action === 'delete-permanent') showDeletePermanentModal.value = true;
 };
 
 const showUndoBanner = ref(false);

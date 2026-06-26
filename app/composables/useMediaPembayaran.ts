@@ -38,10 +38,7 @@ export const useMediaPembayaran = () => {
         return await MediaPembayaranService.delete(id);
     };
 
-    const deletePermanentMediaPembayaran = async (id: number) => {
-        return await MediaPembayaranService.deletePermanent(id);
-    };
-
+    
     return {
         fetchMediaPembayaranList,
         fetchMediaPembayaranDetail,
@@ -49,6 +46,5 @@ export const useMediaPembayaran = () => {
         createMediaPembayaran,
         updateMediaPembayaran,
         deleteMediaPembayaran,
-        deletePermanentMediaPembayaran,
     };
 };
