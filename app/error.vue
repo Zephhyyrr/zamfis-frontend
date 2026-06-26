@@ -36,13 +36,17 @@
       </div>
       <h2
         class="text-2xl md:text-4xl font-bold text-gray-800 dark:text-white mb-4 tracking-wide leading-tight transition-colors">
-        <span class="text-primary">Afwan,</span> Halaman Tidak Ditemukan
+        <span class="text-primary">Afwan,</span> {{ error?.statusCode === 404 ? 'Halaman Tidak Ditemukan' : 'Terjadi Kesalahan' }}
       </h2>
       <p
         class="text-gray-600 dark:text-gray-300 text-base md:text-lg max-w-2xl mb-10 leading-relaxed font-medium transition-colors">
-        Mohon maaf, halaman yang Anda tuju mungkin telah dipindahkan, dihapus, atau Anda memasukkan alamat (URL) yang
-        kurang tepat.
+        {{ error?.statusCode === 404 
+           ? 'Mohon maaf, halaman yang Anda tuju mungkin telah dipindahkan, dihapus, atau Anda memasukkan alamat (URL) yang kurang tepat.' 
+           : (error?.statusMessage || error?.message || 'Mohon maaf, terjadi kesalahan pada server kami. Silakan coba beberapa saat lagi.') }}
       </p>
+      <div v-if="error?.statusCode !== 404 && error?.statusCode" class="mb-6 px-4 py-2 bg-red-100 text-red-700 rounded-lg font-mono text-sm inline-block">
+        Error Code: {{ error.statusCode }}
+      </div>
       <BaseButton @click="handleError" icon="lucide:arrow-left" text="Kembali ke Beranda" :fullWidth="false"
         class="px-8 py-3.5 mt-4 text-base" />
 
