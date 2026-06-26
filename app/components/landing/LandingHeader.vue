@@ -74,9 +74,13 @@ import { useRuntimeConfig, useTheme } from '#imports'
 
 const { isDark, toggleTheme } = useTheme()
 
-const masehiDate = new Intl.DateTimeFormat('id-ID', {
-  day: 'numeric', month: 'long', year: 'numeric'
-}).format(new Date())
+const masehiDate = ref('')
+
+onMounted(() => {
+  masehiDate.value = new Intl.DateTimeFormat('id-ID', {
+    day: 'numeric', month: 'long', year: 'numeric'
+  }).format(new Date())
+})
 
 const hijriDate = ref('')
 

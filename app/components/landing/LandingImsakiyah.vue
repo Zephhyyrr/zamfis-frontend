@@ -51,8 +51,16 @@ import { computed } from 'vue'
 import { useAsyncData } from '#imports'
 import { DownloadIcon } from 'lucide-vue-next'
 
-const hijriYear = new Intl.DateTimeFormat('id-ID-u-ca-islamic', { year: 'numeric' }).format(new Date())
+const hijriYear = ref('')
 const gregorianYear = new Date().getFullYear()
+
+onMounted(() => {
+  try {
+    hijriYear.value = new Intl.DateTimeFormat('id-ID-u-ca-islamic', { year: 'numeric' }).format(new Date())
+  } catch (e) {
+    hijriYear.value = '1446 H' // Fallback
+  }
+})
 
 const { data: dataImsakiyah, pending: pendingImsakiyah } = useAsyncData<any>('imsakiyah-list-public', () =>
   ContentService.getAllContents({ jenis: 'imsakiyah', limit: 1 } as any)

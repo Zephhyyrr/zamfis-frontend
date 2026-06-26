@@ -157,7 +157,15 @@ const getWibDate = () => {
   )
 }
 
-const currentDate = new Date().toLocaleDateString('id-ID', { timeZone: 'Asia/Jakarta', weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
+const currentDate = ref('')
+
+onMounted(() => {
+  try {
+    currentDate.value = new Date().toLocaleDateString('id-ID', { timeZone: 'Asia/Jakarta', weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
+  } catch (e) {
+    currentDate.value = new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
+  }
+})
 
 const config = useRuntimeConfig()
 const { data: dataJadwal, pending: pendingJadwal, error: errorJadwal, refresh: refreshJadwal } = useAsyncData('jadwal-shalat', () => {
