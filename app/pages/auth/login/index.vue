@@ -124,7 +124,7 @@ const parseErrorMessage = (message: string): string => {
   }
   
   if (lowerMsg.includes('not found') || lowerMsg.includes('user_not_found') || lowerMsg.includes('tidak terdaftar') || lowerMsg.includes('tidak ditemukan') || lowerMsg.includes('belum terdaftar') || lowerMsg.includes('tidak ada')) {
-    return 'Email tidak terdaftar. Silakan daftar terlebih dahulu.';
+    return 'Email tidak terdaftar.';
   }
   
   if ((lowerMsg.includes('password') || lowerMsg.includes('wrong password') || lowerMsg.includes('invalid password')) && !lowerMsg.includes('not found') && !lowerMsg.includes('user')) {
