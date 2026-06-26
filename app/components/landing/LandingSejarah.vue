@@ -19,7 +19,7 @@
         <div class="md:w-5/12 p-8 md:p-12 flex items-center justify-center relative shrink-0">
           <div class="relative w-full max-w-md rounded-2xl overflow-hidden shadow-2xl">
             <img
-              :src="sejarahContent.gambarUrl ? resolveAssetUrl(sejarahContent.gambarUrl) : 'https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'"
+              :src="sejarahContent.gambarUrl && sejarahContent.gambarUrl.length > 0 ? resolveAssetUrl(sejarahContent.gambarUrl[0]) : 'https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'"
               :alt="sejarahContent.judul" class="w-full h-auto object-cover aspect-[4/3]">
             <div class="absolute inset-0 bg-gradient-to-t from-secondary/90 via-transparent to-transparent"></div>
             <div class="absolute bottom-5 left-5 right-5">
