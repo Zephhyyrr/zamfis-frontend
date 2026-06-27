@@ -1,45 +1,40 @@
-import { useRuntimeConfig, useNuxtApp, useRequestHeaders } from '#app'
+import { defineNuxtPlugin, useRequestHeaders, useRuntimeConfig } from '#app';
 
-export const createHttpClient = () => {
-    const config = useRuntimeConfig()
+export default defineNuxtPlugin((nuxtApp) => {
+    const config = useRuntimeConfig();
 
-    let globalLoading: any = null
-    try {
-        globalLoading = useNuxtApp().$globalLoading
-    } catch (e) {
-        // Abaikan jika tidak dalam konteks Nuxt
-    }
+    const headers = import.meta.server ? useRequestHeaders(['cookie']) : {};
 
-    let ssrHeaders: any = {}
-    if (import.meta.server) {
-        try {
-            ssrHeaders = useRequestHeaders(['cookie'])
-        } catch (e) {
-            // Abaikan
-        }
-    }
-
-    return $fetch.create({
+    const api = $fetch.create({
         baseURL: config.public.apiBaseUrl,
         credentials: 'include',
-        onRequest({ options }) {
-            if (globalLoading && import.meta.client) globalLoading.show()
-            if (import.meta.server && ssrHeaders.cookie) {
-                options.headers = new Headers(options.headers)
-                options.headers.set('cookie', ssrHeaders.cookie)
+        headers: headers as any,
+        onRequest() {
+            if (nuxtApp.$globalLoading && import.meta.client) {
+                (nuxtApp.$globalLoading as any).show();
             }
         },
-        onResponse({ response }) {
-            if (globalLoading && import.meta.client) globalLoading.hide()
+        onResponse() {
+            if (nuxtApp.$globalLoading && import.meta.client) {
+                (nuxtApp.$globalLoading as any).hide();
+            }
         },
         onResponseError({ response, request }) {
-            if (globalLoading && import.meta.client) globalLoading.hide()
+            if (nuxtApp.$globalLoading && import.meta.client) {
+                (nuxtApp.$globalLoading as any).hide();
+            }
             if (response?.status === 401) {
                 const urlStr = typeof request === 'string' ? request : (request as any)?.url || '';
                 if (!urlStr.includes('auth/me') && import.meta.client && window.location.pathname !== '/auth/login') {
-                    window.location.href = '/auth/login'
+                    window.location.href = '/auth/login';
                 }
             }
         }
-    })
-}
+    });
+
+    return {
+        provide: {
+            api
+        }
+    };
+});

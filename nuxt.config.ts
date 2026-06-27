@@ -11,6 +11,9 @@ export default defineNuxtConfig({
       apiUrlHadis: process.env.API_URL_HADIS || 'https://api.myquran.com/v2/hadits',
     }
   },
+  plugins: [
+    '~/infrastructure/http/clients.ts'
+  ],
   modules: [
     '@nuxtjs/tailwindcss',
     '@pinia/nuxt'
