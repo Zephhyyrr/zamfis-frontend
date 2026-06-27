@@ -1,21 +1,15 @@
 <template>
-  <BaseModal
-    :modelValue="modelValue"
-    @update:modelValue="emit('update:modelValue', $event)"
-    title="Edit Sumber Keuangan"
-    icon="lucide:pencil"
-    type="info"
-    confirmText="Simpan Perubahan"
-    @confirm="submitForm"
-    :isLoading="isLoading"
-  >
-    <div class="space-y-4">
-      <div>
-        <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Nama Sumber Jenis Kas</label>
-        <input v-model="form.nama" type="text" class="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400" />
-      </div>
-    </div>
-  </BaseModal>
+    <BaseModal :modelValue="modelValue" @update:modelValue="emit('update:modelValue', $event)"
+        title="Edit Jenis Kas" icon="lucide:pencil" type="info" confirmText="Simpan Perubahan"
+        @confirm="submitForm" :isLoading="isLoading">
+        <div class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Nama Jenis Kas</label>
+                <input v-model="form.nama" type="text"
+                    class="mt-1 block w-full border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400" />
+            </div>
+        </div>
+    </BaseModal>
 </template>
 
 <script setup lang="ts">
@@ -23,8 +17,8 @@ import { ref, watch } from 'vue';
 import { useJenisKas } from '~/composables/useJenisKas';
 
 const props = defineProps({
-  modelValue: { type: Boolean, default: false },
-  editData: { type: Object, default: () => ({}) }
+    modelValue: { type: Boolean, default: false },
+    editData: { type: Object, default: () => ({}) }
 });
 
 const emit = defineEmits(['update:modelValue', 'saved']);
@@ -67,12 +61,9 @@ const submitForm = async () => {
         if (jenisKasDetailRefresh) await jenisKasDetailRefresh();
         emit('update:modelValue', false);
         emit('saved', 'Berhasil', 'Jenis Kas berhasil diperbarui');
-    } catch(e) {
+    } catch (e) {
         console.error('Error updating:', e);
         alert('Gagal mengupdate Jenis Kas.');
     }
 };
 </script>
-
-
-

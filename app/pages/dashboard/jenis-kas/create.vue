@@ -5,8 +5,8 @@
         <Icon icon="lucide:arrow-left" class="w-5 h-5 text-gray-600 dark:text-gray-400" />
       </NuxtLink>
       <div>
-        <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-100">Tambah Sumber Jenis Kas</h1>
-        <p class="text-gray-600 dark:text-gray-400">Isi formulir untuk mencatat tipe sumber baru</p>
+        <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-100">Tambah Jenis Kas</h1>
+        <p class="text-gray-600 dark:text-gray-400">Isi formulir untuk mencatat jenis kas baru</p>
       </div>
     </div>
 
@@ -16,8 +16,8 @@
       <form @submit.prevent="submitForm">
         <div class="space-y-6">
           <div>
-            <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Nama Sumber Jenis Kas</label>
-            <input v-model="form.nama" type="text" required :disabled="isSubmitting" class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400" placeholder="Contoh: Infak Jumat, Listrik, Air" />
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Nama Jenis Kas</label>
+            <input v-model="form.nama" type="text" required :disabled="isSubmitting" class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm disabled:opacity-50 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400" placeholder="Contoh: Kas surau, Anak Yatim" />
           </div>
         </div>
 
