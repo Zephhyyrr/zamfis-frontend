@@ -1,4 +1,6 @@
-export default defineNuxtRouteMiddleware((to, from) => {
+import { useAuth } from '~/composables/useAuth';
+
+export default defineNuxtRouteMiddleware(async (to, from) => {
     if (to.path === '/reset-password') {
         return navigateTo({ path: '/auth/reset-password', query: to.query });
     }
@@ -11,14 +13,15 @@ export default defineNuxtRouteMiddleware((to, from) => {
         return;
     }
 
-    const token = useCookie('token');
+    const { isAuthenticated } = useAuth();
+
     const isPublic = to.path === '/' || to.path.startsWith('/auth') || to.path.startsWith('/berita');
 
-    if (!token.value && !isPublic) {
+    if (!isAuthenticated.value && !isPublic) {
         return navigateTo('/auth/login');
     }
 
-    if (token.value && isPublic) {
+    if (isAuthenticated.value && isPublic) {
         return navigateTo('/dashboard');
     }
 });

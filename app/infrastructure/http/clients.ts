@@ -1,8 +1,7 @@
-import { useRuntimeConfig, useCookie, useNuxtApp } from '#app'
+import { useRuntimeConfig, useNuxtApp, useRequestHeaders } from '#app'
 
 export const createHttpClient = () => {
     const config = useRuntimeConfig()
-    const cookie = useCookie('token')
 
     let globalLoading: any = null
     try {
@@ -13,24 +12,25 @@ export const createHttpClient = () => {
 
     return $fetch.create({
         baseURL: config.public.apiBaseUrl,
+        credentials: 'include',
         onRequest({ options }) {
             if (globalLoading && import.meta.client) globalLoading.show()
-            const token = cookie.value
-            if (token) {
-                const headers = new Headers(options.headers)
-                headers.set('Authorization', `Bearer ${token}`)
-                options.headers = headers
+            if (import.meta.server) {
+                const headers = useRequestHeaders(['cookie'])
+                if (headers.cookie) {
+                    options.headers = new Headers(options.headers)
+                    options.headers.set('cookie', headers.cookie)
+                }
             }
         },
         onResponse({ response }) {
             if (globalLoading && import.meta.client) globalLoading.hide()
         },
-        onResponseError({ response }) {
+        onResponseError({ response, request }) {
             if (globalLoading && import.meta.client) globalLoading.hide()
             if (response?.status === 401) {
-                const authToken = useCookie('token')
-                authToken.value = null
-                if (import.meta.client) {
+                const urlStr = typeof request === 'string' ? request : (request as any)?.url || '';
+                if (!urlStr.includes('auth/me') && import.meta.client && window.location.pathname !== '/auth/login') {
                     window.location.href = '/auth/login'
                 }
             }

@@ -9,7 +9,7 @@ export const useAuth = () => {
     const login = async (payload: ILoginPayload) => {
         const response = await AuthService.login(payload);
         if (response.success && response.data) {
-            authStore.setAuth(response.data.user, response.data.token);
+            authStore.setAuth(response.data.user);
         }
         return response;
     };
