@@ -34,6 +34,17 @@
       </button>
     </div>
     
+    <div v-if="activeTab === 'draft'"
+      class="mb-4 bg-warning/10 dark:bg-warning/20 border border-warning/30 dark:border-warning/50 rounded-xl p-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+          <Icon icon="lucide:info" class="w-5 h-5" />
+        <div>
+          <h4 class="text-sm font-semibold text-yellow-900 dark:text-yellow-100">Penghapusan Otomatis</h4>
+          <p class="text-xs text-yellow-800 dark:text-yellow-200/80">Data yang sudah dihapus akan dihapus permanen dari database secara otomatis setelah 30 hari.</p>
+        </div>
+      </div>
+    </div>
+
     <div v-if="showUndoBanner"
       class="mb-4 bg-amber-50 dark:bg-amber-900/30 border border-amber-200 dark:border-amber-700/50 rounded-xl p-4 flex items-center justify-between">
       <div class="flex items-center gap-3">
@@ -119,8 +130,8 @@
                 <button v-if="activeTab === 'draft'" @click="openActionModal('delete', item)" class="text-emerald-700 hover:text-emerald-800 p-1.5 hover:bg-emerald-50 rounded-lg mr-2 transition-colors outline-none focus:ring-2 focus:ring-emerald-500/50" title="Pulihkan">
                   <Icon icon="lucide:rotate-ccw" class="w-4 h-4" />
                 </button>
-                <button @click="activeTab === 'draft' ? openPermanentDeleteModal(item) : openActionModal('delete', item)" class="text-amber-700 hover:text-amber-800 p-1.5 hover:bg-amber-50 rounded-lg transition-colors outline-none focus:ring-2 focus:ring-amber-500/50" :title="activeTab === 'active' ? 'Arsipkan' : 'Hapus Permanen'">
-                  <Icon :icon="activeTab === 'active' ? 'lucide:trash-2' : 'lucide:trash-2'" class="w-4 h-4" />
+                <button v-if="activeTab === 'active'" @click="openActionModal('delete', item)" class="text-amber-700 hover:text-amber-800 p-1.5 hover:bg-amber-50 rounded-lg transition-colors outline-none focus:ring-2 focus:ring-amber-500/50" title="Arsipkan">
+                  <Icon icon="lucide:trash-2" class="w-4 h-4" />
                 </button>
               </td>
             </tr>
@@ -236,7 +247,7 @@ const showDeleteModal = ref(false);
 const showStatusModal = ref(false);
 const selectedItem = ref<any>(null);
 const currentAction = ref<'edit' | 'delete' | 'status' | null>(null);
-const deleteMode = ref<'archive' | 'restore' | 'permanent'>('archive');
+const deleteMode = ref<'archive' | 'restore'>('archive');
 
 const openCreateModal = () => {
     router.push('/dashboard/content/create');
@@ -251,13 +262,6 @@ const openActionModal = (action: 'edit' | 'delete' | 'status', item: any) => {
       showDeleteModal.value = true;
     }
     if (action === 'status') showStatusModal.value = true;
-};
-
-const openPermanentDeleteModal = (item: any) => {
-  currentAction.value = 'delete';
-  selectedItem.value = { ...item };
-  deleteMode.value = 'permanent';
-  showDeleteModal.value = true;
 };
 
 // Undo feature properties

@@ -81,10 +81,4 @@ export class ContentService extends BaseService {
             query: params,
         });
     }
-
-    static async deleteContentPermanently(id: number): Promise<IApiResponse<void>> {
-        return await this.api<IApiResponse<void>>(endpoints.CONTENT.DELETE_PERMANENT(id), {
-            method: 'DELETE',
-        });
-    }
 }

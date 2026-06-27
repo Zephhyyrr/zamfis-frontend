@@ -24,7 +24,6 @@ export const endpoints = {
         CREATE: 'contents/',
         UPDATE: (id: number) => `contents/${id}`,
         DELETE: (id: number) => `contents/${id}`,
-        DELETE_PERMANENT: (id: number) => `contents/${id}/delete-permanent`,
         GET_DRAFT: 'contents/draft',
     },
 
@@ -35,7 +34,7 @@ export const endpoints = {
         UPDATE: (id: number) => `jenis-kas/${id}`,
         DELETE: (id: number) => `jenis-kas/${id}`,
         GET_DRAFT: 'jenis-kas/draft',
-            },
+    },
 
     MEDIA_PEMBAYARAN: {
         GET_ALL: 'media-pembayaran/',
@@ -44,7 +43,7 @@ export const endpoints = {
         UPDATE: (id: number) => `media-pembayaran/${id}`,
         DELETE: (id: number) => `media-pembayaran/${id}`,
         GET_DRAFT: 'media-pembayaran/draft',
-            },
+    },
 
     FAVORITE_TRANSAKSI: {
         GET_ALL: 'favorite-transaksi/',
@@ -53,7 +52,7 @@ export const endpoints = {
         UPDATE: (id: number) => `favorite-transaksi/${id}`,
         DELETE: (id: number) => `favorite-transaksi/${id}`,
         GET_DRAFT: 'favorite-transaksi/draft',
-            },
+    },
 
     KELOMPOK_KURBAN: {
         GET_ALL: 'kelompok-kurban/',
@@ -62,7 +61,7 @@ export const endpoints = {
         UPDATE: (id: number) => `kelompok-kurban/${id}`,
         DELETE: (id: number) => `kelompok-kurban/${id}`,
         GET_DRAFT: 'kelompok-kurban/draft',
-            },
+    },
 
     PESERTA_KURBAN: {
         GET_ALL: 'peserta-kurban/',
@@ -71,7 +70,7 @@ export const endpoints = {
         UPDATE: (id: number) => `peserta-kurban/${id}`,
         DELETE: (id: number) => `peserta-kurban/${id}`,
         GET_DRAFT: 'peserta-kurban/draft',
-                GET_PUBLIC_YEARS: 'peserta-kurban/public/years',
+        GET_PUBLIC_YEARS: 'peserta-kurban/public/years',
         GET_PUBLIC_KURBAN: 'peserta-kurban/public/kurban',
     },
 
@@ -82,7 +81,7 @@ export const endpoints = {
         UPDATE: (id: number) => `transaksi/${id}`,
         DELETE: (id: number) => `transaksi/${id}`,
         GET_DRAFT: 'transaksi/draft',
-                GET_DASHBOARD: 'transaksi/dashboard',
+        GET_DASHBOARD: 'transaksi/dashboard',
         GET_PUBLIC_DASHBOARD: 'transaksi/public/dashboard',
         GET_PUBLIC_LIST: 'transaksi/public/list',
     },

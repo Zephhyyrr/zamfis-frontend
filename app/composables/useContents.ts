@@ -38,10 +38,6 @@ export const useContent = () => {
         );
     };
 
-    const deletePermanentContent = async (id: number) => {
-        return await ContentService.deleteContentPermanently(id);
-    };
-
     return {
         fetchContents,
         fetchContentDetail,
@@ -49,6 +45,5 @@ export const useContent = () => {
         updateContent,
         deleteContent,
         fetchDraftContents,
-        deletePermanentContent
     };
 };
