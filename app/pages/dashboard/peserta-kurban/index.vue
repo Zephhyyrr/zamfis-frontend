@@ -19,7 +19,14 @@
           class="block w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg leading-5 focus:outline-none focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
           placeholder="Cari nama peserta kurban..." />
       </div>
-      <div class="w-full sm:w-1/2 md:max-w-xs">
+      <div class="w-full sm:w-1/4 md:max-w-xs">
+        <select v-model="selectedTahun"
+          class="block w-full py-2 px-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 rounded-lg shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm text-gray-700 dark:text-gray-300">
+          <option value="">Semua Tahun</option>
+          <option v-for="t in tahunList" :key="t" :value="t">{{ t }}</option>
+        </select>
+      </div>
+      <div class="w-full sm:w-1/4 md:max-w-xs">
         <select v-model="selectedKelompok"
           class="block w-full py-2 px-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 rounded-lg shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm text-gray-700 dark:text-gray-300">
           <option value="">Semua Kelompok</option>
@@ -137,7 +144,11 @@
                   title="Pulihkan">
                   <Icon icon="lucide:rotate-ccw" class="w-4 h-4" />
                 </button>
-                <button v-if="activeTab === 'active'" @click="openActionModal('delete', item, 'archive')" class="text-amber-700 hover:text-amber-800 p-1.5 hover:bg-amber-50 rounded-lg transition-colors" title="Arsipkan"><Icon icon="lucide:trash-2" class="w-4 h-4" /></button>
+                <button v-if="activeTab === 'active'" @click="openActionModal('delete', item, 'archive')"
+                  class="text-amber-700 hover:text-amber-800 p-1.5 hover:bg-amber-50 rounded-lg transition-colors"
+                  title="Arsipkan">
+                  <Icon icon="lucide:trash-2" class="w-4 h-4" />
+                </button>
               </td>
             </tr>
           </tbody>
@@ -201,8 +212,14 @@ const draftMeta = computed(() => getMeta(draftApiResponse));
 
 const activeTab = ref<'active' | 'draft'>('active');
 const searchQuery = ref('');
+const selectedTahun = ref<string>('');
 const selectedKelompok = ref<number | ''>('');
 const visibleItems = computed(() => activeTab.value === 'active' ? activeItems.value : draftItems.value);
+
+const tahunList = computed(() => {
+  const years = new Set<string>(visibleItems.value.map((item: any) => String(item.tahun || '2024')));
+  return Array.from(years).sort((a, b) => Number(b) - Number(a));
+});
 
 const { fetchKelompokKurbanList } = useKelompokKurban();
 const kelompokParams = ref({ page: 1, limit: 100 });
@@ -211,6 +228,10 @@ const kelompokList = computed(() => extractItems(kelompokRes));
 
 const filteredList = computed(() => {
   let result = visibleItems.value;
+
+  if (selectedTahun.value !== '') {
+    result = result.filter((item: any) => String(item.tahun || '2024') === selectedTahun.value);
+  }
 
   if (selectedKelompok.value !== '') {
     result = result.filter((item: any) => item.kelompokKurbanId === selectedKelompok.value);
