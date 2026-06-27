@@ -6,7 +6,7 @@ const { isDark, toggleTheme } = useTheme();
 </script>
 
 <template>
-  <div class="auth-layout min-h-screen flex flex-col relative overflow-hidden bg-white dark:bg-gray-900">
+  <div key="auth-layout" class="auth-layout min-h-screen flex flex-col relative overflow-hidden bg-white dark:bg-gray-900">
     <div class="absolute top-4 right-4 z-50">
       <button @click="toggleTheme"
         class="p-2.5 rounded-xl bg-white/80 dark:bg-gray-800/80 text-gray-600 dark:text-gray-300 border border-emerald-100 dark:border-gray-700 hover:bg-emerald-50 dark:hover:bg-gray-700 transition-colors backdrop-blur-sm shadow-sm"

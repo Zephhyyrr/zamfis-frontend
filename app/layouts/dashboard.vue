@@ -1,5 +1,5 @@
 <template>
-  <div
+  <div key="dashboard-layout"
     class="dashboard-container flex h-screen overflow-hidden bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
     <DashboardSidebar :is-open="isMobileOpen" :is-collapsed="isDesktopCollapsed" @close="isMobileOpen = false" />
 
