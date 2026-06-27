@@ -421,13 +421,14 @@ const kasGroupStyle = (id) => {
   return map[id] ?? map[1];
 };
 
-const currentDate = new Date().toLocaleDateString('id-ID', {
-  weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
-});
-
+const currentDate = ref('');
 const currentHijriDate = ref('');
 
 onMounted(async () => {
+  currentDate.value = new Date().toLocaleDateString('id-ID', {
+    weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+  });
+
   const d = new Date();
   let hijriFallback = new Intl.DateTimeFormat('id-ID-u-ca-islamic', { year: 'numeric', month: 'long', day: 'numeric' }).format(d);
   try {

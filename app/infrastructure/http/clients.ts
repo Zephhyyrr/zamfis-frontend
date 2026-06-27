@@ -10,17 +10,23 @@ export const createHttpClient = () => {
         // Abaikan jika tidak dalam konteks Nuxt
     }
 
+    let ssrHeaders: any = {}
+    if (import.meta.server) {
+        try {
+            ssrHeaders = useRequestHeaders(['cookie'])
+        } catch (e) {
+            // Abaikan
+        }
+    }
+
     return $fetch.create({
         baseURL: config.public.apiBaseUrl,
         credentials: 'include',
         onRequest({ options }) {
             if (globalLoading && import.meta.client) globalLoading.show()
-            if (import.meta.server) {
-                const headers = useRequestHeaders(['cookie'])
-                if (headers.cookie) {
-                    options.headers = new Headers(options.headers)
-                    options.headers.set('cookie', headers.cookie)
-                }
+            if (import.meta.server && ssrHeaders.cookie) {
+                options.headers = new Headers(options.headers)
+                options.headers.set('cookie', ssrHeaders.cookie)
             }
         },
         onResponse({ response }) {
