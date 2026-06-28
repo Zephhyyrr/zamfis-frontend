@@ -253,6 +253,17 @@
           </select>
         </div>
 
+        <div>
+          <label class="mb-1 block text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">Jenis Kas</label>
+          <select
+            v-model="exportJenisKasId"
+            class="w-full rounded-lg border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm dark: outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
+          >
+            <option value="all">Semua Jenis Kas</option>
+            <option v-for="kas in JenisKasTabs" :key="kas.id" :value="kas.id">{{ kas.nama }}</option>
+          </select>
+        </div>
+
         <div v-if="exportMode === 'monthly'">
           <label class="mb-1 block text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">Bulan</label>
           <select
@@ -322,6 +333,7 @@ const showExportModal = ref(false);
 const exportMode = ref<'monthly' | 'yearly'>('monthly');
 const exportMonth = ref(1);
 const exportYear = ref(new Date().getFullYear());
+const exportJenisKasId = ref<number | 'all'>('all');
 
 const monthOptions = [
   { value: 1, label: 'Januari' }, { value: 2, label: 'Februari' }, { value: 3, label: 'Maret' },
@@ -504,11 +516,26 @@ const openExportModal = () => {
   exportYear.value = exportYears.value[0] ?? new Date().getFullYear();
   if (selectedMonth.value !== 'all') exportMonth.value = Number(selectedMonth.value);
   if (selectedYear.value !== 'all') exportYear.value = Number(selectedYear.value);
+  exportJenisKasId.value = activejenisKasId.value;
   showExportModal.value = true;
 };
 
 const handleExportConfirm = async () => {
-  const allFilteredRows = filteredTransactions.value;
+  const allFilteredRows = rawTransactions.value.filter((item) => {
+    if (searchQuery.value) {
+      const q = searchQuery.value.toLowerCase();
+      const uraian = (item.uraian || '').toLowerCase();
+      const jenisKas = (item.jenisKas?.nama || '').toLowerCase();
+      if (!uraian.includes(q) && !jenisKas.includes(q)) return false;
+    }
+
+    if (exportJenisKasId.value !== 'all' && item.jenisKasId !== exportJenisKasId.value) return false;
+    if (transactionType.value === 'income' && item.tipe !== 'uang_masuk') return false;
+    if (transactionType.value === 'expense' && item.tipe !== 'uang_keluar') return false;
+
+    return true;
+  });
+
   const workbook = XLSX.utils.book_new();
 
   if (exportMode.value === 'monthly') {
