@@ -215,8 +215,7 @@ const visibleUsers = computed(() => activeUsers.value);
 const isTabPending = computed(() => pending.value);
 const filteredUsers = computed(() => {
   if (!searchQuery.value) return visibleUsers.value;
-  const q = searchQuery.value.toLowerCase();
-  return visibleUsers.value.filter((item: any) => item.nama?.toLowerCase().includes(q) || item.email?.toLowerCase().includes(q));
+  return visibleUsers.value.filter((item: any) => item.nama?.toLowerCase().includes(searchQuery.value.toLowerCase()) || item.email?.toLowerCase().includes(searchQuery.value.toLowerCase()));
 });
 
 const paginatedList = computed(() => {

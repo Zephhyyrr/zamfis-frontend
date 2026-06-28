@@ -182,8 +182,7 @@ const filteredList = computed(() => {
   }
 
   if (searchQuery.value) {
-    const q = searchQuery.value.toLowerCase();
-    result = result.filter((item: any) => item.nama?.toLowerCase().includes(q));
+    result = result.filter((item: any) => item.nama?.toLowerCase().includes(searchQuery.value.toLowerCase()));
   }
   
   return result;
@@ -195,7 +194,10 @@ const paginatedList = computed(() => {
 });
 
 const activeMetaFrontend = computed(() => {
-  const t = activeTab.value === 'active' ? filteredList.value.length : 0;
+  let list = activeItems.value;
+  if (filterTahun.value !== 'Semua') list = list.filter((item: any) => String(item.tahun || new Date(item.createdAt).getFullYear()) === String(filterTahun.value));
+  if (searchQuery.value) list = list.filter((item: any) => item.nama?.toLowerCase().includes(searchQuery.value.toLowerCase()));
+  const t = list.length;
   const tp = Math.ceil(t / 10) || 1;
   return {
     currentPage: activePage.value,
@@ -208,7 +210,10 @@ const activeMetaFrontend = computed(() => {
 });
 
 const draftMetaFrontend = computed(() => {
-  const t = activeTab.value === 'draft' ? filteredList.value.length : 0;
+  let list = draftItems.value;
+  if (filterTahun.value !== 'Semua') list = list.filter((item: any) => String(item.tahun || new Date(item.createdAt).getFullYear()) === String(filterTahun.value));
+  if (searchQuery.value) list = list.filter((item: any) => item.nama?.toLowerCase().includes(searchQuery.value.toLowerCase()));
+  const t = list.length;
   const tp = Math.ceil(t / 10) || 1;
   return {
     currentPage: draftPage.value,

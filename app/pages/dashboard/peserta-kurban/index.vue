@@ -248,7 +248,11 @@ const paginatedList = computed(() => {
 });
 
 const activeMetaFrontend = computed(() => {
-  const t = activeTab.value === 'active' ? filteredList.value.length : 0;
+  let result = activeItems.value;
+  if (selectedTahun.value !== '') result = result.filter((item: any) => String(item.tahun || '2024') === selectedTahun.value);
+  if (selectedKelompok.value !== '') result = result.filter((item: any) => item.kelompokKurbanId === selectedKelompok.value);
+  if (searchQuery.value) result = result.filter((item: any) => item.nama?.toLowerCase().includes(searchQuery.value.toLowerCase()));
+  const t = result.length;
   const tp = Math.ceil(t / 10) || 1;
   return {
     currentPage: activePage.value,
@@ -261,7 +265,11 @@ const activeMetaFrontend = computed(() => {
 });
 
 const draftMetaFrontend = computed(() => {
-  const t = activeTab.value === 'draft' ? filteredList.value.length : 0;
+  let result = draftItems.value;
+  if (selectedTahun.value !== '') result = result.filter((item: any) => String(item.tahun || '2024') === selectedTahun.value);
+  if (selectedKelompok.value !== '') result = result.filter((item: any) => item.kelompokKurbanId === selectedKelompok.value);
+  if (searchQuery.value) result = result.filter((item: any) => item.nama?.toLowerCase().includes(searchQuery.value.toLowerCase()));
+  const t = result.length;
   const tp = Math.ceil(t / 10) || 1;
   return {
     currentPage: draftPage.value,

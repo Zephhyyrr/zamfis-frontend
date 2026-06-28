@@ -185,8 +185,7 @@ const isTabPending = computed(() => activeTab.value === 'active' ? activePending
 
 const filteredList = computed(() => {
   if (!searchQuery.value) return visibleItems.value;
-  const q = searchQuery.value.toLowerCase();
-  return visibleItems.value.filter((item: any) => item.nama?.toLowerCase().includes(q));
+  return visibleItems.value.filter((item: any) => item.nama?.toLowerCase().includes(searchQuery.value.toLowerCase()));
 });
 
 const paginatedList = computed(() => {
@@ -195,7 +194,7 @@ const paginatedList = computed(() => {
 });
 
 const activeMetaFrontend = computed(() => {
-  const t = activeTab.value === 'active' ? filteredList.value.length : 0;
+  const t = (searchQuery.value ? activeItems.value.filter((item: any) => item.nama?.toLowerCase().includes(searchQuery.value.toLowerCase())) : activeItems.value).length;
   const tp = Math.ceil(t / 10) || 1;
   return {
     currentPage: activePage.value,
@@ -208,7 +207,7 @@ const activeMetaFrontend = computed(() => {
 });
 
 const draftMetaFrontend = computed(() => {
-  const t = activeTab.value === 'draft' ? filteredList.value.length : 0;
+  const t = (searchQuery.value ? draftItems.value.filter((item: any) => item.nama?.toLowerCase().includes(searchQuery.value.toLowerCase())) : draftItems.value).length;
   const tp = Math.ceil(t / 10) || 1;
   return {
     currentPage: draftPage.value,

@@ -244,7 +244,12 @@ const paginatedList = computed(() => {
 });
 
 const activeMetaFrontend = computed(() => {
-  const t = activeTab.value === 'active' ? filteredList.value.length : 0;
+  let list = getArray(activeData);
+  if (searchQuery.value) {
+    const q = searchQuery.value.toLowerCase();
+    list = list.filter((item) => item.uraian?.toLowerCase().includes(q) || item.jenisKas?.nama?.toLowerCase().includes(q));
+  }
+  const t = list.length;
   const tp = Math.ceil(t / 10) || 1;
   return {
     currentPage: activePage.value,
@@ -257,7 +262,12 @@ const activeMetaFrontend = computed(() => {
 });
 
 const draftMetaFrontend = computed(() => {
-  const t = activeTab.value === 'draft' ? filteredList.value.length : 0;
+  let list = getArray(draftData);
+  if (searchQuery.value) {
+    const q = searchQuery.value.toLowerCase();
+    list = list.filter((item) => item.uraian?.toLowerCase().includes(q) || item.jenisKas?.nama?.toLowerCase().includes(q));
+  }
+  const t = list.length;
   const tp = Math.ceil(t / 10) || 1;
   return {
     currentPage: draftPage.value,
