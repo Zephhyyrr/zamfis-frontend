@@ -165,16 +165,17 @@
               <th class="px-6 py-3 text-right">Debet</th>
               <th class="px-6 py-3 text-right">Kredit</th>
               <th class="px-6 py-3 text-right">Media Pembayaran</th>
+              <th class="px-6 py-3 text-left">Dibuat Oleh</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-100">
             <tr v-if="pending" class="hover:bg-gray-50 dark:hover:bg-gray-700/50 dark:bg-gray-700/50">
-              <td colspan="7" class="px-6 py-8 text-center">
+              <td colspan="8" class="px-6 py-8 text-center">
                 <Icon icon="lucide:loader-circle" class="mx-auto h-8 w-8 animate-spin text-emerald-600" />
               </td>
             </tr>
             <tr v-else-if="transactions.length === 0">
-              <td colspan="7" class="px-6 py-8 text-center text-sm text-gray-500 dark:text-gray-400">Tidak ada data yang cocok dengan filter.</td>
+              <td colspan="8" class="px-6 py-8 text-center text-sm text-gray-500 dark:text-gray-400">Tidak ada data yang cocok dengan filter.</td>
             </tr>
             <tr v-else v-for="(row, index) in transactions" :key="row.id" class="hover:bg-gray-50 dark:hover:bg-gray-700/50 dark:bg-gray-700/50">
               <td class="px-6 py-4 text-gray-500 dark:text-gray-400">{{ (currentPage - 1) * pageSize + index + 1 }}</td>
@@ -198,6 +199,17 @@
               </td>
               <td class="px-6 py-4 text-center text-gray-800 dark:text-gray-100">
                 {{ row.mediaPembayaran?.nama || '-' }}
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                <div class="flex items-center gap-2">
+                  <div class="w-6 h-6 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 flex items-center justify-center text-xs font-bold shrink-0 overflow-hidden">
+                    <img v-if="row.user?.fotoProfile" :src="resolveAssetUrl(row.user.fotoProfile)" alt="Profile" class="w-full h-full object-cover">
+                    <span v-else>{{ row.user?.nama ? row.user.nama.charAt(0).toUpperCase() : 'S' }}</span>
+                  </div>
+                  <span class="max-w-[100px] truncate" :title="row.user?.nama || 'Sistem'">
+                    {{ row.user?.nama ? row.user.nama.split(' ')[0] : 'Sistem' }}
+                  </span>
+                </div>
               </td>
             </tr>
           </tbody>
@@ -264,6 +276,7 @@ import * as XLSX from 'xlsx';
 import { useTransaksi } from '~/composables/useTransaksi';
 import type { ITransaksi } from '~/domain/models/ITransaksi';
 import { useJenisKas } from '~/composables/useJenisKas';
+import { resolveAssetUrl } from '~/infrastructure/adapters/assets';
 
 definePageMeta({ layout: 'dashboard' });
 
