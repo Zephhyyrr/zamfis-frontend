@@ -79,7 +79,7 @@
         </div>
     </div>
     
-    <ProfileCropperModal v-model="showCropper" :imageUrl="tempImageUrl" @cropped="onCropped" />
+    <FeaturesSettingsProfileCropperModal v-model="showCropper" :imageUrl="tempImageUrl" @cropped="onCropped" />
 </template>
 
 <script setup lang="ts">
@@ -89,7 +89,6 @@ import { definePageMeta, useRuntimeConfig } from '#imports';
 import { useAuth } from '~/composables/useAuth';
 import { UserService } from '~/application/services/UserServices';
 import { resolveAssetUrl } from '~/infrastructure/adapters/assets';
-import ProfileCropperModal from '~/components/features/settings/ProfileCropperModal.vue';
 
 definePageMeta({
     layout: 'dashboard'
