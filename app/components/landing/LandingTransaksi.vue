@@ -90,10 +90,12 @@
                 </td>
                 <td class="px-5 py-3.5 text-center">
                   <span v-if="trx.tipe === 'uang_masuk'"
-                    class="inline-flex items-center gap-1 text-emerald-700 bg-emerald-100 dark:bg-emerald-900/30 px-2.5 py-1 rounded-full text-xs font-bold border border-emerald-200 dark:border-emerald-700">Uang Masuk
+                    class="inline-flex items-center gap-1 text-emerald-700 bg-emerald-100 dark:bg-emerald-900/30 px-2.5 py-1 rounded-full text-xs font-bold border border-emerald-200 dark:border-emerald-700">Uang
+                    Masuk
                   </span>
                   <span v-else
-                    class="inline-flex items-center gap-1 text-red-700 bg-red-100 dark:bg-red-900/30 px-2.5 py-1 rounded-full text-xs font-bold border border-red-200 dark:border-red-700"> Uang Keluar
+                    class="inline-flex items-center gap-1 text-red-700 bg-red-100 dark:bg-red-900/30 px-2.5 py-1 rounded-full text-xs font-bold border border-red-200 dark:border-red-700">
+                    Uang Keluar
                   </span>
                 </td>
                 <td class="px-5 py-3.5 text-sm text-right font-bold whitespace-nowrap tabular-nums"
@@ -153,7 +155,7 @@ const { data: dataDashboard } = useAsyncData<any>('dashboard-kas-public-filter',
 const kasSummaryList = computed(() => dataDashboard.value?.data?.perKasCards || [])
 
 const { data: dataTransaksi, pending: pendingTransaksi, error: errorTransaksi } = useAsyncData<any>('transaksi-list-public-all', () =>
-  TransaksiService.getPublicList({ limit: 10000 })
+  TransaksiService.getPublicList({ limit: 100000 })
 )
 const transaksiList = computed(() => {
   if (errorTransaksi.value) console.error('Error fetching transactions:', errorTransaksi.value)

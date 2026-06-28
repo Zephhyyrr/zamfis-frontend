@@ -29,7 +29,7 @@
         Aktif
         <span class="ml-2 rounded-full px-2 py-0.5 text-xs"
           :class="activeTab === 'active' ? 'bg-white/20 text-white' : 'bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-400'">{{
-            activeMeta?.totalItems || 0 }}</span>
+            activeMetaFrontend?.totalItems || 0 }}</span>
       </button>
     </div>
 
@@ -85,7 +85,7 @@
                 Tidak ada data pengguna aktif ditemukan.
               </td>
             </tr>
-            <tr v-else v-for="user in filteredUsers" :key="user.id" :class="[
+            <tr v-else v-for="user in paginatedList" :key="user.id" :class="[
               Number(user.id) === Number(authStore.user?.id)
                 ? 'bg-emerald-50 dark:bg-emerald-900/30 hover:bg-emerald-100 dark:hover:bg-emerald-900/50 border-l-4 border-emerald-500'
                 : 'hover:bg-gray-50 dark:bg-gray-700/50 dark:hover:bg-gray-700/50'
@@ -143,7 +143,7 @@
         </table>
       </div>
 
-      <BasePagination v-model="activeParams.page" @update:modelValue="refresh" :meta="activeMeta"
+      <BasePagination v-model="activePage" @update:modelValue="refresh" :meta="activeMeta"
         class="rounded-none border-t border-gray-100 dark:border-gray-700" />
     </div>
 
@@ -163,7 +163,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onBeforeUnmount } from 'vue';
+import { ref, computed, onBeforeUnmount , watch } from 'vue';
 import { definePageMeta, useRouter } from '#imports';
 import { SearchIcon, PencilIcon, TrashIcon } from 'lucide-vue-next';
 import { Icon } from '@iconify/vue';
@@ -179,7 +179,21 @@ const router = useRouter();
 const authStore = useAuthStore();
 const { fetchUsers, deleteUser } = useUser();
 
-const activeParams = ref({ page: 1, limit: 10 });
+const activePage = ref(1);
+const searchInput = ref('');
+const searchQuery = ref('');
+watch(searchQuery, () => { activePage.value = 1; });
+let searchTimeout: any = null;
+
+watch(searchInput, (val) => {
+  clearTimeout(searchTimeout);
+  searchTimeout = setTimeout(() => {
+    searchQuery.value = val;
+    activePage.value = 1;
+  }, 500);
+});
+
+const activeParams = computed(() => ({ page: activePage.value, limit: 10, search: searchQuery.value || undefined }));
 const { data: apiResponse, pending, refresh } = fetchUsers(activeParams);
 
 const users = computed<IUser[]>(() => (apiResponse.value as IApiResponse<IUser[]>)?.data ?? []);
@@ -199,15 +213,28 @@ const activeTab = ref<'active'>('active');
 const activeUsers = computed(() => users.value.filter(user => !user.isDeleted));
 const visibleUsers = computed(() => activeUsers.value);
 const isTabPending = computed(() => pending.value);
-const searchQuery = ref('');
 const filteredUsers = computed(() => {
   if (!searchQuery.value) return visibleUsers.value;
-  const lowerQuery = searchQuery.value.toLowerCase();
-  return visibleUsers.value.filter(u =>
-    u.nama?.toLowerCase().includes(lowerQuery) ||
-    u.email?.toLowerCase().includes(lowerQuery) ||
-    u.role?.toLowerCase().includes(lowerQuery)
-  );
+  const q = searchQuery.value.toLowerCase();
+  return visibleUsers.value.filter((item: any) => item.nama?.toLowerCase().includes(q) || item.email?.toLowerCase().includes(q));
+});
+
+const paginatedList = computed(() => {
+  const start = (activePage.value - 1) * 10;
+  return filteredUsers.value.slice(start, start + 10);
+});
+
+const activeMetaFrontend = computed(() => {
+  const t = activeTab.value === 'active' ? filteredUsers.value.length : 0;
+  const tp = Math.ceil(t / 10) || 1;
+  return {
+    currentPage: activePage.value,
+    perPage: 10,
+    totalItems: t,
+    totalPages: tp,
+    hasNextPage: activePage.value < tp,
+    hasPreviousPage: activePage.value > 1
+  };
 });
 
 const goToCreate = () => router.push('/dashboard/users/create');

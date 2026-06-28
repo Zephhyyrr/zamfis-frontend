@@ -259,17 +259,13 @@
 import { computed, ref, watch } from 'vue';
 import { definePageMeta } from '#imports';
 import { DownloadIcon } from 'lucide-vue-next';
-import { $fetch } from 'ofetch';
 import { Icon } from '@iconify/vue';
 import * as XLSX from 'xlsx';
 import { useTransaksi } from '~/composables/useTransaksi';
 import type { ITransaksi } from '~/domain/models/ITransaksi';
-import type { IPaginationMeta } from '~/domain/types/IApiResponse';
 import { useJenisKas } from '~/composables/useJenisKas';
 
-definePageMeta({
-  layout: 'dashboard'
-});
+definePageMeta({ layout: 'dashboard' });
 
 const searchInput = ref('');
 const searchQuery = ref('');
@@ -281,6 +277,7 @@ watch(searchInput, (val) => {
     searchQuery.value = val;
   }, 500);
 });
+
 const transactionType = ref<'all' | 'income' | 'expense'>('all');
 const startDate = ref('');
 const endDate = ref('');
@@ -290,25 +287,19 @@ const activejenisKasId = ref<number | 'all'>('all');
 const currentPage = ref(1);
 const pageSize = ref(10);
 
-const params = computed(() => {
-  return {
-    page: currentPage.value,
-    limit: pageSize.value,
-    search: searchQuery.value,
-    type: transactionType.value === 'all' ? undefined : transactionType.value,
-    startDate: startDate.value || undefined,
-    endDate: endDate.value || undefined,
-    month: selectedMonth.value === 'all' ? undefined : selectedMonth.value,
-    year: selectedYear.value === 'all' ? undefined : selectedYear.value,
-    jenisKasId: activejenisKasId.value === 'all' ? undefined : activejenisKasId.value
-  }
+const { fetchTransactions, fetchDashboardSummary } = useTransaksi();
+
+// Fetch ALL active transactions for frontend filtering
+const fetchParams = ref({ limit: 100000 });
+const { data: responseData, pending } = fetchTransactions(fetchParams, 'reports-transactions');
+
+const rawTransactions = computed<ITransaksi[]>(() => {
+  if (responseData.value && (responseData.value as any).data) return (responseData.value as any).data;
+  return [];
 });
 
-const { fetchTransactions, fetchDashboardSummary } = useTransaksi();
-const { data: responseData, pending } = fetchTransactions(params, 'reports-transactions');
-
 const { fetchJenisKasList } = useJenisKas();
-const kasParams = ref({ page: 1, limit: 10 });
+const kasParams = ref({ page: 1, limit: 100 });
 const { data: kasResponse } = fetchJenisKasList(kasParams);
 
 const summaryYearRef = ref<'all'>('all');
@@ -320,33 +311,64 @@ const exportMonth = ref(1);
 const exportYear = ref(new Date().getFullYear());
 
 const monthOptions = [
-  { value: 1, label: 'Januari' },
-  { value: 2, label: 'Februari' },
-  { value: 3, label: 'Maret' },
-  { value: 4, label: 'April' },
-  { value: 5, label: 'Mei' },
-  { value: 6, label: 'Juni' },
-  { value: 7, label: 'Juli' },
-  { value: 8, label: 'Agustus' },
-  { value: 9, label: 'September' },
-  { value: 10, label: 'Oktober' },
-  { value: 11, label: 'November' },
-  { value: 12, label: 'Desember' }
+  { value: 1, label: 'Januari' }, { value: 2, label: 'Februari' }, { value: 3, label: 'Maret' },
+  { value: 4, label: 'April' }, { value: 5, label: 'Mei' }, { value: 6, label: 'Juni' },
+  { value: 7, label: 'Juli' }, { value: 8, label: 'Agustus' }, { value: 9, label: 'September' },
+  { value: 10, label: 'Oktober' }, { value: 11, label: 'November' }, { value: 12, label: 'Desember' }
 ];
 
-const transactions = computed<ITransaksi[]>(() => {
-  if (responseData.value && (responseData.value as any).data) return (responseData.value as any).data;
-  return [];
+const filteredTransactions = computed(() => {
+  return rawTransactions.value.filter((item) => {
+    if (searchQuery.value) {
+      const q = searchQuery.value.toLowerCase();
+      const uraian = (item.uraian || '').toLowerCase();
+      const jenisKas = (item.jenisKas?.nama || '').toLowerCase();
+      if (!uraian.includes(q) && !jenisKas.includes(q)) return false;
+    }
+
+    if (activejenisKasId.value !== 'all' && item.jenisKasId !== activejenisKasId.value) return false;
+    if (transactionType.value === 'income' && item.tipe !== 'uang_masuk') return false;
+    if (transactionType.value === 'expense' && item.tipe !== 'uang_keluar') return false;
+
+    if (startDate.value && new Date(item.tanggal) < new Date(`${startDate.value}T00:00:00`)) return false;
+    if (endDate.value && new Date(item.tanggal) > new Date(`${endDate.value}T23:59:59`)) return false;
+
+    const itemDate = new Date(item.tanggal);
+    if (selectedMonth.value !== 'all' && itemDate.getMonth() + 1 !== selectedMonth.value) return false;
+    if (selectedYear.value !== 'all' && itemDate.getFullYear() !== selectedYear.value) return false;
+
+    return true;
+  });
 });
 
-const meta = computed<IPaginationMeta | undefined>(() => {
-  if (responseData.value && (responseData.value as any).meta) return (responseData.value as any).meta;
-  return undefined;
+const transactions = computed<ITransaksi[]>(() => {
+  const start = (currentPage.value - 1) * pageSize.value;
+  return filteredTransactions.value.slice(start, start + pageSize.value);
+});
+
+const meta = computed(() => {
+  const t = filteredTransactions.value.length;
+  const tp = Math.ceil(t / pageSize.value) || 1;
+  return {
+    currentPage: currentPage.value,
+    perPage: pageSize.value,
+    totalItems: t,
+    totalPages: tp,
+    hasNextPage: currentPage.value < tp,
+    hasPreviousPage: currentPage.value > 1
+  };
 });
 
 const summary = computed(() => {
-  if (responseData.value && (responseData.value as any).summary) return (responseData.value as any).summary;
-  return { totalIncome: 0, totalExpense: 0, netBalance: 0 };
+  const totalIncome = filteredTransactions.value
+    .filter(tx => tx.tipe === 'uang_masuk')
+    .reduce((sum, tx) => sum + Number(tx.nominal || 0), 0);
+    
+  const totalExpense = filteredTransactions.value
+    .filter(tx => tx.tipe === 'uang_keluar')
+    .reduce((sum, tx) => sum + Number(tx.nominal || 0), 0);
+    
+  return { totalIncome, totalExpense, netBalance: totalIncome - totalExpense };
 });
 
 const availableYears = computed(() => {
@@ -389,8 +411,6 @@ const getKredit = (tx: ITransaksi) => {
   return Number(tx.kredit) || (tx.tipe === 'uang_keluar' ? Number(tx.nominal || 0) : 0);
 };
 
-
-
 const formatCurrency = (value: number | string | null | undefined) => {
   return new Intl.NumberFormat('id-ID', {
     style: 'currency',
@@ -411,8 +431,6 @@ const formatDate = (value: string) => {
 const formatMonthName = (month: number) => {
   return monthOptions.find((m) => m.value === month)?.label || `Bulan-${month}`;
 };
-
-
 
 const sortRows = (rows: ITransaksi[]) => {
   return [...rows].sort((a, b) => {
@@ -463,13 +481,7 @@ const buildSheet = (workbook: XLSX.WorkBook, year: number, month: number, rows: 
     XLSX.utils.decode_range('A2:G2')
   ];
   worksheet['!cols'] = [
-    { wch: 6 },
-    { wch: 14 },
-    { wch: 44 },
-    { wch: 24 },
-    { wch: 16 },
-    { wch: 16 },
-    { wch: 16 }
+    { wch: 6 }, { wch: 14 }, { wch: 44 }, { wch: 24 }, { wch: 16 }, { wch: 16 }, { wch: 16 }
   ];
 
   XLSX.utils.book_append_sheet(workbook, worksheet, formatMonthName(month).slice(0, 3));
@@ -477,26 +489,13 @@ const buildSheet = (workbook: XLSX.WorkBook, year: number, month: number, rows: 
 
 const openExportModal = () => {
   exportYear.value = exportYears.value[0] ?? new Date().getFullYear();
-  if (selectedMonth.value !== 'all') {
-    exportMonth.value = Number(selectedMonth.value);
-  }
-  if (selectedYear.value !== 'all') {
-    exportYear.value = Number(selectedYear.value);
-  }
+  if (selectedMonth.value !== 'all') exportMonth.value = Number(selectedMonth.value);
+  if (selectedYear.value !== 'all') exportYear.value = Number(selectedYear.value);
   showExportModal.value = true;
 };
 
 const handleExportConfirm = async () => {
-  // Fetch all filtered data from backend
-  const exportParams = { ...params.value, limit: -1 };
-  
-  // Use $fetch instead of useAsyncData for one-off button click
-  const response: any = await $fetch('/api/transactions', {
-    params: exportParams
-  });
-
-  const allFilteredRows = response.data || [];
-
+  const allFilteredRows = filteredTransactions.value;
   const workbook = XLSX.utils.book_new();
 
   if (exportMode.value === 'monthly') {

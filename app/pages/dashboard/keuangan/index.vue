@@ -15,14 +15,14 @@
           ? 'bg-emerald-600 text-white shadow-sm'
           : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'" @click="activeTab = 'active'">
         Aktif
-        <span class="ml-2 rounded-full px-2 py-0.5 text-xs" :class="activeTab === 'active' ? 'bg-white/20 text-white' : 'bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-400'">{{ activeMeta?.totalItems || 0 }}</span>
+        <span class="ml-2 rounded-full px-2 py-0.5 text-xs" :class="activeTab === 'active' ? 'bg-white/20 text-white' : 'bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-400'">{{ activeMetaFrontend?.totalItems || 0 }}</span>
       </button>
       <button type="button" class="inline-flex items-center rounded-lg px-4 py-2 text-sm font-medium transition-colors"
         :class="activeTab === 'draft'
           ? 'bg-amber-500 text-white shadow-sm'
           : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'" @click="activeTab = 'draft'">
         Draft
-        <span class="ml-2 rounded-full px-2 py-0.5 text-xs" :class="activeTab === 'draft' ? 'bg-white/20 text-white' : 'bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-400'">{{ draftMeta?.totalItems || 0 }}</span>
+        <span class="ml-2 rounded-full px-2 py-0.5 text-xs" :class="activeTab === 'draft' ? 'bg-white/20 text-white' : 'bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-400'">{{ draftMetaFrontend?.totalItems || 0 }}</span>
       </button>
     </div>
 
@@ -31,7 +31,7 @@
         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
           <SearchIcon class="h-5 w-5 text-gray-400 dark:text-gray-500 dark:text-gray-400" />
         </div>
-        <input v-model="searchQuery" type="text"
+        <input v-model="searchInput" type="text"
           class="block w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg leading-5 dark: dark: focus:outline-none focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm transition-colors bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
           placeholder="Cari uraian keuangan...">
       </div>
@@ -77,7 +77,12 @@
             </tr>
           </thead>
           <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-            <tr v-if="filteredList.length === 0">
+            <tr v-if="isPending" class="hover:bg-gray-50 dark:bg-gray-700/50 dark:hover:bg-gray-700/50">
+              <td colspan="9" class="px-6 py-8 text-center">
+                <Icon icon="lucide:loader-circle" class="mx-auto h-8 w-8 animate-spin text-emerald-600" />
+              </td>
+            </tr>
+            <tr v-else-if="filteredList.length === 0">
               <td colspan="9" class="px-6 py-8 text-center text-gray-500 dark:text-gray-400 text-sm">
                   <div class="flex flex-col items-center justify-center text-center text-gray-500 dark:text-gray-400 text-sm">
                   <Icon icon="lucide:file-question" class="w-12 h-12 text-gray-300 dark:text-gray-600 dark:text-gray-400 mb-2" />
@@ -85,9 +90,9 @@
                 </div>
               </td>
             </tr>
-            <tr v-else v-for="(item, index) in filteredList" :key="item.id || index" class="hover:bg-gray-50 dark:bg-gray-700/50 dark:hover:bg-gray-700/50">
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{{ ((currentParams.page - 1) *
-                currentParams.limit) + index + 1 }}</td>
+            <tr v-else v-for="(item, index) in paginatedList" :key="item.id || index" class="hover:bg-gray-50 dark:bg-gray-700/50 dark:hover:bg-gray-700/50">
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{{ (((activeTab === 'active' ? activePage : draftPage) - 1) *
+                10) + index + 1 }}</td>
               <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">{{ formatDate(item.tanggal) }}</td>
               <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-100">{{ item.uraian }}</td>
               <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">
@@ -142,10 +147,10 @@
         </table>
       </div>
 
-      <BasePagination v-if="activeTab === 'active'" v-model="activeParams.page" @update:modelValue="refreshActive"
-        :meta="activeMeta" class="rounded-none border-t border-gray-100 dark:border-gray-700" />
-      <BasePagination v-if="activeTab === 'draft'" v-model="draftParams.page" @update:modelValue="refreshDraft"
-        :meta="draftMeta" class="rounded-none border-t border-gray-100 dark:border-gray-700" />
+      <BasePagination v-if="activeTab === 'active'" v-model="activePage" @update:modelValue="refreshActive"
+        :meta="activeMetaFrontend" class="rounded-none border-t border-gray-100 dark:border-gray-700" />
+      <BasePagination v-if="activeTab === 'draft'" v-model="draftPage" @update:modelValue="refreshDraft"
+        :meta="draftMetaFrontend" class="rounded-none border-t border-gray-100 dark:border-gray-700" />
     </div>
 
     <KeuanganEditModal v-model="showEditModal" :editData="editData" @saved="refreshAll" />
@@ -178,11 +183,28 @@ const { fetchTransactions, fetchDraftTransactions, deleteTransaction } = useTran
 
 const activeTab = ref('active');
 
-const activeParams = ref({ page: 1, limit: 10 });
-const draftParams = ref({ page: 1, limit: 10 });
+const activePage = ref(1);
+const draftPage = ref(1);
+const searchInput = ref('');
+const searchQuery = ref('');
+let searchTimeout = null;
 
-const { data: activeData, refresh: refreshActive } = fetchTransactions(activeParams);
-const { data: draftData, refresh: refreshDraft } = fetchDraftTransactions(draftParams);
+watch(searchInput, (val) => {
+  clearTimeout(searchTimeout);
+  searchTimeout = setTimeout(() => {
+    searchQuery.value = val;
+    activePage.value = 1;
+    draftPage.value = 1;
+  }, 500);
+});
+
+const activeParams = computed(() => ({ limit: 100000 }));
+const draftParams = computed(() => ({ limit: 100000 }));
+
+const { data: activeData, pending: activePending, refresh: refreshActive } = fetchTransactions(activeParams);
+const { data: draftData, pending: draftPending, refresh: refreshDraft } = fetchDraftTransactions(draftParams);
+
+const isPending = computed(() => activeTab.value === 'active' ? activePending.value : draftPending.value);
 
 const getMeta = (resData) => {
   let res = resData?.value;
@@ -204,15 +226,47 @@ const draftMeta = computed(() => getMeta(draftData));
 
 const currentParams = computed(() => activeTab.value === 'active' ? activeParams.value : draftParams.value);
 const rawList = computed(() => activeTab.value === 'active' ? getArray(activeData) : getArray(draftData));
-
-const searchQuery = ref('');
 const filteredList = computed(() => {
-  if (!searchQuery.value) return rawList.value;
-  const q = searchQuery.value.toLowerCase();
-  return rawList.value.filter(item =>
-    item.uraian?.toLowerCase().includes(q) ||
-    item.jenisKas?.nama?.toLowerCase().includes(q)
-  );
+  let list = rawList.value;
+  if (searchQuery.value) {
+    const q = searchQuery.value.toLowerCase();
+    list = list.filter((item) => 
+      item.uraian?.toLowerCase().includes(q) || 
+      item.jenisKas?.nama?.toLowerCase().includes(q)
+    );
+  }
+  return list;
+});
+
+const paginatedList = computed(() => {
+  const start = ((activeTab.value === 'active' ? activePage.value : draftPage.value) - 1) * 10;
+  return filteredList.value.slice(start, start + 10);
+});
+
+const activeMetaFrontend = computed(() => {
+  const t = activeTab.value === 'active' ? filteredList.value.length : 0;
+  const tp = Math.ceil(t / 10) || 1;
+  return {
+    currentPage: activePage.value,
+    perPage: 10,
+    totalItems: t,
+    totalPages: tp,
+    hasNextPage: activePage.value < tp,
+    hasPreviousPage: activePage.value > 1
+  };
+});
+
+const draftMetaFrontend = computed(() => {
+  const t = activeTab.value === 'draft' ? filteredList.value.length : 0;
+  const tp = Math.ceil(t / 10) || 1;
+  return {
+    currentPage: draftPage.value,
+    perPage: 10,
+    totalItems: t,
+    totalPages: tp,
+    hasNextPage: draftPage.value < tp,
+    hasPreviousPage: draftPage.value > 1
+  };
 });
 
 const refreshAll = async () => {

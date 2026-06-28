@@ -26,14 +26,14 @@
         :class="activeTab === 'active' ? 'bg-emerald-600 text-white shadow-sm' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'"
         @click="activeTab = 'active'">
         Aktif
-        <span class="ml-2 rounded-full px-2 py-0.5 text-xs" :class="activeTab === 'active' ? 'bg-white/20 text-white' : 'bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-400'">{{ activeMeta?.totalItems || 0 }}</span>
+        <span class="ml-2 rounded-full px-2 py-0.5 text-xs" :class="activeTab === 'active' ? 'bg-white/20 text-white' : 'bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-400'">{{ activeMetaFrontend?.totalItems || 0 }}</span>
       </button>
       <button type="button"
         class="inline-flex items-center rounded-lg px-4 py-2 text-sm font-medium transition-colors"
         :class="activeTab === 'draft' ? 'bg-amber-500 text-white shadow-sm' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'"
         @click="activeTab = 'draft'">
         Draft
-        <span class="ml-2 rounded-full px-2 py-0.5 text-xs" :class="activeTab === 'draft' ? 'bg-white/20 text-white' : 'bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-400'">{{ draftMeta?.totalItems || 0 }}</span>
+        <span class="ml-2 rounded-full px-2 py-0.5 text-xs" :class="activeTab === 'draft' ? 'bg-white/20 text-white' : 'bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-400'">{{ draftMetaFrontend?.totalItems || 0 }}</span>
       </button>
     </div>
 
@@ -71,7 +71,7 @@
                 </div>
               </td>
             </tr>
-            <tr v-else v-for="(item, index) in filteredList" :key="item.id" class="hover:bg-gray-50 dark:hover:bg-gray-700/50 dark:bg-gray-700/50">
+            <tr v-else v-for="(item, index) in paginatedList" :key="item.id" class="hover:bg-gray-50 dark:hover:bg-gray-700/50 dark:bg-gray-700/50">
               <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">
                 {{ ((activeTab === 'active' ? activeParams.page : draftParams.page) - 1) * 10 + Number(index) + 1 }}
               </td>
@@ -101,8 +101,8 @@
           </tbody>
         </table>
       </div>
-      <BasePagination v-if="activeTab === 'active'" v-model="activeParams.page" @update:modelValue="refresh" :meta="activeMeta" class="rounded-none border-t border-gray-100 dark:border-gray-700" />
-      <BasePagination v-if="activeTab === 'draft'" v-model="draftParams.page" @update:modelValue="refreshDraft" :meta="draftMeta" class="rounded-none border-t border-gray-100 dark:border-gray-700" />
+      <BasePagination v-if="activeTab === 'active'" v-model="activePage" @update:modelValue="refresh" :meta="activeMetaFrontend" class="rounded-none border-t border-gray-100 dark:border-gray-700" />
+      <BasePagination v-if="activeTab === 'draft'" v-model="draftPage" @update:modelValue="refreshDraft" :meta="draftMetaFrontend" class="rounded-none border-t border-gray-100 dark:border-gray-700" />
     </div>
 
     <FeaturesMediaPembayaranEditModal v-model="showEditModal" :editData="selectedItem" @saved="handleSuccess" />
@@ -117,7 +117,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onBeforeUnmount } from 'vue';
+import { ref, computed, onBeforeUnmount , watch } from 'vue';
 import { definePageMeta, useRouter } from '#imports';
 import { SearchIcon, PencilIcon } from 'lucide-vue-next';
 import { Icon } from '@iconify/vue';
@@ -128,8 +128,14 @@ definePageMeta({ layout: 'dashboard' as any });
 const router = useRouter();
 const { fetchMediaPembayaranList, fetchDraftMediaPembayaran, deleteMediaPembayaran } = useMediaPembayaran();
 
-const activeParams = ref({ page: 1, limit: 10 });
-const draftParams = ref({ page: 1, limit: 10 });
+const activePage = ref(1);
+const draftPage = ref(1);
+const searchQuery = ref('');
+watch(searchQuery, () => { activePage.value = 1; draftPage.value = 1; });
+
+const activeParams = ref({ page: 1, limit: 1000 });
+const draftParams = ref({ page: 1, limit: 1000 });
+
 
 const { data: apiResponse, refresh } = fetchMediaPembayaranList(activeParams);
 const { data: draftApiResponse, refresh: refreshDraft } = fetchDraftMediaPembayaran(draftParams);
@@ -157,13 +163,44 @@ const activeMeta = computed(() => getMeta(apiResponse));
 const draftMeta = computed(() => getMeta(draftApiResponse));
 
 const activeTab = ref<'active' | 'draft'>('active');
-const searchQuery = ref('');
+
 
 const visibleItems = computed(() => activeTab.value === 'active' ? activeItems.value : draftItems.value);
 const filteredList = computed(() => {
   if (!searchQuery.value) return visibleItems.value;
   const q = searchQuery.value.toLowerCase();
   return visibleItems.value.filter((item: any) => item.nama?.toLowerCase().includes(q));
+});
+
+const paginatedList = computed(() => {
+  const start = ((activeTab.value === 'active' ? activePage.value : draftPage.value) - 1) * 10;
+  return filteredList.value.slice(start, start + 10);
+});
+
+const activeMetaFrontend = computed(() => {
+  const t = activeTab.value === 'active' ? filteredList.value.length : 0;
+  const tp = Math.ceil(t / 10) || 1;
+  return {
+    currentPage: activePage.value,
+    perPage: 10,
+    totalItems: t,
+    totalPages: tp,
+    hasNextPage: activePage.value < tp,
+    hasPreviousPage: activePage.value > 1
+  };
+});
+
+const draftMetaFrontend = computed(() => {
+  const t = activeTab.value === 'draft' ? filteredList.value.length : 0;
+  const tp = Math.ceil(t / 10) || 1;
+  return {
+    currentPage: draftPage.value,
+    perPage: 10,
+    totalItems: t,
+    totalPages: tp,
+    hasNextPage: draftPage.value < tp,
+    hasPreviousPage: draftPage.value > 1
+  };
 });
 
 const showEditModal = ref(false);
