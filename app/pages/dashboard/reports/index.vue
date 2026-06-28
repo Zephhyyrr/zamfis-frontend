@@ -20,7 +20,7 @@
         <div class="xl:col-span-2">
           <label class="mb-1 block text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">Cari</label>
           <input
-            v-model="searchQuery"
+            v-model="searchInput"
             type="text"
             placeholder="Cari uraian atau Jenis Kas..."
             class="w-full rounded-lg border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm dark: outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
@@ -271,7 +271,16 @@ definePageMeta({
   layout: 'dashboard'
 });
 
+const searchInput = ref('');
 const searchQuery = ref('');
+let searchTimeout: ReturnType<typeof setTimeout>;
+
+watch(searchInput, (val) => {
+  clearTimeout(searchTimeout);
+  searchTimeout = setTimeout(() => {
+    searchQuery.value = val;
+  }, 500);
+});
 const transactionType = ref<'all' | 'income' | 'expense'>('all');
 const startDate = ref('');
 const endDate = ref('');
@@ -513,6 +522,7 @@ const handleExportConfirm = async () => {
 };
 
 const resetFilters = () => {
+  searchInput.value = '';
   searchQuery.value = '';
   transactionType.value = 'all';
   startDate.value = '';
