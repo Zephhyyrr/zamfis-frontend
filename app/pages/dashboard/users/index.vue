@@ -8,7 +8,8 @@
       <BaseButton text="Tambah Pengguna" variant="primary" :fullWidth="false" icon="lucide:plus" @click="goToCreate" />
     </div>
 
-    <div class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 mb-6 flex items-center">
+    <div
+      class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 mb-6 flex items-center">
       <div class="relative w-full max-w-md">
         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
           <SearchIcon class="h-5 w-5 text-gray-400 dark:text-gray-500 dark:text-gray-400" />
@@ -19,40 +20,58 @@
       </div>
     </div>
 
-    <div class="mb-6 flex flex-wrap gap-2 rounded-xl bg-white dark:bg-gray-800 p-2 shadow-sm border border-gray-100 dark:border-gray-700">
+    <div
+      class="mb-6 flex flex-wrap gap-2 rounded-xl bg-white dark:bg-gray-800 p-2 shadow-sm border border-gray-100 dark:border-gray-700">
       <button type="button" class="inline-flex items-center rounded-lg px-4 py-2 text-sm font-medium transition-colors"
         :class="activeTab === 'active'
           ? 'bg-emerald-600 text-white shadow-sm'
           : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'" @click="activeTab = 'active'">
         Aktif
-        <span class="ml-2 rounded-full px-2 py-0.5 text-xs" :class="activeTab === 'active' ? 'bg-white/20 text-white' : 'bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-400'">{{ activeMeta?.totalItems || 0 }}</span>
+        <span class="ml-2 rounded-full px-2 py-0.5 text-xs"
+          :class="activeTab === 'active' ? 'bg-white/20 text-white' : 'bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-400'">{{
+            activeMeta?.totalItems || 0 }}</span>
       </button>
     </div>
 
     <div v-if="showUndoBanner"
       class="mb-4 bg-amber-50 dark:bg-amber-900/30 border border-amber-200 dark:border-amber-700/50 rounded-xl p-4 flex items-center justify-between">
       <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-full flex items-center justify-center bg-amber-100 dark:bg-amber-800 text-amber-600 dark:text-amber-400">
+        <div
+          class="w-10 h-10 rounded-full flex items-center justify-center bg-amber-100 dark:bg-amber-800 text-amber-600 dark:text-amber-400">
           <Icon icon="lucide:archive-restore" class="w-5 h-5" />
         </div>
         <div>
           <h4 class="text-sm font-semibold text-amber-900 dark:text-amber-100">Data Diarsipkan</h4>
-          <p class="text-xs text-amber-700 dark:text-amber-300">Data telah dipindahkan ke draft. Anda dapat memulihkannya dari tab Draft.</p>
+          <p class="text-xs text-amber-700 dark:text-amber-300">Data telah dipindahkan ke draft. Anda dapat
+            memulihkannya dari tab Draft.</p>
         </div>
       </div>
     </div>
 
-    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
+    <div
+      class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
       <div class="overflow-x-auto">
         <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
           <thead class="bg-gray-50 dark:bg-gray-700/50">
             <tr>
-              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Nama</th>
-              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Email</th>
-              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Role</th>
-              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Status</th>
-              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Verifikasi</th>
-              <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Aksi</th>
+              <th scope="col"
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                Nama</th>
+              <th scope="col"
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                Email</th>
+              <th scope="col"
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                Role</th>
+              <th scope="col"
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                Status</th>
+              <th scope="col"
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                Verifikasi</th>
+              <th scope="col"
+                class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                Aksi</th>
             </tr>
           </thead>
           <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
@@ -66,16 +85,15 @@
                 Tidak ada data pengguna aktif ditemukan.
               </td>
             </tr>
-            <tr v-else v-for="user in filteredUsers" :key="user.id" 
-              :class="[
-                Number(user.id) === Number(authStore.user?.id)
-                  ? 'bg-emerald-50 dark:bg-emerald-900/30 hover:bg-emerald-100 dark:hover:bg-emerald-900/50 border-l-4 border-emerald-500'
-                  : 'hover:bg-gray-50 dark:bg-gray-700/50 dark:hover:bg-gray-700/50'
-              ]"
-            >
+            <tr v-else v-for="user in filteredUsers" :key="user.id" :class="[
+              Number(user.id) === Number(authStore.user?.id)
+                ? 'bg-emerald-50 dark:bg-emerald-900/30 hover:bg-emerald-100 dark:hover:bg-emerald-900/50 border-l-4 border-emerald-500'
+                : 'hover:bg-gray-50 dark:bg-gray-700/50 dark:hover:bg-gray-700/50'
+            ]">
               <td class="px-6 py-4 whitespace-nowrap">
                 <div class="flex items-center">
-                  <div v-if="user.fotoProfile && user.fotoProfile !== 'null'" class="flex-shrink-0 h-10 w-10 rounded-full overflow-hidden border border-emerald-200 dark:border-emerald-800">
+                  <div v-if="user.fotoProfile && user.fotoProfile !== 'null'"
+                    class="flex-shrink-0 h-10 w-10 rounded-full overflow-hidden border border-emerald-200 dark:border-emerald-800">
                     <img :src="resolveAssetUrl(user.fotoProfile)" :alt="user.nama" class="h-full w-full object-cover" />
                   </div>
                   <div v-else
@@ -84,14 +102,16 @@
                   </div>
                   <div class="ml-4 text-sm font-medium text-gray-900 dark:text-gray-100">
                     {{ user.nama }}
-                    <span v-if="Number(user.id) === Number(authStore.user?.id)" class="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-emerald-100 text-emerald-800 dark:bg-emerald-800/30 dark:text-emerald-400">
+                    <span v-if="Number(user.id) === Number(authStore.user?.id)"
+                      class="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-emerald-100 text-emerald-800 dark:bg-emerald-800/30 dark:text-emerald-400">
                       Anda
                     </span>
                   </div>
                 </div>
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{{ user.email }}</td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400 capitalize">{{ user.role }}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400 capitalize">{{ user.role
+                }}</td>
               <td class="px-6 py-4 whitespace-nowrap">
                 <button type="button"
                   class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full transition-colors outline-none focus:ring-2 focus:ring-offset-1 focus:ring-primary/30"
@@ -122,23 +142,20 @@
           </tbody>
         </table>
       </div>
-      
-      <BasePagination v-model="activeParams.page" @update:modelValue="refresh" :meta="activeMeta" class="rounded-none border-t border-gray-100 dark:border-gray-700" />
+
+      <BasePagination v-model="activeParams.page" @update:modelValue="refresh" :meta="activeMeta"
+        class="rounded-none border-t border-gray-100 dark:border-gray-700" />
     </div>
 
     <FeaturesUsersUserStatusModal v-model="showStatusModal" :user="selectedUser" @success="handleSuccess" />
     <FeaturesUsersUserEditModal v-model="showEditModal" :user="selectedUser" @success="handleSuccess" />
-    <FeaturesUsersUserDeleteModal
-      v-model="showDeleteModal"
-      :user="selectedUser"
-      :mode="deleteMode"
-      @success="handleSuccess"
-    />
+    <FeaturesUsersUserDeleteModal v-model="showDeleteModal" :user="selectedUser" :mode="deleteMode"
+      @success="handleSuccess" />
 
 
 
-    <BaseModal v-model="showResultModal" :title="resultTitle" :icon="resultIcon" :type="resultType"
-      confirmText="Tutup" :showCancel="false">
+    <BaseModal v-model="showResultModal" :title="resultTitle" :icon="resultIcon" :type="resultType" confirmText="Tutup"
+      :showCancel="false">
       <p class="text-sm text-gray-700 dark:text-white">{{ resultMessage }}</p>
     </BaseModal>
 
@@ -204,8 +221,8 @@ const deleteMode = ref<'archive'>('archive');
 const openActionModal = (action: 'edit' | 'delete' | 'status', user: IUser) => {
   if ((action === 'status' || action === 'delete') && Number(user.id) === Number(authStore.user?.id)) {
     resultTitle.value = 'Tidak Diizinkan';
-    resultMessage.value = action === 'status' 
-      ? 'Anda tidak bisa menonaktifkan atau mengaktifkan akun Anda sendiri.' 
+    resultMessage.value = action === 'status'
+      ? 'Anda tidak bisa menonaktifkan atau mengaktifkan akun Anda sendiri.'
       : 'Anda tidak bisa menghapus akun Anda sendiri.';
     resultType.value = 'danger';
     resultIcon.value = 'lucide:alert-circle';
