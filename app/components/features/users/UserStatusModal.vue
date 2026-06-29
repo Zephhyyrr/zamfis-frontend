@@ -50,12 +50,12 @@ const submitToggleStatus = async () => {
     }
 
     try {
-        await toggleActivateUser(props.user.id);
+        const res = await toggleActivateUser(props.user.id);
         emit('update:modelValue', false);
         if (targetStatus.value) {
-            emit('success', 'User Diaktifkan', 'User berhasil diaktifkan dan dapat mengakses sistem.');
+            emit('success', 'User Diaktifkan', (res as any).message || 'User berhasil diaktifkan. Email verifikasi telah dikirim ulang.');
         } else {
-            emit('success', 'User Dinonaktifkan', 'User berhasil dinonaktifkan.');
+            emit('success', 'User Dinonaktifkan', (res as any).message || 'User berhasil dinonaktifkan.');
         }
     } catch (error: any) {
         console.error('Gagal mengubah status user:', error);
