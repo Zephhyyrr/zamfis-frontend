@@ -1,14 +1,6 @@
 <template>
-  <BaseModal
-    :modelValue="modelValue"
-    @update:modelValue="emit('update:modelValue', $event)"
-    :title="modalTitle"
-    :icon="modalIcon"
-    :type="modalType"
-    :confirmText="confirmText"
-    @confirm="handleConfirm"
-    :isLoading="isLoading"
-  >
+  <BaseModal :modelValue="modelValue" @update:modelValue="emit('update:modelValue', $event)" :title="modalTitle"
+    :icon="modalIcon" :type="modalType" :confirmText="confirmText" @confirm="handleConfirm" :isLoading="isLoading">
     <p class="text-sm text-gray-700 dark:text-white">{{ modalBody }}</p>
   </BaseModal>
 </template>
@@ -39,8 +31,8 @@ const modalIcon = computed(() => {
 });
 
 const modalType = computed(() => {
-  if (props.mode === 'restore') return 'success';
-  return 'warning';
+  if (props.mode === 'restore') return 'warning';
+  return 'danger';
 });
 
 const confirmText = computed(() => {
