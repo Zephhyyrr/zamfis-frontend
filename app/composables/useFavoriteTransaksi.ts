@@ -18,13 +18,7 @@ export const useFavoriteTransaksi = () => {
         );
     };
 
-    const fetchDraftFavoriteTransaksi = (params: Ref<IPaginationQuery>) => {
-        return useAsyncData(
-            'favorite-transaksi-draft',
-            () => FavoriteTransaksiService.getDraft(params.value),
-            { watch: [params] }
-        );
-    };
+
 
     const createFavoriteTransaksi = async (payload: ICreateFavoriteTransaksiPayload) => {
         return await FavoriteTransaksiService.create(payload);
@@ -42,7 +36,7 @@ export const useFavoriteTransaksi = () => {
     return {
         fetchFavoriteTransaksiList,
         fetchFavoriteTransaksiDetail,
-        fetchDraftFavoriteTransaksi,
+
         createFavoriteTransaksi,
         updateFavoriteTransaksi,
         deleteFavoriteTransaksi,

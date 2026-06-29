@@ -2,67 +2,36 @@
   <BaseModal
     :modelValue="modelValue"
     @update:modelValue="emit('update:modelValue', $event)"
-    :title="modalTitle"
-    :icon="modalIcon"
-    :type="modalType"
-    :confirmText="confirmText"
+    title="Hapus Permanen"
+    icon="lucide:trash-2"
+    type="danger"
+    confirmText="Ya, Hapus Permanen"
     @confirm="handleConfirm"
     :isLoading="isLoading"
   >
-    <p class="text-sm text-gray-700 dark:text-white">{{ modalBody }}</p>
+    <p class="text-sm text-gray-700 dark:text-white">Hapus permanen favorit transaksi "{{ item?.uraian }}"? Aksi ini tidak dapat dibatalkan.</p>
   </BaseModal>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref } from 'vue';
 import { useFavoriteTransaksi } from '~/composables/useFavoriteTransaksi';
 
 const props = defineProps({
   modelValue: { type: Boolean, default: false },
-  item: { type: Object, default: () => ({}) },
-  mode: { type: String as () => 'archive' | 'restore', default: 'archive' }
+  item: { type: Object, default: () => ({}) }
 });
 
 const emit = defineEmits(['update:modelValue', 'success']);
 const isLoading = ref(false);
 const { deleteFavoriteTransaksi } = useFavoriteTransaksi();
 
-const modalTitle = computed(() => {
-  if (props.mode === 'archive') return 'Arsipkan Favorit Transaksi';
-  if (props.mode === 'restore') return 'Pulihkan Favorit Transaksi';
-  return 'Hapus Permanen';
-});
-
-const modalIcon = computed(() => props.mode === 'restore' ? 'lucide:rotate-ccw' : 'lucide:trash-2');
-
-const modalType = computed(() => {
-  if (props.mode === 'restore') return 'success';
-  return 'warning';
-});
-
-const confirmText = computed(() => {
-  if (props.mode === 'archive') return 'Ya, Arsipkan';
-  if (props.mode === 'restore') return 'Ya, Pulihkan';
-  return 'Ya, Hapus Permanen';
-});
-
-const modalBody = computed(() => {
-  const uraian = props.item?.uraian || '';
-  if (props.mode === 'archive') return `Arsipkan favorit transaksi "${uraian}"?`;
-  if (props.mode === 'restore') return `Pulihkan favorit transaksi "${uraian}" dari draft?`;
-  return `Hapus permanen favorit transaksi "${uraian}"? Aksi ini tidak dapat dibatalkan.`;
-});
-
 const handleConfirm = async () => {
   isLoading.value = true;
   try {
     await deleteFavoriteTransaksi(props.item.id);
     emit('update:modelValue', false);
-    if (props.mode === 'restore') {
-      emit('success', 'Berhasil Dipulihkan', 'Favorit transaksi telah dipulihkan dari draft.');
-    } else {
-      emit('success', 'Berhasil Diarsipkan', 'Favorit transaksi dipindahkan ke draft.');
-    }
+    emit('success', 'Berhasil Dihapus', `Favorit transaksi "${props.item?.uraian}" berhasil dihapus secara permanen.`);
   } catch (e) {
     console.error(e);
   } finally {

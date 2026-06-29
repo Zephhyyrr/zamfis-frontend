@@ -38,11 +38,4 @@ export class FavoriteTransaksiService extends BaseService {
         });
     }
 
-    static async getDraft(params?: IPaginationQuery): Promise<IApiResponse<IFavoriteTransaksi[]>> {
-        return await this.api<IApiResponse<IFavoriteTransaksi[]>>(endpoints.FAVORITE_TRANSAKSI.GET_DRAFT, {
-            method: 'GET',
-            query: params,
-        });
-    }
-
-    }
+}
