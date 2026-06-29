@@ -35,41 +35,10 @@
       </div>
     </div>
 
-    <div
-      class="mb-6 flex flex-wrap gap-2 rounded-xl bg-white dark:bg-gray-800 p-2 shadow-sm border border-gray-100 dark:border-gray-700">
-      <button type="button" class="inline-flex items-center rounded-lg px-4 py-2 text-sm font-medium transition-colors"
-        :class="activeTab === 'active' ? 'bg-emerald-600 text-white shadow-sm' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'"
-        @click="activeTab = 'active'">
-        Aktif
-        <span class="ml-2 rounded-full px-2 py-0.5 text-xs"
-          :class="activeTab === 'active' ? 'bg-white/20 text-white' : 'bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-400'">{{
-            activeMetaFrontend?.totalItems || 0 }}</span>
-      </button>
-      <button type="button" class="inline-flex items-center rounded-lg px-4 py-2 text-sm font-medium transition-colors"
-        :class="activeTab === 'draft' ? 'bg-amber-500 text-white shadow-sm' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'"
-        @click="activeTab = 'draft'">
-        Draft
-        <span class="ml-2 rounded-full px-2 py-0.5 text-xs"
-          :class="activeTab === 'draft' ? 'bg-white/20 text-white' : 'bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-400'">{{
-            draftMetaFrontend?.totalItems || 0 }}</span>
-      </button>
-    </div>
 
 
-    <div v-if="showUndoBanner"
-      class="mb-4 bg-amber-50 dark:bg-amber-900/30 border border-amber-200 dark:border-amber-700/50 rounded-xl p-4 flex items-center justify-between">
-      <div class="flex items-center gap-3">
-        <div
-          class="w-10 h-10 rounded-full flex items-center justify-center bg-amber-100 dark:bg-amber-800 text-amber-600 dark:text-amber-400">
-          <Icon icon="lucide:archive-restore" class="w-5 h-5" />
-        </div>
-        <div>
-          <h4 class="text-sm font-semibold text-amber-900 dark:text-amber-100">Data Diarsipkan</h4>
-          <p class="text-xs text-amber-700 dark:text-amber-300">Data telah dipindahkan ke draft. Anda dapat
-            memulihkannya dari tab Draft.</p>
-        </div>
-      </div>
-    </div>
+
+
 
     <div
       class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden flex flex-col">
@@ -109,14 +78,13 @@
                 <div
                   class="flex flex-col items-center justify-center text-center text-gray-500 dark:text-gray-400 text-sm">
                   <Icon icon="lucide:file-question" class="w-12 h-12 text-gray-300 mb-2" />
-                  <p>{{ activeTab === 'active' ? 'Belum ada peserta kurban.' : 'Tidak ada peserta di draft.' }}</p>
+                  <p>Belum ada peserta kurban.</p>
                 </div>
               </td>
             </tr>
             <tr v-else v-for="(item, index) in paginatedList" :key="item.id"
               class="hover:bg-gray-50 dark:hover:bg-gray-700/50 dark:bg-gray-700/50">
-              <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-400">{{ ((activeTab === 'active' ?
-                activeParams.page : draftParams.page) - 1) * 10 + Number(index) + 1 }}</td>
+              <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-400">{{ (activePage - 1) * 10 + Number(index) + 1 }}</td>
               <td class="px-4 py-4 text-sm font-medium text-gray-900 dark:text-gray-100">{{ item.nama }}</td>
               <td class="px-4 py-4 text-sm text-gray-700">{{ item.tahun || '2024' }}</td>
               <td class="px-4 py-4 text-sm text-gray-600 dark:text-gray-400">
@@ -134,19 +102,15 @@
               </td>
               <td class="px-4 py-4 text-sm text-gray-600 dark:text-gray-400">{{ item.kelompokKurban?.nama || '-' }}</td>
               <td class="px-4 py-4 whitespace-nowrap text-right text-sm font-medium">
-                <button v-if="activeTab === 'active'" @click="openActionModal('edit', item)"
+                <button @click="openActionModal('edit', item)"
                   class="text-blue-600 hover:text-blue-800 p-1.5 hover:bg-blue-50 rounded-lg mr-2 transition-colors"
                   title="Edit">
                   <PencilIcon class="w-4 h-4" />
                 </button>
-                <button v-if="activeTab === 'draft'" @click="openActionModal('delete', item, 'restore')"
-                  class="text-emerald-700 hover:text-emerald-800 p-1.5 hover:bg-emerald-50 rounded-lg mr-2 transition-colors"
-                  title="Pulihkan">
-                  <Icon icon="lucide:rotate-ccw" class="w-4 h-4" />
-                </button>
-                <button v-if="activeTab === 'active'" @click="openActionModal('delete', item, 'archive')"
+
+                <button @click="openActionModal('delete', item)"
                   class="text-amber-700 hover:text-amber-800 p-1.5 hover:bg-amber-50 rounded-lg transition-colors"
-                  title="Arsipkan">
+                  title="Hapus">
                   <Icon icon="lucide:trash-2" class="w-4 h-4" />
                 </button>
               </td>
@@ -154,14 +118,12 @@
           </tbody>
         </table>
       </div>
-      <BasePagination v-if="activeTab === 'active'" v-model="activePage" @update:modelValue="refresh"
+      <BasePagination v-model="activePage" @update:modelValue="refresh"
         :meta="activeMetaFrontend" class="rounded-none border-t border-gray-100 dark:border-gray-700" />
-      <BasePagination v-if="activeTab === 'draft'" v-model="draftPage" @update:modelValue="refreshDraft"
-        :meta="draftMetaFrontend" class="rounded-none border-t border-gray-100 dark:border-gray-700" />
     </div>
 
     <FeaturesPesertaKurbanEditModal v-model="showEditModal" :editData="selectedItem" @saved="handleSuccess" />
-    <FeaturesPesertaKurbanDeleteModal v-model="showDeleteModal" :item="selectedItem" :mode="deleteMode"
+    <FeaturesPesertaKurbanDeleteModal v-model="showDeleteModal" :item="selectedItem"
       @success="handleSuccess" />
 
     <BaseModal v-model="showResultModal" :title="resultTitle" icon="lucide:badge-check" type="success"
@@ -182,18 +144,15 @@ import { useKelompokKurban } from '~/composables/useKelompokKurban';
 definePageMeta({ layout: 'dashboard' as any });
 
 const router = useRouter();
-const { fetchPesertaKurbanList, fetchDraftPesertaKurban, deletePesertaKurban } = usePesertaKurban();
+const { fetchPesertaKurbanList, deletePesertaKurban } = usePesertaKurban();
 
 const activePage = ref(1);
-const draftPage = ref(1);
 const searchQuery = ref('');
-watch(searchQuery, () => { activePage.value = 1; draftPage.value = 1; });
+watch(searchQuery, () => { activePage.value = 1; });
 
 const activeParams = ref({ page: 1, limit: 1000 });
-const draftParams = ref({ page: 1, limit: 1000 });
 
 const { data: apiResponse, refresh } = fetchPesertaKurbanList(activeParams);
-const { data: draftApiResponse, refresh: refreshDraft } = fetchDraftPesertaKurban(draftParams);
 
 const extractItems = (resRef: any) => {
   const root = resRef?.value;
@@ -205,13 +164,9 @@ const extractItems = (resRef: any) => {
 };
 
 const activeItems = computed(() => extractItems(apiResponse));
-const draftItems = computed(() => extractItems(draftApiResponse));
-
-const activeTab = ref<'active' | 'draft'>('active');
-
-const selectedTahun = ref<string>('');
 const selectedKelompok = ref<number | ''>('');
-const visibleItems = computed(() => activeTab.value === 'active' ? activeItems.value : draftItems.value);
+const selectedTahun = ref<string>('');
+const visibleItems = computed(() => activeItems.value);
 
 const tahunList = computed(() => {
   const years = new Set<string>(visibleItems.value.map((item: any) => String(item.tahun || '2024')));
@@ -243,7 +198,7 @@ const filteredList = computed(() => {
 });
 
 const paginatedList = computed(() => {
-  const start = ((activeTab.value === 'active' ? activePage.value : draftPage.value) - 1) * 10;
+  const start = (activePage.value - 1) * 10;
   return filteredList.value.slice(start, start + 10);
 });
 
@@ -264,58 +219,25 @@ const activeMetaFrontend = computed(() => {
   };
 });
 
-const draftMetaFrontend = computed(() => {
-  let result = draftItems.value;
-  if (selectedTahun.value !== '') result = result.filter((item: any) => String(item.tahun || '2024') === selectedTahun.value);
-  if (selectedKelompok.value !== '') result = result.filter((item: any) => item.kelompokKurbanId === selectedKelompok.value);
-  if (searchQuery.value) result = result.filter((item: any) => item.nama?.toLowerCase().includes(searchQuery.value.toLowerCase()));
-  const t = result.length;
-  const tp = Math.ceil(t / 10) || 1;
-  return {
-    currentPage: draftPage.value,
-    perPage: 10,
-    totalItems: t,
-    totalPages: tp,
-    hasNextPage: draftPage.value < tp,
-    hasPreviousPage: draftPage.value > 1
-  };
-});
-
 const showEditModal = ref(false);
 const showDeleteModal = ref(false);
 const selectedItem = ref<any>(null);
 const currentAction = ref<'edit' | 'delete' | null>(null);
-const deleteMode = ref<'archive' | 'restore'>('archive');
 
-const openActionModal = (action: 'edit' | 'delete', item: any, mode?: 'archive' | 'restore') => {
+const openActionModal = (action: 'edit' | 'delete', item: any) => {
   currentAction.value = action;
   selectedItem.value = { ...item };
   if (action === 'edit') showEditModal.value = true;
-  if (action === 'delete') {
-    deleteMode.value = mode || (activeTab.value === 'draft' ? 'restore' : 'archive');
-    showDeleteModal.value = true;
-  }
+  if (action === 'delete') showDeleteModal.value = true;
 };
 
-const showUndoBanner = ref(false);
-const undoLoading = ref(false);
-const lastDeletedId = ref<number | null>(null);
-let undoTimer: any = null;
-const clearUndoState = () => { showUndoBanner.value = false; lastDeletedId.value = null; if (undoTimer) { clearTimeout(undoTimer); undoTimer = null; } };
-const showDeleteUndo = (id: number) => { if (undoTimer) clearTimeout(undoTimer); lastDeletedId.value = id; showUndoBanner.value = true; undoTimer = setTimeout(clearUndoState, 8000); };
-const undoDelete = async () => {
-  if (!lastDeletedId.value) return;
-  undoLoading.value = true;
-  try { await deletePesertaKurban(lastDeletedId.value); await refresh(); await refreshDraft(); clearUndoState(); }
-  catch (e) { console.error(e); } finally { undoLoading.value = false; }
-};
+
 
 const showResultModal = ref(false);
 const resultTitle = ref('');
 const resultMessage = ref('');
 const handleSuccess = async (title: string, message: string) => {
-  await refresh(); await refreshDraft();
-  if (currentAction.value === 'delete' && deleteMode.value === 'archive' && selectedItem.value) showDeleteUndo(selectedItem.value.id);
+  await refresh(); 
   resultTitle.value = title; resultMessage.value = message; showResultModal.value = true;
 };
 
@@ -329,5 +251,5 @@ const formatCurrency = (val: number) => {
   return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(val);
 };
 
-onBeforeUnmount(() => { if (undoTimer) clearTimeout(undoTimer); });
+
 </script>

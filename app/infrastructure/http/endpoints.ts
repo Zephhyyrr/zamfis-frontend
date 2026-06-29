@@ -69,7 +69,6 @@ export const endpoints = {
         CREATE: 'peserta-kurban/',
         UPDATE: (id: number) => `peserta-kurban/${id}`,
         DELETE: (id: number) => `peserta-kurban/${id}`,
-        GET_DRAFT: 'peserta-kurban/draft',
         GET_PUBLIC_YEARS: 'peserta-kurban/public/years',
         GET_PUBLIC_KURBAN: 'peserta-kurban/public/kurban',
     },

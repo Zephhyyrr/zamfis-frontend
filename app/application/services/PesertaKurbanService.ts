@@ -38,13 +38,6 @@ export class PesertaKurbanService extends BaseService {
         });
     }
 
-    static async getDraft(params?: IPaginationQuery): Promise<IApiResponse<IPesertaKurban[]>> {
-        return await this.api<IApiResponse<IPesertaKurban[]>>(endpoints.PESERTA_KURBAN.GET_DRAFT, {
-            method: 'GET',
-            query: params,
-        });
-    }
-
     
     static async getPublicYears(): Promise<IApiResponse<string[]>> {
         return await this.api<IApiResponse<string[]>>(endpoints.PESERTA_KURBAN.GET_PUBLIC_YEARS, {

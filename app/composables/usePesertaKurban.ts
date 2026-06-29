@@ -18,14 +18,6 @@ export const usePesertaKurban = () => {
         );
     };
 
-    const fetchDraftPesertaKurban = (params: Ref<IPaginationQuery>) => {
-        return useAsyncData(
-            'peserta-kurban-draft',
-            () => PesertaKurbanService.getDraft(params.value),
-            { watch: [params] }
-        );
-    };
-
     const createPesertaKurban = async (payload: ICreatePesertaKurbanPayload) => {
         return await PesertaKurbanService.create(payload);
     };
@@ -42,7 +34,6 @@ export const usePesertaKurban = () => {
     return {
         fetchPesertaKurbanList,
         fetchPesertaKurbanDetail,
-        fetchDraftPesertaKurban,
         createPesertaKurban,
         updatePesertaKurban,
         deletePesertaKurban,
