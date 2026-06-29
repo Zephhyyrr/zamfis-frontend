@@ -41,6 +41,15 @@
 
 
     <div
+      class="mb-6 flex flex-wrap gap-2 rounded-xl bg-white dark:bg-gray-800 p-2 shadow-sm border border-gray-100 dark:border-gray-700">
+      <button type="button" class="inline-flex items-center rounded-lg px-4 py-2 text-sm font-medium transition-colors bg-emerald-600 text-white shadow-sm">
+        Aktif
+        <span class="ml-2 rounded-full px-2 py-0.5 text-xs bg-white/20 text-white">{{
+            activeMetaFrontend?.totalItems || 0 }}</span>
+      </button>
+    </div>
+
+    <div
       class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden flex flex-col">
       <div class="overflow-x-auto flex-1">
         <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
