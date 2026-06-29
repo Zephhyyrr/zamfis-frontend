@@ -111,7 +111,7 @@
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{{ user.email }}</td>
               <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400 capitalize">{{ user.role
-                }}</td>
+              }}</td>
               <td class="px-6 py-4 whitespace-nowrap">
                 <button type="button"
                   class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full transition-colors outline-none focus:ring-2 focus:ring-offset-1 focus:ring-primary/30"
@@ -143,7 +143,7 @@
         </table>
       </div>
 
-      <BasePagination v-model="activePage" @update:modelValue="refresh" :meta="activeMeta"
+      <BasePagination v-model="activePage" :meta="activeMetaFrontend"
         class="rounded-none border-t border-gray-100 dark:border-gray-700" />
     </div>
 
@@ -163,7 +163,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onBeforeUnmount , watch } from 'vue';
+import { ref, computed, onBeforeUnmount, watch } from 'vue';
 import { definePageMeta, useRouter } from '#imports';
 import { SearchIcon, PencilIcon, TrashIcon } from 'lucide-vue-next';
 import { Icon } from '@iconify/vue';
@@ -180,21 +180,12 @@ const authStore = useAuthStore();
 const { fetchUsers, deleteUser } = useUser();
 
 const activePage = ref(1);
-const searchInput = ref('');
 const searchQuery = ref('');
+
 watch(searchQuery, () => { activePage.value = 1; });
-let searchTimeout: any = null;
 
-watch(searchInput, (val) => {
-  clearTimeout(searchTimeout);
-  searchTimeout = setTimeout(() => {
-    searchQuery.value = val;
-    activePage.value = 1;
-  }, 500);
-});
-
-const activeParams = computed(() => ({ page: activePage.value, limit: 10, search: searchQuery.value || undefined }));
-const { data: apiResponse, pending, refresh } = fetchUsers(activeParams);
+const apiParams = ref({ limit: 1000, page: 1 });
+const { data: apiResponse, pending, refresh } = fetchUsers(apiParams);
 
 const users = computed<IUser[]>(() => (apiResponse.value as IApiResponse<IUser[]>)?.data ?? []);
 
