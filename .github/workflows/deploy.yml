@@ -1,0 +1,35 @@
+name: Deploy Frontend
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy Frontend
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.VPS_IP }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          script: |
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            
+            cd /var/www/surauzamzam/frontend
+            
+            # Memaksa pembacaan environment variables khusus production
+            set -a
+            source .env.production
+            set +a
+            
+            git pull origin main
+            
+            npm install
+            npm run build
+            
+            # Menyalakan aplikasi Nuxt dari folder .output via PM2
+            pm2 restart frontend || pm2 start .output/server/index.mjs --name "frontend"
+            pm2 save
