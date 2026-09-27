@@ -61,8 +61,14 @@
         </div>
       </div>
 
-      <div class="pt-6 border-t border-white/20 text-center text-xs text-white/80">
-        &copy; {{ new Date().getFullYear() }} Sistem Informasi Surau Zam Zam. Dikelola dengan penuh amanah.
+      <div class="pt-6 border-t border-white/20 flex flex-col md:flex-row items-center justify-between text-xs text-white/80 gap-4 md:gap-0">
+        <div>
+          &copy; {{ new Date().getFullYear() }} Sistem Informasi Surau Zam Zam. Dikelola dengan penuh amanah.
+        </div>
+        <div class="flex items-center gap-2 bg-white/10 px-3 py-1.5 rounded-lg border border-white/10">
+          <span class="font-medium">Total Pengunjung:</span>
+          <img src="https://api.visitorbadge.io/api/visitors?path=surauzamzam.com&countColor=%2310b981&labelStyle=none" alt="Visitor Counter" class="h-5" />
+        </div>
       </div>
     </div>
   </footer>
