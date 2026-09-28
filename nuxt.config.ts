@@ -20,7 +20,7 @@ export default defineNuxtConfig({
   ],
   app: {
     head: {
-      title: 'Zam - Zam Financial Intelligence System',
+      title: 'Surau Zam - Zam',
       script: [
         {
           innerHTML: `if (localStorage.getItem('theme') === 'dark') { document.documentElement.classList.add('dark'); }`,
