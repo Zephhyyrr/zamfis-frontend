@@ -1,6 +1,12 @@
 <template>
   <div class="fixed bottom-6 right-6 z-50 flex flex-col items-end">
-    <div class="animate-float-btn">
+    <div class="animate-float-btn flex items-center">
+      
+      <div class="flex items-center gap-2 bg-white/10 backdrop-blur-md pl-4 pr-10 py-2 rounded-l-2xl border border-white/20 border-r-0 text-white text-xs mr-[-30px] z-40 shadow-lg relative h-[42px]">
+        <span class="font-medium whitespace-nowrap">Total Pengunjung:</span>
+        <img src="https://api.visitorbadge.io/api/visitors?path=surauzamzam.com&countColor=%2310b981&labelStyle=none" alt="Visitor Counter" class="h-5" />
+      </div>
+
       <BaseButton @click="toggleModal" :fullWidth="false" variant="success"
         class="!rounded-full !w-16 !h-16 !p-0 flex items-center justify-center shadow-2xl hover:shadow-emerald-900/50 transform hover:scale-110 group relative z-50 border-none">
         <Icon icon="lucide:book-open"
