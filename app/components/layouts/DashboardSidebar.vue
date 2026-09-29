@@ -11,7 +11,7 @@
         <img src="/zamfis_logo.png" alt="Logo" class="w-8 h-8 object-contain flex-shrink-0" />
         <div>
           <h1 class="text-lg font-bold text-emerald-600 dark:text-emerald-400 leading-tight">Surau Zam-Zam</h1>
-          <p class="text-[10px] text-gray-500 dark:text-gray-400 mt-1 whitespace-normal leading-tight">Zam - Zam Financial Intelligence System</p>
+          <p class="text-[10px] text-gray-500 dark:text-gray-400 mt-1 whitespace-normal leading-tight">Sistem Informasi Surau</p>
         </div>
       </div>
       <div v-show="isCollapsed" class="whitespace-nowrap overflow-hidden transition-opacity duration-300">

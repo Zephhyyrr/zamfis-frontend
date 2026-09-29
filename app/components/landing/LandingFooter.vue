@@ -15,6 +15,25 @@
           <p class="text-sm text-white/90 leading-relaxed">
             Sistem informasi manajemen surau untuk mendukung transparansi pengelolaan keuangan, informasi kegiatan, dan dakwah secara digital.
           </p>
+
+          <!-- Visitor Statistics -->
+          <div class="mt-8 font-[Poppins]">
+            <h5 class="text-sm font-bold text-white mb-3">Statistik Pengunjung</h5>
+            <div class="flex flex-col gap-2">
+              <div class="flex items-center justify-between bg-white px-3 py-2 rounded-lg shadow-md w-full max-w-[200px]">
+                <span class="text-xs font-semibold text-gray-700">Hari Ini</span>
+                <span class="bg-emerald-500 text-white text-xs font-bold px-2 py-0.5 rounded">12</span>
+              </div>
+              <div class="flex items-center justify-between bg-white px-3 py-2 rounded-lg shadow-md w-full max-w-[200px]">
+                <span class="text-xs font-semibold text-gray-700">Kemarin</span>
+                <span class="bg-emerald-500 text-white text-xs font-bold px-2 py-0.5 rounded">45</span>
+              </div>
+              <div class="flex items-center justify-between bg-white px-3 py-2 rounded-lg shadow-md w-full max-w-[200px]">
+                <span class="text-xs font-semibold text-gray-700">Total</span>
+                <img src="https://api.visitorbadge.io/api/visitors?path=surauzamzam.com&countColor=%2310b981&labelStyle=none" alt="Total Visitor" class="h-5" />
+              </div>
+            </div>
+          </div>
         </div>
 
         <div>

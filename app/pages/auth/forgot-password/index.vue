@@ -5,7 +5,7 @@
         <img src="/zamfis_logo.png" alt="Logo" class="h-20 w-auto object-contain" />
       </div>
       <h1 class="text-2xl font-bold text-secondary dark:text-white mb-1">Surau Zam-Zam</h1>
-      <p class="text-font-color dark:text-gray-300 text-sm">Zam - Zam Financial Intelligence System</p>
+      <p class="text-font-color dark:text-gray-300 text-sm">Sistem Informasi Surau</p>
     </div>
     <div class="auth-card rounded-2xl p-8">
       <template v-if="!isSubmitted">
@@ -121,9 +121,9 @@ definePageMeta({
 });
 
 useHead({
-  title: 'Zam - Zam Financial Intelligence System',
+  title: 'Surau Zam-Zam',
   meta: [
-    { name: 'description', content: 'Reset password akun Zam - Zam Financial Intelligence System Surau Zam-Zam' },
+    { name: 'description', content: 'Reset password akun Sistem Informasi Surau Zam-Zam' },
   ],
 });
 
