@@ -114,9 +114,11 @@
               }}</td>
               <td class="px-6 py-4 whitespace-nowrap">
                 <button type="button"
-                  class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full transition-colors outline-none focus:ring-2 focus:ring-offset-1 focus:ring-primary/30"
+                  class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full transition-colors outline-none focus:ring-2 focus:ring-offset-1 focus:ring-primary/30 disabled:opacity-50 disabled:cursor-not-allowed"
                   :class="user.isActive ? 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 hover:bg-green-200 dark:hover:bg-green-900/50' : 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300 hover:bg-red-200 dark:hover:bg-red-900/50'"
-                  @click="openActionModal('status', user)">
+                  @click="openActionModal('status', user)"
+                  :disabled="user.email === 'pengurussurauzamzam@gmail.com'"
+                  :title="user.email === 'pengurussurauzamzam@gmail.com' ? 'Akun utama tidak dapat dinonaktifkan' : ''">
                   {{ user.isActive ? 'Aktif' : 'Tidak Aktif' }}
                 </button>
               </td>
@@ -128,13 +130,15 @@
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                 <button v-if="activeTab === 'active'" @click="openActionModal('edit', user)"
-                  class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 p-1.5 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-lg mr-2 transition-colors outline-none focus:ring-2 focus:ring-blue-500/50"
-                  title="Edit">
+                  class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 p-1.5 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-lg mr-2 transition-colors outline-none focus:ring-2 focus:ring-blue-500/50 disabled:opacity-50 disabled:cursor-not-allowed"
+                  :title="user.email === 'pengurussurauzamzam@gmail.com' && authStore.user?.email !== 'pengurussurauzamzam@gmail.com' ? 'Hanya pemilik akun yang dapat mengedit' : 'Edit'"
+                  :disabled="user.email === 'pengurussurauzamzam@gmail.com' && authStore.user?.email !== 'pengurussurauzamzam@gmail.com'">
                   <PencilIcon class="w-4 h-4" />
                 </button>
                 <button @click="openActionModal('delete', user)"
-                  class="text-amber-700 dark:text-amber-500 hover:text-amber-800 dark:hover:text-amber-400 p-1.5 hover:bg-amber-50 dark:hover:bg-amber-900/30 rounded-lg transition-colors outline-none focus:ring-2 focus:ring-amber-500/50"
-                  title="Hapus">
+                  class="text-amber-700 dark:text-amber-500 hover:text-amber-800 dark:hover:text-amber-400 p-1.5 hover:bg-amber-50 dark:hover:bg-amber-900/30 rounded-lg transition-colors outline-none focus:ring-2 focus:ring-amber-500/50 disabled:opacity-50 disabled:cursor-not-allowed"
+                  :title="user.email === 'pengurussurauzamzam@gmail.com' ? 'Akun utama tidak dapat dihapus' : 'Hapus'"
+                  :disabled="user.email === 'pengurussurauzamzam@gmail.com'">
                   <Icon icon="lucide:trash-2" class="w-4 h-4" />
                 </button>
               </td>
@@ -236,6 +240,33 @@ const currentAction = ref<'edit' | 'delete' | 'status' | null>(null);
 const deleteMode = ref<'archive'>('archive');
 
 const openActionModal = (action: 'edit' | 'delete' | 'status', user: IUser) => {
+  if (user.email === 'pengurussurauzamzam@gmail.com') {
+    if (action === 'delete') {
+      resultTitle.value = 'Tidak Diizinkan';
+      resultMessage.value = 'Akun utama (pengurussurauzamzam@gmail.com) tidak dapat dihapus.';
+      resultType.value = 'danger';
+      resultIcon.value = 'lucide:alert-circle';
+      showResultModal.value = true;
+      return;
+    }
+    if (action === 'status') {
+      resultTitle.value = 'Tidak Diizinkan';
+      resultMessage.value = 'Status aktif akun utama (pengurussurauzamzam@gmail.com) tidak dapat dinonaktifkan.';
+      resultType.value = 'danger';
+      resultIcon.value = 'lucide:alert-circle';
+      showResultModal.value = true;
+      return;
+    }
+    if (action === 'edit' && authStore.user?.email !== 'pengurussurauzamzam@gmail.com') {
+      resultTitle.value = 'Tidak Diizinkan';
+      resultMessage.value = 'Akun utama (pengurussurauzamzam@gmail.com) hanya dapat diedit oleh pemilik akun tersebut.';
+      resultType.value = 'danger';
+      resultIcon.value = 'lucide:alert-circle';
+      showResultModal.value = true;
+      return;
+    }
+  }
+
   if ((action === 'status' || action === 'delete') && Number(user.id) === Number(authStore.user?.id)) {
     resultTitle.value = 'Tidak Diizinkan';
     resultMessage.value = action === 'status'
